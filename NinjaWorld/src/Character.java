@@ -1,8 +1,13 @@
 import java.util.HashMap;
-
+//import java.util.Math;
 
 public class Character extends Creature {
 
+	public String clan;
+	public String gender;
+	public int exp;
+	private int expToLevelUp;
+	
 	public int goodDeeds;
 	public int badDeeds;
 	public int goodDeedsSeen;
@@ -40,4 +45,23 @@ public class Character extends Creature {
 		return new Character();
 		
 	}
-}
+	
+	public void levelUp() {
+		lvl_++;
+		updateExp();
+		int points = 0;
+		if(lvl_ == 0) {
+			points = 6;
+		}else {
+			points = (int) (Math.sqrt(lvl_)+2);			
+		}
+		this.stats_.purchaseStats(points);
+	}
+	
+	public void updateExp() {
+		exp = 0;
+		double scaleOnLevel = Math.pow(lvl_, 1.3);  //x^1.3  exponent
+		expToLevelUp = (int) (100.0 + (scaleOnLevel * 10.0));
+		//expToLevelUp = 100 + (lvl_ * 10);
+	}
+}//end Character

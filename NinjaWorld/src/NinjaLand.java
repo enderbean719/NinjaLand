@@ -7,9 +7,7 @@ public class NinjaLand {
 		// BEGIN GAME
 		System1 s = new System1();
 		Menu mainMenu = new Menu();
-		mainMenu.start();
-		System.out.println("Hello world");
-		s.out("Hello world2");
+		mainMenu.start(); 
 		
 		Story1 st1 = new Story1();
 		st1.start_();

@@ -9,6 +9,8 @@ public class Ability {
 	private double size;
 	private double speed;
 	private double duration;
+	private double visibility;
+	private double sensibility;
 	
 	private double basicDamage;
 	private double chakraDamage;
