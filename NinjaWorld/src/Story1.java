@@ -4,8 +4,8 @@ public class Story1 implements Story {
 	int answer = 0;
 	
 	@Override
-	public void start_() {
-		// TODO Auto-generated method stub
+	public void start_() { 
+		//SETH BEGIN HERE
 		System1 s = new System1();
 		s.out("Story1 begin");
 		

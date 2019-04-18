@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class System1 {
@@ -14,12 +15,28 @@ public class System1 {
 		System.out.print(input);
 	}
 	
-	public int getInt() {
-		return reader.nextInt();
+	public int getInt(){
+		int i = 0;
+		try {
+			i = reader.nextInt();
+		}catch(InputMismatchException  e){
+			System.out.println("Input error - please enter an integer.");
+	        reader.nextLine();
+			i = getInt();
+		}
+		return i;
 	}
 	
 	public double getDecimal() {
-		return reader.nextDouble();
+		double d = 0;
+		try {
+			d = reader.nextDouble();
+		}catch(InputMismatchException  e){
+			System.out.println("Input error - please enter an decimal number.");
+			reader.nextLine();
+			d = getDecimal();
+		}
+		return d;			
 	}
 	
 	public String getLine() {
@@ -29,4 +46,16 @@ public class System1 {
 	public String getWord() {
 		return reader.next();
 	}
-}
+	
+	public int getIntBetween(int min, int max) {
+		int i = 0;		
+		i = getInt();
+		while(i<min || i>max) {
+			System.out.println("Please enter a number between " + min + " and " + max);
+			i = getInt();
+		}
+		return i;
+	}
+	
+	
+}//end System1

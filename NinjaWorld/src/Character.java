@@ -18,9 +18,11 @@ public class Character extends Creature {
 	public HashMap<String, Integer> badDeedsPer;
 	public HashMap<String, Double> relationships;
 	
+	private System1 s = new System1();
+	
 	public Character() {
 		name_ = "Name"; 
-		lvl_ = 1;
+		lvl_ = 0;
 	    stats_ = new Stats();
 		abilities_ = new Ability[1];
 		position_ = new Position();
@@ -48,9 +50,10 @@ public class Character extends Creature {
 	
 	public void levelUp() {
 		lvl_++;
+		s.out("LEVEL UP TO "+ lvl_ + "!!!"); 		
 		updateExp();
 		int points = 0;
-		if(lvl_ == 0) {
+		if(lvl_ == 1) {
 			points = 6;
 		}else {
 			points = (int) (Math.sqrt(lvl_)+2);			
@@ -64,4 +67,19 @@ public class Character extends Creature {
 		expToLevelUp = (int) (100.0 + (scaleOnLevel * 10.0));
 		//expToLevelUp = 100 + (lvl_ * 10);
 	}
+	
+	
+	
+	public void printNumber(int x) {
+		//http://patorjk.com/software/taag/#p=display&f=Star%20Wars&t=234567
+		//star wars ascii font
+		
+		//x mod 10 loop (find number of digits)   123  --> 3 digits
+		//print top of 1, top of 2, top of 3
+		//print mid of 1, mid of 2, mid of 3 etc
+	}
+	
+	
+	
+	
 }//end Character
