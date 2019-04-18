@@ -9,7 +9,8 @@ public class Stats {
 	
 	public double maxHP;
 	public double maxChakra;
-	
+	public double hpRegen;
+	public double chakraRegen;	
 	public double basicAtk;
 	public double chakraAtk;
 	public double basicDef;
@@ -18,36 +19,32 @@ public class Stats {
 	public double brains;
 	public double sensing;
 	
-	public double hpRegen;
-	public double chakraRegen;
 	//special item influenced stats
 	private double armor;
 	private double weight;
 	
 	public Stats() {
 
-		currentHP = 1;
-		currentChakra = 1;
-		maxHP = 40;
-		basicAtk = 1;
-		chakraAtk = 1;
-		basicDef = 1;
-		chakraDef = 1;
-		speed = 1;
-		brains = 1;
-		maxChakra = 40;
-		sensing = 1;
-		hpRegen = 1;
-		chakraRegen = 1;		
+		currentHP = 40;
+		currentChakra = 40;
+		maxHP = 40;  		
+		maxChakra = 40;		
+		hpRegen = 1;		
+		chakraRegen = 1;	
+		basicAtk = 1;		
+		chakraAtk = 1;		
+		basicDef = 1;		
+		chakraDef = 1;		
+		speed = 1;			
+		brains = 1;				
+		sensing = 1;		
+			
 		armor = 1;
 		weight = 1;
 
 	}
 	
 	public void purchaseStats(int x){
-		
-		
-		
 		s.out("These are your current stats.");
 		int answer = 0;
 		
@@ -65,6 +62,8 @@ public class Stats {
 		}
 		
 	}//end purchaseStats
+	
+	
 	
 	public void printStats() {
 		s.out("1.  Strength:					" + basicAtk);
@@ -123,6 +122,170 @@ public class Stats {
 		
 	}//end levelUpStats
 	 
+	//level math
+	//points = (int) (Math.sqrt(lvl_)+2);
+	//level 
+	//1 = 6 --> 6
+	//2 = 3 --> 9
+	//3 = 3 --> 12
+	//4 = 4 --> 16
+	//5 = 4 --> 20
+	//6 = 4 --> 24
+	//7 = 5 --> 29
+	//8 = 5 --> 34
+	//9 = 5 --> 39
+	//10 = 5 --> 44
+	//11 = 5 --> 49
+	//12 = 5 --> 54
+	//13 = 6 --> 60
+	public int calcPoints(int lvl) {
+		int points = 6;  //points for lvl 1
+		//add points for each level after 1
+		for(int i = 2; i<=lvl; i++) {
+			points += (int) (Math.sqrt(lvl)+2);
+		}
+		return points;
+	}
 	
+	
+	public void loadCreatureStats(String type, int level) {
+		//clawed --> dog, cat, bobcat, lion, fox, bear (speed, strength, hp)
+		//flying --> bird, bat, dragon  (sensing + ninjutsu + speed)
+		//elemental --> (ninjutsu + durable)
+		//tanky  --> bear, toad, golem, (durable and strength)
+		//tricky  --> goblin, ghost, sage animal (genjutsu)
+		
+		
+		if(type == "clawed") {
+			loadClawed(level);
+		}else if(type == "flying") {
+			loadFlying(level);
+		}else if(type == "elemental") {
+			
+		}else if(type =="tanky") {
+			
+		}else if(type =="tricky") {
+			
+		}else {
+			
+		}
+		
+		
+	}//end loadCreatureStats
+	
+	
+	private void loadClawed(int lvl) {
+		int points = calcPoints(lvl);
+		currentHP = 1;
+		currentChakra = 1;		
+		
+		maxHP = 40;  		//10%
+		maxChakra = 40;		//5%
+		hpRegen = 1;		//5%
+		chakraRegen = 1;	//5%
+		basicAtk = 1;		//20%
+		chakraAtk = 1;		//5%
+		basicDef = 1;		//5%
+		chakraDef = 1;		//5%
+		speed = 1;			//30%
+		brains = 1;			//5%		
+		sensing = 1;		//5%
+		//11 stats total
+		
+		armor = 1;
+		weight = 1;
+		
+		applyPoints(points, .10, .05, .05, .05, .20, .05, .05, .05, .30, .05, .05);
+		currentHP = maxHP;
+		currentChakra = maxChakra;	
+	}
+	
+
+	private void loadFlying(int lvl) {
+		int points = calcPoints(lvl);
+		currentHP = 1;
+		currentChakra = 1;		
+		
+		maxHP = 40;  		//5%
+		maxChakra = 40;		//5%
+		hpRegen = 1;		//5%
+		chakraRegen = 1;	//5%
+		basicAtk = 1;		//5%
+		chakraAtk = 1;		//20%
+		basicDef = 1;		//5%
+		chakraDef = 1;		//5%
+		speed = 1;			//10%
+		brains = 1;			//5%		
+		sensing = 1;		//30%
+		//11 stats total
+		
+		armor = 1;
+		weight = 1;
+		
+		applyPoints(points, .05, .05, .05, .05, .05, .20, .05, .05, .10, .05, .30);
+		currentHP = maxHP;
+		currentChakra = maxChakra;	
+	}
+	
+	
+	private void applyPoints(int p, double a, double b, double c, double d, double e, double f, double g, double h, double i, double j, double k) {
+		//calculate ratios
+		int[] pp = new int[11];
+		pp[0]  = (int) (p * a);  
+		pp[1]  = (int) (p * b);
+		pp[2]  = (int) (p * c);
+		pp[3]  = (int) (p * d);
+		pp[4]  = (int) (p * e);
+		pp[5]  = (int) (p * f);
+		pp[6]  = (int) (p * g);
+		pp[7]  = (int) (p * h);
+		pp[8]  = (int) (p * i);
+		pp[9]  = (int) (p * j);
+		pp[10] = (int) (p * k);
+		//11 stats total
+		
+		//fix rounding errors
+		int index = 0;
+		while(sumIntArray(pp) > p) {
+			pp[index]--;
+			index++;
+			if(index > 10) {
+				index = 0;
+			}
+		}
+		
+		index = 0;
+		while(sumIntArray(pp) < p) {
+			pp[index]++;
+			index++;
+			if(index > 10) {
+				index = 0;
+			}
+		}
+		
+		//apply pp[index] to stats
+		maxHP 			*= Math.pow(1.3, (double) pp[0]);  //multiply HP by 1.3 ^ #points
+		maxChakra 		*= Math.pow(1.3, (double) pp[1]);  //multiply HP by 1.3 ^ #points
+		hpRegen			+= pp[2];
+		chakraRegen 	+= pp[3];
+		basicAtk 		+= pp[4];
+		chakraAtk 		+= pp[5];
+		basicDef 		+= pp[6];
+		chakraDef		+= pp[7];
+		speed			+= pp[8];
+		
+		brains			+= pp[9];
+		sensing			+= pp[10];		
+		 
+		
+	}// end applyPoints
+	
+	private int sumIntArray(int[] array) {
+		int sum = 0;
+		for(int a : array){
+			sum += a;
+		}
+		return sum;
+	}
 	
 }//end stats

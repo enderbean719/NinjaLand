@@ -13,7 +13,7 @@ public class Menu {
 		s.out("2. Load Game");
 		s.out("3. Multiplayer Match");
 		s.out("4. Quit Game"); 
-		answer = s.getIntBetween(1,4); 
+		answer = s.getIntBetween(1,5); 
 		//s.out("you chose " + answer);
 		if (answer == 1){
 			newCharacter();
@@ -21,6 +21,9 @@ public class Menu {
 			s.out("Load game under construction");
 		}else if(answer == 3) {
 			s.out("Multiplayer match under construction");
+		}else if(answer == 5) {
+			Story4 st4 = new Story4();
+			st4.start_();
 		}else {
 			s.out("Farewell ninja!");
 			System.exit(0);
