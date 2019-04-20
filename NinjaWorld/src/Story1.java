@@ -4,12 +4,12 @@ public class Story1 implements Story {
 	int answer = 0;
 	
 	@Override
-	public void start_() { 
+	public void start_(Character mc) { 
 		//SETH BEGIN HERE
 		System1 s = new System1();
 		s.out("Story1 begin");
 		
-		s.out("Welcome " ); //+ player.name);
+		s.out("Welcome " + mc.name_ ); //+ player.name);
 		
 		
 		//PLOT
@@ -32,6 +32,7 @@ public class Story1 implements Story {
 		s.out("3. no, are you hearing things? ");
 		answer = s.getInt();
 		if(answer == 1) {
+			
 			s.out("I was wondering when you would finally notice!");
 			s.out("It's the chuunin exams!  We're late for the show!");
 			s.out("Let's go find some seats in the audience.");
@@ -52,7 +53,31 @@ public class Story1 implements Story {
 		}
 		answer = s.getInt();
 		
-		
+		s.out("THE STORY CONTINUES....");
+		s.out("6 months later...");
+		s.out("");
+		s.out(mc.name_ + " its time for you to begin a mission.");
+		s.out("Please select a mission");
+		s.out("1. Sam's mission - C rank - $500 gold");
+		s.out("2. Chris's mission - C rank - $500 gold");
+		s.out("3. Jake's mission - D rank - $300 gold");
+		s.out("4. Josh's mission - D rank - $300 gold");
+		answer = s.getInt();
+		Mission1 m1 = new Mission1();
+		Mission2 m2 = new Mission2();
+		Mission3 m3 = new Mission3();
+		Mission4 m4 = new Mission4();
+		if(answer ==1) {
+			m1.start_(mc);
+		}else if(answer == 2) {
+			m2.start_(mc);
+		}else if(answer == 3) {
+			m3.start_(mc);
+		}else if(answer == 4) {
+			m4.start_(mc);
+		}else {
+			s.out("Okay then.  No missions for you.");
+		}
 		
 	}//end story1
 	

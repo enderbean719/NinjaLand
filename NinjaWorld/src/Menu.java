@@ -23,7 +23,7 @@ public class Menu {
 			s.out("Multiplayer match under construction");
 		}else if(answer == 5) {
 			Story4 st4 = new Story4();
-			st4.start_();
+			st4.start_(mc);
 		}else {
 			s.out("Farewell ninja!");
 			System.exit(0);
@@ -84,7 +84,6 @@ public class Menu {
 				 
 		
 		
-		
 	//	https://naruto.fandom.com/wiki/Clans
 //		s.out("1. Nara");   //shadows
 //		s.out("1. Uchiha");  //sasuke
@@ -102,5 +101,9 @@ public class Menu {
 		
 	}//end newCharacter
 	 
+
+	public Character getMainCharacter() {
+		return this.mc;
+	}
 	
 }//end Menu

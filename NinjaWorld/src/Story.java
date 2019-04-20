@@ -6,6 +6,6 @@
 	 public String name_ = "_";
 	 public int lvl_ = 0;
 	
-	 void start_();
+	 void start_(Character mc);
 	
 }
