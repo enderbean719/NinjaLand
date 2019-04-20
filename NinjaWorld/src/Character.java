@@ -8,15 +8,6 @@ public class Character extends Creature {
 	public int exp;
 	private int expToLevelUp;
 	
-	public int goodDeeds;
-	public int badDeeds;
-	public int goodDeedsSeen;
-	public int badDeedsSeen;
-	public double percentGood;
-	public double percentTrusted;
-	public HashMap<String, Integer> goodDeedsPer;
-	public HashMap<String, Integer> badDeedsPer;
-	public HashMap<String, Double> relationships;
 	
 	private System1 s = new System1();
 	

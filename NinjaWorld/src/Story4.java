@@ -7,6 +7,14 @@ public class Story4 implements Story {
 		System1 s = new System1();
 		s.out("Story4 begin");
 		
+		
+		Map mm = new Map(6,6);
+		mm.printMapOfIds();
+		s.out("");
+		mm.printMapOfLabels();
+		
+		int answer = s.getInt();
+		
 		Character testC = new Character();
 		testC.stats_.loadCreatureStats("clawed", 4);
 		testC.printStatsFormal();
@@ -19,5 +27,6 @@ public class Story4 implements Story {
 		s.getInt();
 		System.exit(0);
 	}
+	
 
 }//end Story4

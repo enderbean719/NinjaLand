@@ -51,6 +51,7 @@ public class Menu {
 		
 	}//end printTitle
 	
+	
 	public void newCharacter() {
 		//print image of teacher ninja
 		s.out("What is your name, ninja?");
