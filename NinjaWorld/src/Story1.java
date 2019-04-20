@@ -23,10 +23,10 @@ public class Story1 implements Story {
 		//deliver a scroll to the hokage's assistant
 		//peek inside scroll = lose trust but gain a forbidden jutsu
 		
-		s.out("Hey " + " My name is Rock Lee" ) ;// + p.name); 
+		s.out("Hey " + mc.name_+", My name is Rock Lee" ) ;// + p.name); 
 		
 		//print nice character image;
-		s.out("Do you hear that load roaring?");
+		s.out("Do you hear that loud roaring?");
 		s.out("1. yeah, whats all the commotion?");
 		s.out("2. no, what's up?");
 		s.out("3. no, are you hearing things? ");
