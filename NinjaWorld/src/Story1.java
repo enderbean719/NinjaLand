@@ -9,7 +9,7 @@ public class Story1 implements Story {
 		System1 s = new System1();
 		s.out("Story1 begin");
 		
-		s.out("Welcome " + mc.name_ ); //+ player.name);
+		s.out("Welcome " + mc.name ); //+ player.name);
 		
 		
 		//PLOT
@@ -23,28 +23,34 @@ public class Story1 implements Story {
 		//deliver a scroll to the hokage's assistant
 		//peek inside scroll = lose trust but gain a forbidden jutsu
 		
-		s.out("Hey " + mc.name_+", My name is Rock Lee" ) ;// + p.name); 
-		
+		Character saisu = new Character("AI");
+		saisu.name = "Saisu Kamano";
+		mc.rel.newRelationship75(saisu.name);
+		//https://naruto.fandom.com/wiki/Saisu_Kamano
+		//someone build loader function inside Character Class file for Saisu's stats
 		//print nice character image;
+		s.out(saisu.name + ": Hey " + mc.name ) ;		
 		s.out("Do you hear that loud roaring?");
 		s.out("1. yeah, whats all the commotion?");
 		s.out("2. no, what's up?");
 		s.out("3. no, are you hearing things? ");
 		answer = s.getInt();
 		if(answer == 1) {
-			
+			mc.rel_.addGoodDeedAgainst(saisu.name);
 			s.out("I was wondering when you would finally notice!");
 			s.out("It's the chuunin exams!  We're late for the show!");
 			s.out("Let's go find some seats in the audience.");
 			s.out("1. Sure lets go!");
 			s.out("2. Nah...You go ahead.");
 		}else if(answer == 2) {
+			//no good deed, no bad deed, neutral response
 			s.out("Man, you must be deaf or something!");
 			s.out("It's the chuunin exams!  We're late for the show!");
 			s.out("Let's go find some seats in the audience.");
 			s.out("1. Sure lets go!");
 			s.out("2. Nah...You go ahead.");
 		}else {
+			mc.rel_.addBadDeedAgainst(saisu.name);
 			s.out("What?? You're kidding, right?");
 			s.out("It's the chuunin exams!  We're late for the show!");
 			s.out("Let's go find some seats in the audience.");
@@ -56,7 +62,7 @@ public class Story1 implements Story {
 		s.out("THE STORY CONTINUES....");
 		s.out("6 months later...");
 		s.out("");
-		s.out(mc.name_ + " its time for you to begin a mission.");
+		s.out(mc.name + " its time for you to begin a mission.");
 		s.out("Please select a mission");
 		s.out("1. Sam's mission - C rank - $500 gold");
 		s.out("2. Chris's mission - C rank - $500 gold");

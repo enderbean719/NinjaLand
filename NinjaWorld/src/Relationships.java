@@ -7,8 +7,8 @@ public class Relationships {
 	public int badDeeds;
 	public int goodDeedsSeen;
 	public int badDeedsSeen;
-	public double percentGood;
-	public double percentTrusted;
+	public double percentGood;  	// = good deeds		 / (good deeds + bad deeds)
+	public double percentTrusted;	// = good deeds seen / (good deeds seen + bad deeds seen)
 	private HashMap<String, Integer> goodDeedsPer;
 	private HashMap<String, Integer> badDeedsPer;
 	private HashMap<String, Double> relationships;

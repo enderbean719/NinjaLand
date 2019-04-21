@@ -1,8 +1,8 @@
 
 public class Creature {
 
-	 public String name_;
-	 public int lvl_ ;
+	 public String name;
+	 public int lvl ;
 	 public Stats stats_ ;
 	 public Ability[] abilities_ ;
 	 public Position position_ ;
@@ -11,18 +11,17 @@ public class Creature {
 	 System1 s = new System1();
 	 
 	 public Creature() {
-			name_ = "Name"; 
-			lvl_ = 0;
+			name = "Name"; 
+			lvl = 0;
 		    stats_ = new Stats();
 			abilities_ = new Ability[1];
 			position_ = new Position();
-			status_ = new Status();
-			 
+			status_ = new Status();			 
 	 }
 		
 	 public void printStatsFormal() {
 		 s.out("");
-		 s.out(this.name_ + " stats:");
+		 s.out(this.name + " stats:");
 		 this.stats_.printStats();
 	 }
 	

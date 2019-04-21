@@ -56,8 +56,8 @@ public class Menu {
 		//print image of teacher ninja
 		s.out("What is your name, ninja?");
 		answerS = s.getWord();
-		mc.name_ = answerS;
-		s.out("Welcome " + mc.name_);
+		mc.name = answerS;
+		s.out("Welcome " + mc.name);
 		s.out("What do you identify as?");
 		s.out("1. Male");
 		s.out("2. Female");

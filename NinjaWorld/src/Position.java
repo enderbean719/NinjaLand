@@ -8,6 +8,8 @@ public class Position {
 	public boolean oderless;
 	//public boolean 
 	
+	
+	
 	//only one in this list
 	private boolean inWater;
 	private boolean inAir;
