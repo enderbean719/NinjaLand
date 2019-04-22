@@ -6,10 +6,8 @@ public class Story1 implements Story {
 	@Override
 	public void start_(Character mc) { 
 		//SETH BEGIN HERE
-		System1 s = new System1();
-		s.out("Story1 begin");
-		
-		s.out("Welcome " + mc.name ); //+ player.name);
+		System1 s = new System1(); 
+		 
 		
 		
 		//PLOT
@@ -25,7 +23,7 @@ public class Story1 implements Story {
 		
 		Character saisu = new Character("AI");
 		saisu.name = "Saisu Kamano";
-		mc.rel.newRelationship75(saisu.name);
+		mc.rel_.newRelationship75(saisu.name);
 		//https://naruto.fandom.com/wiki/Saisu_Kamano
 		//someone build loader function inside Character Class file for Saisu's stats
 		//print nice character image;
@@ -37,6 +35,7 @@ public class Story1 implements Story {
 		answer = s.getInt();
 		if(answer == 1) {
 			mc.rel_.addGoodDeedAgainst(saisu.name);
+			s.out("<" + saisu.name + " noticed your positive attitude.>");
 			s.out("I was wondering when you would finally notice!");
 			s.out("It's the chuunin exams!  We're late for the show!");
 			s.out("Let's go find some seats in the audience.");
@@ -50,6 +49,7 @@ public class Story1 implements Story {
 			s.out("1. Sure lets go!");
 			s.out("2. Nah...You go ahead.");
 		}else {
+			s.out("<" + saisu.name + " noticed your negative attitude.>");
 			mc.rel_.addBadDeedAgainst(saisu.name);
 			s.out("What?? You're kidding, right?");
 			s.out("It's the chuunin exams!  We're late for the show!");
@@ -59,10 +59,16 @@ public class Story1 implements Story {
 		}
 		answer = s.getInt();
 		
+		
+		//Yuki Minazuki = Itachi sensei
+		//Kakashi is jonin at this time - maybe a sensei
+		
+		Character ibiki = new Character("AI");
+		ibiki.name = "Ibiki Morino";
 		s.out("THE STORY CONTINUES....");
 		s.out("6 months later...");
 		s.out("");
-		s.out(mc.name + " its time for you to begin a mission.");
+		s.out(ibiki.name + ": " + mc.name + ", its time for you to begin a mission.");
 		s.out("Please select a mission");
 		s.out("1. Sam's mission - C rank - $500 gold");
 		s.out("2. Chris's mission - C rank - $500 gold");

@@ -6,16 +6,16 @@ public class Character extends Creature {
 	public String clan;
 	public String gender;
 	public int age;	
-	public Relationships rel_;
-	public Map map_;
-	public Squad squad_;
-	public Summonings summonings_;
-	public Battle battle_;
-	public Commands commands_;
+	public Relationships rel_ = new Relationships();
+	public Map map_ = new Map();
+	public Squad squad_ = new Squad();
+	public Summonings summonings_ = new Summonings();
+	public Battle battle_ = new Battle();
+	public Commands commands_ = new Commands();
 	public int exp;
 	private int expToLevelUp;
-	public boolean isAI;
-	
+	public boolean isAI = false;
+	public String[] image = {""};
 	
 	
 	private System1 s = new System1();
@@ -31,13 +31,16 @@ public class Character extends Creature {
 	}
 	
 	public Character(String isAI) {
+		
 		name = "Name"; 
 		lvl = 0;
 	    stats_ = new Stats();
 		abilities_ = new Ability[1];
 		position_ = new Position();
 		status_ = new Status();
-		this.isAI = true;
+		if(isAI == "AI" || isAI == "Ai" || isAI == "ai") {
+			this.isAI = true;
+		}
 		 
 	}
 	
@@ -90,6 +93,11 @@ public class Character extends Creature {
 		//print mid of 1, mid of 2, mid of 3 etc
 	}
 	
+	public void printImage() {
+		for(int i = 0; i<image.length; i++) {
+			s.out(image[i]);
+		}
+	}
 	
 	
 	

@@ -64,6 +64,9 @@ public class Menu {
 		answer = s.getIntBetween(1,2);
 		if (answer == 1) {
 			mc.gender = "male";
+			mc.image = Images.getImage("maleNinja");
+			mc.printImage();
+			s.out("Handsome guy!");
 		}else {
 			mc.gender = "female";
 		} 

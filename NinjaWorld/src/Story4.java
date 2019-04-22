@@ -7,24 +7,33 @@ public class Story4 implements Story {
 		System1 s = new System1();
 		s.out("Story4 begin");
 		
-		
-		Map mm = new Map(6,6);
-		mm.printMapOfIds();
-		s.out("");
-		mm.printMapOfLabels();
-		
-		int answer = s.getInt();
-		
+
 		Character testC = new Character();
+		testC.name = "Naruto";
 		testC.stats_.loadCreatureStats("clawed", 4);
 		testC.printStatsFormal();
 		
 		Creature monster = new Creature();
+		monster.name = "Evil Crane";
 		monster.stats_.loadCreatureStats("flying", 2);
 		monster.printStatsFormal();
 		
-		s.out("Enter integer to quit");
-		s.getInt();
+		
+		Map mm = new Map(testC,5,5);
+		//mm.getArea(1, 1);
+		mm.placeCreature(monster, 4, 4);
+		mm.printMapOfIds();
+		s.out("");
+		mm.printMapOfLabels();
+		s.out("");
+		mm.printMapOfNames();
+		s.out("");
+
+		
+		
+		
+		//s.out("Enter integer to quit");
+		//s.getInt();
 		System.exit(0);
 	}
 	

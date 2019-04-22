@@ -9,10 +9,13 @@ public class Relationships {
 	public int badDeedsSeen;
 	public double percentGood;  	// = good deeds		 / (good deeds + bad deeds)
 	public double percentTrusted;	// = good deeds seen / (good deeds seen + bad deeds seen)
-	private HashMap<String, Integer> goodDeedsPer;
-	private HashMap<String, Integer> badDeedsPer;
-	private HashMap<String, Double> relationships;
+	private HashMap<String, Integer> goodDeedsPer = new HashMap<String,Integer>();
+	private HashMap<String, Integer> badDeedsPer = new HashMap<String,Integer>();
+	private HashMap<String, Double> relationships = new HashMap<String,Double>();
 	
+	public Relationships() {
+		
+	}
 	
 	public void newRelationship50(String name) {
 		addGoodDeedAgainst(name);
