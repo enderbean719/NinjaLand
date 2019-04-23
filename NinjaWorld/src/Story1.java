@@ -58,7 +58,12 @@ public class Story1 implements Story {
 			s.out("2. Nah...You go ahead.");			
 		}
 		answer = s.getInt();
-		
+		Map mainmap = new Map(mc,5,10);
+		mc.map_ = mainmap;
+		if(answer == 1) {
+			mainmap.printMapOfNames();
+			mc.commands_.runCommands();
+		}
 		
 		//Yuki Minazuki = Itachi sensei
 		//Kakashi is jonin at this time - maybe a sensei

@@ -43,6 +43,15 @@ public class Map {
 		placeMC(0,0);
 	}//end Map
 		
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	
 	public Area getArea(int xx, int yy) {
 		Area a = new Area();
 		int l = areas.size();
@@ -63,7 +72,7 @@ public class Map {
 		getArea(x,y).containsObj.add(mc);
 	}
 	
-	public void placeCreature(Creature c, int x, int y) {
+	public void placeCreatureAndRemove(Creature c, int x, int y) {
 		getArea(c.position_.x, c.position_.y).containsObj.remove(c);
 		c.position_.x = x;
 		c.position_.y = y;

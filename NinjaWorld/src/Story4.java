@@ -21,7 +21,7 @@ public class Story4 implements Story {
 		
 		Map mm = new Map(testC,5,5);
 		//mm.getArea(1, 1);
-		mm.placeCreature(monster, 4, 4);
+		mm.placeCreatureAndRemove(monster, 4, 4);
 		mm.printMapOfIds();
 		s.out("");
 		mm.printMapOfLabels();

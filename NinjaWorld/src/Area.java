@@ -7,7 +7,8 @@ public class Area {
 	int x;
 	int y;
 	private System1 s = new System1();
-	public boolean passable = true;		//walkable true
+	public boolean passableByLand = true;		//walkable true
+	public boolean passableByAir = true;		//flyable true
 	public boolean enterable = false;  //doorway false
 	
 	public String look;			//1st look description
@@ -57,7 +58,12 @@ public class Area {
 		if(numCr == 0) {
 			output = " __ ";
 		}else if(numCr == 1) {
-			output = nameCr.substring(0, 4);
+			int len = nameCr.length();
+			if(len>=4) {
+				output = nameCr.substring(0, 4);
+			}else {
+				output = nameCr.substring(0, len);
+			}			
 		}else if(numCr > 1) {
 			output = String.format("%3d", numCr)+"c";
 //			output = numCr + "c  ";

@@ -11,7 +11,7 @@ public class Character extends Creature {
 	public Squad squad_ = new Squad();
 	public Summonings summonings_ = new Summonings();
 	public Battle battle_ = new Battle();
-	public Commands commands_ = new Commands();
+	public Commands commands_ = new Commands(this);
 	public int exp;
 	private int expToLevelUp;
 	public boolean isAI = false;
@@ -99,6 +99,41 @@ public class Character extends Creature {
 		}
 	}
 	
+	public void move(String m) {
+		int x, y, maxX, maxY;
+		x = this.position_.x;
+		y = this.position_.y;
+		maxX = this.map_.getWidth() - 1;
+		maxY = this.map_.getHeight() - 1;
+		if(m=="north") {
+			if(y > 0) {
+				y--;
+			}else {
+				s.out("Cannot go any furthur north");
+			}			
+		}else if(m=="south") {
+			if(y < maxY) {
+				y++;
+			}else {
+				s.out("Cannot go any furthur south");
+			}
+		}else if(m=="east") {
+			if(x < maxX) {
+				x++;
+			}else {
+				s.out("Cannot go any furthur east");
+			}
+		}else if(m=="west") {
+			if(x > 0) {
+				x--;
+			}else {
+				s.out("Cannot go any furthur west");
+			}
+		}else {
+			s.out( m + "?");
+		}
+		this.map_.placeCreatureAndRemove(this, x, y);  //places on the new x,y removes from the old x,y in  this.position_
+	}//end move
 	
 	
 }//end Character
