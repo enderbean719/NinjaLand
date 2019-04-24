@@ -25,21 +25,21 @@ public class Commands {
 	}
 	
 	public void processCommand(String c) {
-		if(c == "map") {
+		if(c.equals("map")) {
 			this.cMap();
-		}else if(c == "stats") {
+		}else if(c.equals("stats")) {
 			this.cStats();
-		}else if(c == "") {
+		}else if(c.equals("")) {
 			
-		}else if(c == "") {
+		}else if(c.equals("")) {
 			
-		}else if(c == "") {
+		}else if(c.equals("")) {
 			
-		}else if(c == "") {
+		}else if(c.equals("")) {
 			
-		}else if(c == "") {
+		}else if(c.equals("")) {
 			
-		}else if(c == "help") {
+		}else if(c.equals("help")) {
 			//help menu
 			s.out("I'm sorry that was not a valid command.");
 			s.out("=========================");
@@ -69,27 +69,32 @@ public class Commands {
 	}
 	
 	public void processMapCommand(String c) {
-		if(c == "north") {
+		if(c.equals("north")) {
 			mc.moveNorth();
 			mc.map_.printMapOfNames();
-		}else if(c == "south") {
+		}else if(c.equals("south")) {
 			mc.moveSouth();
 			mc.map_.printMapOfNames();
-		}else if(c == "east") {
+		}else if(c.equals("east")) {
 			mc.moveEast();
 			mc.map_.printMapOfNames();
-		}else if(c == "west") {
+		}else if(c.equals("west")) {
 			mc.moveWest();
 			mc.map_.printMapOfNames();
-		}else if(c == "look") {
-			
-		}else if(c == "characters") {
-			
-		}else if(c == "land") {
-			
-		}else if(c == "ids") {
-			
-		}else if(c == "help") {
+		}else if(c.equals("look")) {
+			Area current = mc.map_.getAreaMC();
+			if(current.lookCount == 0) {
+				s.out(current.look);
+			}else {
+				s.out(current.lookClosely);
+			}			
+		}else if(c.equals("characters")) {
+			mc.map_.printMapOfNames();
+		}else if(c.equals("land")) {
+			mc.map_.printMapOfLabels();
+		}else if(c.equals("ids")) {
+			mc.map_.printMapOfIds();
+		}else if(c.equals("help")) {
 			//help menu
 			s.out("=========================");
 			s.out("     MAP COMMANDS    ");
@@ -106,6 +111,7 @@ public class Commands {
 			s.out("back = leave the map");
 		}else {
 			//Process.class.getName().
+			s.out("Else - process next commmand list");
 		}
 	}
 

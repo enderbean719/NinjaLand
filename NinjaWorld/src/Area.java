@@ -6,6 +6,7 @@ public class Area {
 	int id;
 	int x;
 	int y;
+	int lookCount;
 	private System1 s = new System1();
 	public boolean passableByLand = true;		//walkable true
 	public boolean passableByAir = true;		//flyable true

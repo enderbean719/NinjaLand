@@ -128,12 +128,14 @@ public class Map {
 			s.print("|");
 			s.out("");
 			
-		}//end printMapOf
-		
-		
-			
-		
+		}//end printMapOf				
 	}//printMapIds
 	
+	public Area getAreaMC() { 
+			int x, y;
+			x = this.mc.position_.x;
+			y = this.mc.position_.y;
+			return getArea(x,y);
+	}
 	
 }//end map
