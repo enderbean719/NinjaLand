@@ -53,6 +53,14 @@ public class Position {
 		
 	}//end setPositionStatus
 	
+	boolean at(int x, int y) {
+		if(this.x == x && this.y == y) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 	void setAllFalse() {
 		inWater = false;
 		inAir = false;

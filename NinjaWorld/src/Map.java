@@ -78,7 +78,8 @@ public class Map {
 		c.position_.y = y;
 		getArea(x,y).containsObj.add(c);
 	}
-
+	
+	 
 	public void printMapOfIds() {
 		printMapOf("ids");
 	}
@@ -99,7 +100,7 @@ public class Map {
 		for(int yy = 0; yy<height; yy++) {
 			//one row
 			for(int xx = 0; xx < this.width; xx++) {
-				s.print("_____");
+				s.print("______");
 			}
 			s.print("_");
 			s.out("");
@@ -109,20 +110,20 @@ public class Map {
 				
 				//output data into 4 characters of space before next cell wall begins
 				if(output == "ids") {
-					s.print(String.format("%4d", a.id));
+					s.print(String.format("%5d", a.id));
 				}else if(output == "labels"){
-					s.print(String.format("%4c", a.legendChar));
+					s.print(String.format("%5c", a.legendChar));
 				}else if(output == "names") {
-					s.print(String.format("%4s", a.getNames()));
+					s.print(String.format("%5s", a.getNames()));
 					//s.print(a.getNames() );
 				}else {
-					s.print("    ");
+					s.print("     ");
 				}
 			}
 			s.print("|");
 			s.out("");
 			for(int xx = 0; xx < this.width; xx++) {
-				s.print("|____");
+				s.print("|_____");
 			}
 			s.print("|");
 			s.out("");

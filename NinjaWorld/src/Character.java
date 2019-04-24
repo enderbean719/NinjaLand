@@ -99,7 +99,7 @@ public class Character extends Creature {
 		}
 	}
 	
-	public void move(String m) {
+	public void move(String m) { //input cardinal direction
 		int x, y, maxX, maxY;
 		x = this.position_.x;
 		y = this.position_.y;
@@ -135,5 +135,17 @@ public class Character extends Creature {
 		this.map_.placeCreatureAndRemove(this, x, y);  //places on the new x,y removes from the old x,y in  this.position_
 	}//end move
 	
+	public void moveNorth() {
+		move("north");
+	}
+	public void moveSouth() {
+		move("south");
+	}
+	public void moveEast() {
+		move("east");
+	}
+	public void moveWest() {
+		move("west");
+	}
 	
 }//end Character

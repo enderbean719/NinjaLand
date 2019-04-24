@@ -32,7 +32,7 @@ public class Story1 implements Story {
 		s.out("1. yeah, whats all the commotion?");
 		s.out("2. no, what's up?");
 		s.out("3. no, are you hearing things? ");
-		answer = s.getInt();
+		answer = s.getIntBetween(1,3);
 		if(answer == 1) {
 			mc.rel_.addGoodDeedAgainst(saisu.name);
 			s.out("<" + saisu.name + " noticed your positive attitude.>");
@@ -57,12 +57,17 @@ public class Story1 implements Story {
 			s.out("1. Sure lets go!");
 			s.out("2. Nah...You go ahead.");			
 		}
-		answer = s.getInt();
-		Map mainmap = new Map(mc,5,10);
+		answer = s.getIntBetween(1,2);
+		Map mainmap = new Map(mc,10,5);
 		mc.map_ = mainmap;
-		if(answer == 1) {
+		Creature arenaBuilding = new Creature();
+		arenaBuilding.name = "Arena";
+		mainmap.getArea(10, 3).addObj(arenaBuilding);
+		if(true) {  //answer == 1
 			mainmap.printMapOfNames();
-			mc.commands_.runCommands();
+			while(mc.position_.at(10, 3)==false) {
+				mc.commands_.runCommands();
+			}
 		}
 		
 		//Yuki Minazuki = Itachi sensei

@@ -59,8 +59,8 @@ public class Area {
 			output = " __ ";
 		}else if(numCr == 1) {
 			int len = nameCr.length();
-			if(len>=4) {
-				output = nameCr.substring(0, 4);
+			if(len>=5) {
+				output = nameCr.substring(0, 5);
 			}else {
 				output = nameCr.substring(0, len);
 			}			

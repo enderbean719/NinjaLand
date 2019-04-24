@@ -1,16 +1,16 @@
 
 public class Status {
-	
-	//unmoveable and unconscious
+
+	// unmoveable and unconscious
 	private boolean isAsleep;
 	private boolean inGenjutsu;
-	private boolean isKO; 
-	//unmoveable
+	private boolean isKO;
+	// unmoveable
 	private boolean isStunned;
 	private boolean isDisabled;
 	private boolean gatheringChakra;
-	
-	//movable
+
+	// movable
 	private boolean isPoisoned;
 	private boolean beingTortured;
 	private boolean isBleeding;
@@ -18,28 +18,25 @@ public class Status {
 	private boolean isDrowning;
 	private boolean isChoking;
 	private boolean handsAreFree;
-	
-	//battle intent
-	//battle
+
+	// battle intent
+	// battle
 	public boolean retreatAttempt;
 	public boolean retreatSuccess;
 	public boolean chasing;
 	public boolean haveMercy;
 	public boolean pauseFighting;
-	
-	public boolean isConscious()
-	{
-		return !(isAsleep || inGenjutsu || isKO );
+
+	public boolean isConscious() {
+		return !(isAsleep || inGenjutsu || isKO);
 	}
-	
-	public boolean canMove()
-	{
+
+	public boolean canMove() {
 		return !(isAsleep || inGenjutsu || isKO || isStunned || isDisabled || gatheringChakra);
 	}
-	
-	public boolean canDoJutsu()
-	{
+
+	public boolean canDoJutsu() {
 		return canMove() && handsAreFree;
 	}
-	
+
 }

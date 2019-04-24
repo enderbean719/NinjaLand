@@ -1,3 +1,4 @@
+import com.sun.org.apache.xalan.internal.xslt.Process;
 
 public class Commands {
 
@@ -17,8 +18,9 @@ public class Commands {
 	
 	public String getCommand() {
 		String command = "help";
-		s.print("Command:");
-		s.getWord();
+		s.out("=========================");
+		s.print("Command: ");
+		command = s.getWord();
 		return command;
 	}
 	
@@ -37,9 +39,7 @@ public class Commands {
 			
 		}else if(c == "") {
 			
-		}else if(c == "") {
-			
-		}else {
+		}else if(c == "help") {
 			//help menu
 			s.out("I'm sorry that was not a valid command.");
 			s.out("=========================");
@@ -49,6 +49,8 @@ public class Commands {
 			s.out("2. stats");
 			s.out("3. ");
 			s.out("4. ");
+		}else {
+			processMapCommand(c);
 			
 		}
 		
@@ -60,20 +62,25 @@ public class Commands {
 	
 	public void cMap() {
 		mc.map_.printMapOfLabels();
-		s.out("Map Command:");
+		s.out("=========================");
+		s.print("Map Command:");
 		processMapCommand(getCommand());
 		
 	}
 	
 	public void processMapCommand(String c) {
 		if(c == "north") {
-			this.cMap();
+			mc.moveNorth();
+			mc.map_.printMapOfNames();
 		}else if(c == "south") {
-			this.cStats();
+			mc.moveSouth();
+			mc.map_.printMapOfNames();
 		}else if(c == "east") {
-			
+			mc.moveEast();
+			mc.map_.printMapOfNames();
 		}else if(c == "west") {
-			
+			mc.moveWest();
+			mc.map_.printMapOfNames();
 		}else if(c == "look") {
 			
 		}else if(c == "characters") {
@@ -82,9 +89,8 @@ public class Commands {
 			
 		}else if(c == "ids") {
 			
-		}else {
+		}else if(c == "help") {
 			//help menu
-			if(c!="help") {s.out("I'm sorry that was not a valid command.");}
 			s.out("=========================");
 			s.out("     MAP COMMANDS    ");
 			s.out("=========================");
@@ -98,10 +104,16 @@ public class Commands {
 			s.out("land");
 			s.out("ids");
 			s.out("back = leave the map");
+		}else {
+			//Process.class.getName().
 		}
 	}
 
 	public void cStats() {
+		s.out("=========================");
+		s.out("         STATS           ");
+		s.out("=========================");
+		this.mc.stats_.printStats();
 		
 	}
 	

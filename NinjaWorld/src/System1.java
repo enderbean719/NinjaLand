@@ -6,9 +6,12 @@ public class System1 {
 	Scanner reader = new Scanner(System.in);
 	
 	//prints 1 line to the screen and ends the line
-	public void out(String input) {
+	public void out(String input)  {		
 		System.out.println(input);
-	}
+		int count = 0;
+		
+		
+	}//end out
 	
 	//prints input, but doens't end the line
 	public void print(String input) {
