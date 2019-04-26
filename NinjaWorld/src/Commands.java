@@ -45,13 +45,7 @@ public class Commands {
 		}else if(c.equals("help")) {
 			commandFound = true;
 			//help menu 
-			s.out("=========================");
-			s.out("     GENERAL COMMANDS    ");
-			s.out("=========================");
-			s.out("1. map");
-			s.out("2. stats");
-			s.out("3. ");
-			s.out("4. ");
+			printGeneralCmds();
 		}else {
 			commandFound = processMapCommand(c);
 			
@@ -66,7 +60,7 @@ public class Commands {
 	public void cMap() {
 		mc.map_.printMapOfLabels();
 		s.out("=========================");
-		s.print("Map Command:");
+		s.out("Map Commands");
 		processMapCommand(getCommand());
 		
 	}
@@ -94,8 +88,10 @@ public class Commands {
 			Area current = mc.map_.getAreaMC();
 			if(current.lookCount == 0) {
 				s.out(current.look);
+				current.lookCount++;
 			}else {
 				s.out(current.lookClosely);
+				current.lookCount++;
 			}			
 		}else if(c.equals("characters")) {
 			commandFound = true;
@@ -112,20 +108,7 @@ public class Commands {
 		}else if(c.equals("help")) {
 			commandFound = true;
 			//help menu
-			s.out("=========================");
-			s.out("     MAP COMMANDS    ");
-			s.out("=========================");
-			s.out("north = go 1 sqare up");
-			s.out("south = go 1 sqare down");
-			s.out("east = go 1 to the left");
-			s.out("west = go 1 to the right");
-			s.out("look = observe area (use twice in a row to get a more detailed description)");
-			s.out("approach = interact with objects");
-			s.out("characters");
-			s.out("land");
-			s.out("ids");
-			s.out("positions");
-			s.out("back = leave the map");
+			printMapCmds();
 		}else {
 			//Process.class.getName().
 			commandFound = false;
@@ -142,6 +125,39 @@ public class Commands {
 		
 	}
 	
+	public void printGeneralCmds() {
+		s.out("=========================");
+		s.out("     GENERAL COMMANDS    ");
+		s.out("=========================");
+		s.out("map");
+		s.out("profile");
+		s.out("stats");
+		s.out("items");
+		s.out("relationships");
+		s.out("sqad");
+		s.out("summonings");
+		s.out("battles");
+		s.out("quit");
+
+	}
+	
+	public void printMapCmds() {
+		s.out("=========================");
+		s.out("     MAP COMMANDS    ");
+		s.out("=========================");
+		s.out("north = go 1 sqare up");
+		s.out("south = go 1 sqare down");
+		s.out("east = go 1 to the left");
+		s.out("west = go 1 to the right");
+		s.out("look = observe area (use twice in a row to get a more detailed description)");
+		s.out("approach = interact with objects");
+		s.out("characters");
+		s.out("land");
+		s.out("ids");
+		s.out("positions");
+	}
+	
+	//public void 
 	
 	
 }//end Commands
