@@ -7,7 +7,7 @@ public class Story1 implements Story {
 	public void start_(Character mc) { 
 		//SETH BEGIN HERE
 		System1 s = new System1(); 
-		 
+		Event e = new Event(mc);
 		
 		
 		//PLOT
@@ -58,14 +58,14 @@ public class Story1 implements Story {
 			s.out("2. Nah...You go ahead.");			
 		}
 		answer = s.getIntBetween(1,2);
-		Map mainmap = new Map(mc,10,5);
+		Map mainmap = new Map(mc,10,5);  //max x = 9, max y = 4
 		mc.map_ = mainmap;
 		Creature arenaBuilding = new Creature();
 		arenaBuilding.name = "Arena";
-		mainmap.getArea(10, 3).addObj(arenaBuilding);
+		mainmap.placeCreatureAndRemove(arenaBuilding,5,2);
 		if(true) {  //answer == 1
 			mainmap.printMapOfNames();
-			while(mc.position_.at(10, 3)==false) {
+			while(e.arrivedAtCreature(arenaBuilding)==false) {   
 				mc.commands_.runCommands();
 			}
 		}

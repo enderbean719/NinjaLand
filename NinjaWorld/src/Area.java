@@ -12,8 +12,8 @@ public class Area {
 	public boolean passableByAir = true;		//flyable true
 	public boolean enterable = false;  //doorway false
 	
-	public String look;			//1st look description
-	public String lookClosely;	//2nd look description
+	public String look = "hmm...nothing interesting here";			//1st look description
+	public String lookClosely = "hmm...nothing special...I think I should look somewhere else.";	//2nd look description
 	
 	char legendChar = ' ';  //used for showing what it contains on the map
 	ArrayList<Object> containsObj = new ArrayList<Object>();
@@ -39,7 +39,7 @@ public class Area {
 	
 	
 	
-	public void addObj(Object o) {
+	private void addObj(Object o) {
 		this.containsObj.add(o);
 	}
 	

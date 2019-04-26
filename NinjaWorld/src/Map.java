@@ -138,4 +138,18 @@ public class Map {
 			return getArea(x,y);
 	}
 	
+	
+	public void printPositionList() {
+		String row = "";
+		for(Area a : this.areas ) {
+			for(Object o : a.containsObj) {
+				if(o instanceof Creature) {
+					row = ((Creature) o).name;
+					row = row + " : (" + ((Creature) o).position_.x + "," + ((Creature) o).position_.y;
+					s.out(row);
+				}
+			}
+		}
+	}//end printPositionList
+	
 }//end map

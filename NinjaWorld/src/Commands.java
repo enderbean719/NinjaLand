@@ -24,10 +24,13 @@ public class Commands {
 		return command;
 	}
 	
-	public void processCommand(String c) {
+	public boolean processCommand(String c) {
+		boolean commandFound = false;
 		if(c.equals("map")) {
+			commandFound = true;
 			this.cMap();
 		}else if(c.equals("stats")) {
+			commandFound = true;
 			this.cStats();
 		}else if(c.equals("")) {
 			
@@ -40,8 +43,8 @@ public class Commands {
 		}else if(c.equals("")) {
 			
 		}else if(c.equals("help")) {
-			//help menu
-			s.out("I'm sorry that was not a valid command.");
+			commandFound = true;
+			//help menu 
 			s.out("=========================");
 			s.out("     GENERAL COMMANDS    ");
 			s.out("=========================");
@@ -50,11 +53,11 @@ public class Commands {
 			s.out("3. ");
 			s.out("4. ");
 		}else {
-			processMapCommand(c);
+			commandFound = processMapCommand(c);
 			
 		}
 		
-		
+		return commandFound;
 		
 	}//end process
 	
@@ -68,20 +71,26 @@ public class Commands {
 		
 	}
 	
-	public void processMapCommand(String c) {
+	public boolean processMapCommand(String c) {
+		boolean commandFound = false;
 		if(c.equals("north")) {
+			commandFound = true;
 			mc.moveNorth();
 			mc.map_.printMapOfNames();
 		}else if(c.equals("south")) {
+			commandFound = true;
 			mc.moveSouth();
 			mc.map_.printMapOfNames();
 		}else if(c.equals("east")) {
+			commandFound = true;
 			mc.moveEast();
 			mc.map_.printMapOfNames();
 		}else if(c.equals("west")) {
+			commandFound = true;
 			mc.moveWest();
 			mc.map_.printMapOfNames();
 		}else if(c.equals("look")) {
+			commandFound = true;
 			Area current = mc.map_.getAreaMC();
 			if(current.lookCount == 0) {
 				s.out(current.look);
@@ -89,12 +98,19 @@ public class Commands {
 				s.out(current.lookClosely);
 			}			
 		}else if(c.equals("characters")) {
+			commandFound = true;
 			mc.map_.printMapOfNames();
 		}else if(c.equals("land")) {
+			commandFound = true;
 			mc.map_.printMapOfLabels();
 		}else if(c.equals("ids")) {
+			commandFound = true;
 			mc.map_.printMapOfIds();
+		}else if(c.equals("positions")) {
+			commandFound = true;
+			mc.map_.printPositionList();
 		}else if(c.equals("help")) {
+			commandFound = true;
 			//help menu
 			s.out("=========================");
 			s.out("     MAP COMMANDS    ");
@@ -108,11 +124,14 @@ public class Commands {
 			s.out("characters");
 			s.out("land");
 			s.out("ids");
+			s.out("positions");
 			s.out("back = leave the map");
 		}else {
 			//Process.class.getName().
+			commandFound = false;
 			s.out("Else - process next commmand list");
 		}
+		return commandFound;
 	}
 
 	public void cStats() {

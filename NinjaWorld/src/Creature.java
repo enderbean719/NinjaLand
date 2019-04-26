@@ -7,6 +7,7 @@ public class Creature {
 	 public Ability[] abilities_ ;
 	 public Position position_ ;
 	 public Status status_ ;
+	 public AI AI_;
 	 
 	 System1 s = new System1();
 	 
