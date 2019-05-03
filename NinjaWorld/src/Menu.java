@@ -7,7 +7,9 @@ public class Menu {
 	String answerS = "";
 	Character mc = new Character();
 	
+	
 	public void start() {
+		mc.AI_.isAI = false;
 		printTitle();
 		s.out("1. New Game");
 		s.out("2. Load Game");

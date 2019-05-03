@@ -21,7 +21,7 @@ public class Story1 implements Story {
 		//deliver a scroll to the hokage's assistant
 		//peek inside scroll = lose trust but gain a forbidden jutsu
 		
-		Character saisu = new Character("AI");
+		Character saisu = new Character();
 		saisu.name = "Saisu Kamano";
 		mc.rel_.newRelationship75(saisu.name);
 		//https://naruto.fandom.com/wiki/Saisu_Kamano
@@ -73,7 +73,7 @@ public class Story1 implements Story {
 		//Yuki Minazuki = Itachi sensei
 		//Kakashi is jonin at this time - maybe a sensei
 		
-		Character ibiki = new Character("AI");
+		Character ibiki = new Character();
 		ibiki.name = "Ibiki Morino";
 		s.out("THE STORY CONTINUES....");
 		s.out("6 months later...");

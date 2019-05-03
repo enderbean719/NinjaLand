@@ -93,10 +93,10 @@ public class Commands {
 				s.out(current.lookClosely);
 				current.lookCount++;
 			}			
-		}else if(c.equals("characters")) {
+		}else if(c.equals("characters") || c.equals("names")) {
 			commandFound = true;
 			mc.map_.printMapOfNames();
-		}else if(c.equals("land")) {
+		}else if(c.equals("land") || c.equals("labels") ) {
 			commandFound = true;
 			mc.map_.printMapOfLabels();
 		}else if(c.equals("ids")) {

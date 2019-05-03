@@ -8,6 +8,10 @@ public class AI {
 	public int cowardly;  //will retreat  1 - 10
 	
 	
+	public AI() {
+		
+	}
+	
 	public AI(Creature c) {
 		this.c = c;
 	}

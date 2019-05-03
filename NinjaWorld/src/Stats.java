@@ -2,8 +2,19 @@
 public class Stats {
 	
 	System1 s = new System1();
-	//base stats
-	
+//base stats
+//	maxHP
+//	maxChakra
+//	hpRegen
+//	chakraRegen	
+//	basicAtk
+//	chakraAtk
+//	basicDef
+//	chakraDef
+//	speed
+//	brains
+//	sensing
+
 	public double currentHP;
 	public double currentChakra;
 	
@@ -104,10 +115,10 @@ public class Stats {
 			sensing++;
 			break;
 		case 8:
-			maxHP *= 1.3;
+			maxHP = maxHP*1.1 + 15;
 			break;
 		case 9:
-			maxChakra *= 1.3;
+			maxChakra = maxChakra*1.1 + 15;
 			break;
 		case 10:
 			hpRegen++;
@@ -264,8 +275,14 @@ public class Stats {
 		}
 		
 		//apply pp[index] to stats
-		maxHP 			*= Math.pow(1.3, (double) pp[0]);  //multiply HP by 1.3 ^ #points
-		maxChakra 		*= Math.pow(1.3, (double) pp[1]);  //multiply HP by 1.3 ^ #points
+		//maxHP 			*= Math.pow(1.3, (double) pp[0]);  //multiply HP by 1.3 ^ #points
+		//maxChakra 		*= Math.pow(1.3, (double) pp[1]);  //multiply HP by 1.3 ^ #points
+		for(int di = 0; di<pp[0];di++) {
+			maxHP = maxHP*1.1 + 15;
+		}
+		for(int di = 0; di<pp[1];di++) {
+			maxChakra = maxChakra*1.1 + 15;
+		}
 		hpRegen			+= pp[2];
 		chakraRegen 	+= pp[3];
 		basicAtk 		+= pp[4];

@@ -2,7 +2,14 @@ import java.util.HashMap;
 //import java.util.Math;
 
 public class Character extends Creature {
-
+	//from CREATURE
+//	 public String name;
+//	 public int lvl ;
+//	 public Stats stats_ ;
+//	 public Abilities abilities_ ;
+//	 public Position position_ ;
+//	 public Status status_ ;
+//	 public AI AI_;
 	public String clan;
 	public String gender;
 	public int age;	
@@ -11,38 +18,26 @@ public class Character extends Creature {
 	public Squad squad_ = new Squad();
 	public Summonings summonings_ = new Summonings();
 	public Battle battle_ = new Battle();
-	public Commands commands_ = new Commands(this);
+	public Commands commands_ = new Commands(this); 
 	public int exp;
-	private int expToLevelUp;
-	public boolean isAI = false;
+	private int expToLevelUp; 
 	public String[] image = {""};
 	
 	
 	private System1 s = new System1();
 	
 	public Character() {
+		//from CREATURE
 		name = "Name"; 
 		lvl = 0;
 	    stats_ = new Stats();
-		abilities_ = new Ability[1];
+		abilities_ = new Abilities();
 		position_ = new Position();
 		status_ = new Status();
 		 
 	}
 	
-	public Character(String isAI) {
-		
-		name = "Name"; 
-		lvl = 0;
-	    stats_ = new Stats();
-		abilities_ = new Ability[1];
-		position_ = new Position();
-		status_ = new Status();
-		if(isAI == "AI" || isAI == "Ai" || isAI == "ai") {
-			this.isAI = true;
-		}
-		 
-	}
+	 
 	
 	@Override
 	public boolean isDead() {

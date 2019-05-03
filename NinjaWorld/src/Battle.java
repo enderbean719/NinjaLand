@@ -1,19 +1,51 @@
 
 public class Battle {
 
-	Battle(){
+	Squad s1;
+	Squad s2;
+	
+	public Battle(){
 		
+	}
+	
+	public Battle(Squad s1, Squad s2){
+		this.s1 = s1;
+		this.s2 = s2;
 	}
 	
 	public Result begin1vCreature(Character mc, Creature monster){
 		Result result = new Result();
-		
-		while(continueFight1vCreature(mc, monster) == true) {
+		Map basicMap = new Map(3,3);
+		mc.map_ = basicMap;
+		mc.map_.printMapOfNames();
+		boolean mcFirst = mcGoesFirst( mc,  monster);
+		if(mcFirst) {
+			 mc.battle_.attack();
+		}else {
 			
+		}
+			 
+		while(continueFight1vCreature(mc, monster) == true) {
+			//see who goes first
+			 
 		}
 		
 		
 		return result;
+	}
+	
+	public void attack() {
+		//give mc list of attack options
+	}
+	
+	public boolean mcGoesFirst(Character mc, Creature monster) {
+		double mcSpeed = mc.stats_.speed;
+		double cSpeed = monster.stats_.speed;
+		double mcRandom = Math.random();
+		double cRandom = Math.random();
+		mcRandom = (mcRandom * mcSpeed) + mcSpeed/2;
+		cRandom = (cRandom * cSpeed) + cSpeed/2;
+		return (mcRandom > cRandom);
 	}
 	
 	
