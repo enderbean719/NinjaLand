@@ -57,7 +57,7 @@ public class Map1 {
 		int l = areas.size();
 		for(int i=0; i<l; i++) {
 			a = areas.get(i);
-			if(a.x == xx && a.y == yy) {
+			if(a.getX() == xx && a.getY() == yy) {
 				break;
 			}
 		}
@@ -66,17 +66,17 @@ public class Map1 {
 	
 	
 	public void placeMC(int x, int y) {
-		getArea(mc.position_.x,mc.position_.y).containsObj.remove(mc);
-		mc.position_.x = x;
-		mc.position_.y = y;
-		getArea(x,y).containsObj.add(mc);
+		getArea(mc.position_.getX(),mc.position_.getY()).getContainsObj().remove(mc);
+		mc.position_.setX(x);
+		mc.position_.setY(y);
+		getArea(x,y).getContainsObj().add(mc);
 	}
 	
 	public void placeCreatureAndRemove(Character c, int x, int y) {
-		getArea(c.position_.x, c.position_.y).containsObj.remove(c);
-		c.position_.x = x;
-		c.position_.y = y;
-		getArea(x,y).containsObj.add(c);
+		getArea(c.position_.getX(), c.position_.getY()).getContainsObj().remove(c);
+		c.position_.setX(x);
+		c.position_.setY(y);
+		getArea(x,y).getContainsObj().add(c);
 	}
 	
 	 
@@ -110,9 +110,9 @@ public class Map1 {
 				
 				//output data into 4 characters of space before next cell wall begins
 				if(output == "ids") {
-					s.print(String.format("%5d", a.id));
+					s.print(String.format("%5d", a.getId()));
 				}else if(output == "labels"){
-					s.print(String.format("%5c", a.legendChar));
+					s.print(String.format("%5s", a.getLegendChar()));
 				}else if(output == "names") {
 					s.print(String.format("%5s", a.getNames()));
 					//s.print(a.getNames() );
@@ -133,8 +133,8 @@ public class Map1 {
 	
 	public Area getAreaMC() { 
 			int x, y;
-			x = this.mc.position_.x;
-			y = this.mc.position_.y;
+			x = this.mc.position_.getX();
+			y = this.mc.position_.getY();
 			return getArea(x,y);
 	}
 	
@@ -142,10 +142,10 @@ public class Map1 {
 	public void printPositionList() {
 		String row = "";
 		for(Area a : this.areas ) {
-			for(Object o : a.containsObj) {
+			for(Object o : a.getContainsObj()) {
 				if(o instanceof Character) {
 					row = ((Character) o).name;
-					row = row + " : (" + ((Character) o).position_.x + "," + ((Character) o).position_.y;
+					row = row + " : (" + ((Character) o).position_.getX() + "," + ((Character) o).position_.getY();
 					s.out(row);
 				}
 			}

@@ -8,7 +8,7 @@ public class Event {
 	}
 	
 	public boolean arrivedAtChar(Character input) {
-		if(mc.position_.x == input.position_.x && mc.position_.y == input.position_.y	 ) {
+		if(mc.position_.getX() == input.position_.getX() && mc.position_.getY() == input.position_.getY()	 ) {
 			return true;
 		}else {
 			return false;

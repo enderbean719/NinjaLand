@@ -19,7 +19,13 @@ public class Status {
 	private boolean isChoking;
 	private boolean oneHandFree;
 	private boolean twoHandsFree; 
+	private boolean canFly;
+	private boolean canGoUnderground;
+	private boolean canSwim;
+	private boolean canWalkOnWater;
+	private boolean canClimbWalls;
 	
+
 	//sensing
 	private boolean isAware;  //aware of enemy nearby
 	private boolean canHear;
@@ -54,6 +60,7 @@ public class Status {
 		isChoking 		= false;
 		oneHandFree 	= true;
 		twoHandsFree 	= true;
+		canFly 			= false;
 		isAware 		= false;
 		canHear 		= true;
 		canSmell 		= true;
@@ -332,7 +339,56 @@ public class Status {
 	public void setHasBeenTargeted(boolean hasBeenTargeted) {
 		this.hasBeenTargeted = hasBeenTargeted;
 	}
-	
-	
+
+	public boolean isCanFly() {
+		return canFly;
+	}
+
+
+	public void setCanFly(boolean canFly) {
+		this.canFly = canFly;
+	}
+
+
+
+	public boolean isCanGoUnderground() {
+		return canGoUnderground;
+	}
+
+
+	public void setCanGoUnderground(boolean canGoUnderground) {
+		this.canGoUnderground = canGoUnderground;
+	}
+
+
+	public boolean isCanSwim() {
+		return canSwim;
+	}
+
+
+	public void setCanSwim(boolean canSwim) {
+		this.canSwim = canSwim;
+	}
+
+
+	public boolean isCanWalkOnWater() {
+		return canWalkOnWater;
+	}
+
+
+	public void setCanWalkOnWater(boolean canWalkOnWater) {
+		this.canWalkOnWater = canWalkOnWater;
+	}
+
+
+	public boolean isCanClimbWalls() {
+		return canClimbWalls;
+	}
+
+
+	public void setCanClimbWalls(boolean canClimbWalls) {
+		this.canClimbWalls = canClimbWalls;
+	}
+
 
 }//end Status

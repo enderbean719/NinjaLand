@@ -97,10 +97,55 @@ public class Character  {
 		}
 	}
 	
+	
+	public void transition(String t) {
+		 //sky, land, water, tree, earth, none
+		Area a = this.map_.getArea(this.position_.getX(), this.position_.getY());
+		if(t.equals("sky")) {
+			if(this.status_.isCanFly() == true) {
+				this.position_.setInSky(true);
+				s.out(this.name + " has begun flying.");
+			}else {
+				s.out(this.name + " can't fly.");
+			}
+		}else if(t.equals("earth")) {
+			if(this.status_.isCanGoUnderground() == true) {
+				this.position_.setUnderGround(true);
+				s.out(this.name + " has gone underground.");
+			}else {
+				s.out(this.name + " can't go underground.");
+			}
+		}else if(t.equals("inWater")) {
+			if(this.status_.isCanSwim() == true) {
+				this.position_.setInWater(true);
+				s.out(this.name + " has gone into the water.");
+			}else {
+				s.out(this.name + " can't swim.");
+			}
+		}else if(t.equals("onWater")) {
+			if(this.status_.isCanWalkOnWater() == true) {
+				this.position_.setOnWater(true);
+				s.out(this.name + " has gone onto the water.");
+			}else {
+				s.out(this.name + " can't walk on water.");
+			}
+		}else if(t.equals("tree")) {
+			if(this.status_.isCanClimbWalls() == true) {
+				this.position_.setInTree(true);
+				s.out(this.name + " has gone into the trees.");
+			}else {
+				s.out(this.name + " can't climb trees.");
+			}
+		}else if(t.equals("land")) {
+			this.position_.setOnLand(true);
+			s.out(this.name + " has gone onto the land.");
+		}
+	}//end transition
+	
 	public void move(String m) { //input cardinal direction
 		int x, y, maxX, maxY;
-		x = this.position_.x;
-		y = this.position_.y;
+		x = this.position_.getX();
+		y = this.position_.getY();
 		maxX = this.map_.getWidth() - 1;
 		maxY = this.map_.getHeight() - 1;
 		if(m=="north") {
@@ -130,8 +175,16 @@ public class Character  {
 		}else {
 			s.out( m + "?");
 		}
-		this.map_.placeCreatureAndRemove(this, x, y);  //places on the new x,y removes from the old x,y in  this.position_
+		Area targetA = this.map_.getArea(x,y);
+		String travel = this.position_.getTravelType();
+		if(targetA.passableBy(travel) ) {
+			this.map_.placeCreatureAndRemove(this, x, y);  //places on the new x,y removes from the old x,y in  this.position_
+		}else {
+			s.out("That area is not passable by " + travel);
+		}
+		
 	}//end move
+	
 	
 	public void moveNorth() {
 		move("north");

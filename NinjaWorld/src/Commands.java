@@ -24,6 +24,14 @@ public class Commands {
 		return command;
 	}
 	
+	public String getBattleMovement() {
+		String command = "help";
+		s.out("=========================");
+		s.print("Movement Command: ");
+		command = s.getWord();
+		return command;
+	}
+	
 	public boolean processCommand(String c) {
 		boolean commandFound = false;
 		if(c.equals("map")) {
@@ -86,12 +94,12 @@ public class Commands {
 		}else if(c.equals("look")) {
 			commandFound = true;
 			Area current = mc.map_.getAreaMC();
-			if(current.lookCount == 0) {
-				s.out(current.look);
-				current.lookCount++;
+			if(current.getLookCount() == 0) {
+				s.out(current.getLook());
+				current.setLookCount(current.getLookCount() + 1);
 			}else {
-				s.out(current.lookClosely);
-				current.lookCount++;
+				s.out(current.getLookClosely());
+				current.setLookCount(current.getLookCount() + 1);
 			}			
 		}else if(c.equals("characters") || c.equals("names")) {
 			commandFound = true;
@@ -116,6 +124,33 @@ public class Commands {
 		}
 		return commandFound;
 	}
+	
+	
+	
+	
+	public boolean processBattleMovementCommand(String c) {
+		boolean commandFound = false;
+		if(c.equals("north")) {
+			commandFound = true;
+			mc.moveNorth();
+			mc.map_.printMapOfNames();
+		}else if(c.equals("south")) {
+			commandFound = true;
+			mc.moveSouth();
+			mc.map_.printMapOfNames();
+		}else if(c.equals("east")) {
+			commandFound = true;
+			mc.moveEast();
+			mc.map_.printMapOfNames();
+		}else if(c.equals("west")) {
+			commandFound = true;
+			mc.moveWest();
+			mc.map_.printMapOfNames();
+		}
+		return false;
+	}
+	
+	
 
 	public void cStats() {
 		s.out("=========================");

@@ -18,6 +18,7 @@ public class Battle {
 	public boolean battleContinues;
 	public Character currentChar;
 	public HashMap<Integer, ArrayList<Ability>> activeAbilitiesByChar; 
+	private int numActions;
 	
 	public Battle(){
 		
@@ -86,14 +87,14 @@ public class Battle {
 			this.characterIdOrder  = characterIdOrder();
 			//loop characters for one round
 			for(int i=0; i<characterIdOrder.size(); i++) {
-				//find char
+			//find char
 				for(Squad s : ss) {
 					currentChar = s.getCharById(characterIdOrder.get(i));
 					if (!(currentChar==null || currentChar.equals(null) )) {
 						break;
 					}
 				}
-				//begin char turn
+			//begin char turn
 				//get active abilities
 				ArrayList<Ability> al = new ArrayList<Ability>();
 				try {
@@ -103,12 +104,17 @@ public class Battle {
 				}catch(Exception e) {
 					
 				}
-				
-				//run movement choices
-				if(currentChar.status_.canMove() ==true) {
-					
+				//run preeffects of prior abilities
+				//()
+			//run movement choices
+				if(currentChar.status_.canMove() == true) {
+					if(currentChar.AI_.isAI == true) {
+						//AI movement
+					}else {
+						
+					}
 				}
-				//get new choices
+			//get new choices
 				if(currentChar.status_.isHasBeenTargeted() == true) {
 					Ability defensive = currentChar.abilities_.chooseDefensive();
 					al.add(defensive);					
@@ -209,7 +215,7 @@ public class Battle {
 	public boolean isAmbush(Squad s) {
 		boolean allHidden = true;
 		for(Character c : s.members) {
-			if(c.position_.hidden != true) {
+			if(c.position_.isHidden() != true) {
 				allHidden =  false;
 			}
 		}

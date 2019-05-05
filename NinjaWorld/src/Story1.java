@@ -1,8 +1,16 @@
 
 public class Story1 implements Story {
  
-	int answer = 0;
+	private int answer = 0;
 	
+	public int getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(int answer) {
+		this.answer = answer;
+	}
+
 	@Override
 	public void start_(Character mc) { 
 		//SETH BEGIN HERE
