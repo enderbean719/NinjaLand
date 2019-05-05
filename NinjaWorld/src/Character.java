@@ -1,24 +1,27 @@
 import java.util.HashMap;
 //import java.util.Math;
 
-public class Character extends Creature {
-	//from CREATURE
-//	 public String name;
-//	 public int lvl ;
-//	 public Stats stats_ ;
-//	 public Abilities abilities_ ;
-//	 public Position position_ ;
-//	 public Status status_ ;
-//	 public AI AI_;
+public class Character  {
+	//from CREATURE 
+	 public String name = "";
+	 public int lvl = 0 ;
+	 public Stats stats_ = new Stats();
+	 public Abilities abilities_ = new Abilities(this);
+	 public Position position_ = new Position();
+	 public Status status_ = new Status();
+	 public AI AI_ = new AI();
 	public String clan;
 	public String gender;
 	public int age;	
+	public int money;
+	public int id;
 	public Relationships rel_ = new Relationships();
-	public Map map_ = new Map();
+	public Map1 map_ = new Map1();
 	public Squad squad_ = new Squad();
 	public Summonings summonings_ = new Summonings();
 	public Battle battle_ = new Battle();
 	public Commands commands_ = new Commands(this); 
+	public Items items_ = new Items();
 	public int exp;
 	private int expToLevelUp; 
 	public String[] image = {""};
@@ -31,7 +34,7 @@ public class Character extends Creature {
 		name = "Name"; 
 		lvl = 0;
 	    stats_ = new Stats();
-		abilities_ = new Abilities();
+		abilities_ = new Abilities(this);
 		position_ = new Position();
 		status_ = new Status();
 		 
@@ -39,13 +42,13 @@ public class Character extends Creature {
 	
 	 
 	
-	@Override
+	 
 	public boolean isDead() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+ 
 	public void show() {
 		// TODO Auto-generated method stub
 
@@ -142,5 +145,16 @@ public class Character extends Creature {
 	public void moveWest() {
 		move("west");
 	}
+	
+	
+	
+	
+	 public void printStatsFormal() {
+		 s.out("");
+		 s.out(this.name + " stats:");
+		 this.stats_.printStats();
+	 }
+	 
+	 
 	
 }//end Character

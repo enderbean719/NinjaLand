@@ -2,8 +2,8 @@
 public class AI {
 	
 	public boolean isAI = true;
-	public Creature c;
-	public boolean canFight;
+	public Character c;
+	public boolean canFight = true;
 	public int aggressive;  //will initiate  1 - 10
 	public int cowardly;  //will retreat  1 - 10
 	
@@ -12,7 +12,7 @@ public class AI {
 		
 	}
 	
-	public AI(Creature c) {
+	public AI(Character c) {
 		this.c = c;
 	}
 	

@@ -58,14 +58,14 @@ public class Story1 implements Story {
 			s.out("2. Nah...You go ahead.");			
 		}
 		answer = s.getIntBetween(1,2);
-		Map mainmap = new Map(mc,10,5);  //max x = 9, max y = 4
+		Map1 mainmap = new Map1(mc,10,5);  //max x = 9, max y = 4
 		mc.map_ = mainmap;
-		Creature arenaBuilding = new Creature();
+		Character arenaBuilding = new Character();
 		arenaBuilding.name = "Arena";
 		mainmap.placeCreatureAndRemove(arenaBuilding,5,2);
 		if(true) {  //answer == 1
 			mainmap.printMapOfNames();
-			while(e.arrivedAtCreature(arenaBuilding)==false) {   
+			while(e.arrivedAtChar(arenaBuilding)==false) {   
 				mc.commands_.runCommands();
 			}
 		}

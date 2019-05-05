@@ -50,9 +50,9 @@ public class Area {
 		int numCr = 0 ;
 		//count characters and creatures in this area
 		for(Object n : this.containsObj) {
-			if(n instanceof Creature) {
+			if(n instanceof Character) {
 				numCr++;
-				nameCr = ((Creature) n).name;
+				nameCr = ((Character) n).name;
 			}
 		}
 		

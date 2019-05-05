@@ -19,7 +19,7 @@ public class Story4 implements Story {
 		
 		s.getInt();
 		
-		Creature monster = new Creature();
+		Character monster = new Character();
 		monster.name = "Evil Crane";
 		monster.stats_.loadCreatureStats("flying", 2);
 		monster.abilities_.aList.add(new Ability());
@@ -35,7 +35,7 @@ public class Story4 implements Story {
 		monster.abilities_.showList();
 		s.getInt();
 		
-		Map mm = new Map(testC,5,5);
+		Map1 mm = new Map1(testC,5,5);
 		//mm.getArea(1, 1);
 		mm.placeCreatureAndRemove(monster, 4, 4);
 		mm.printMapOfIds();
@@ -45,6 +45,9 @@ public class Story4 implements Story {
 		mm.printMapOfNames();
 		s.out("");
  
+		Squad s1 = new Squad(testC);
+		Squad s2 = new Squad(monster);
+		testC.battle_.beginSquadBattle(mm, s1, s2);
 
 		s.getInt();
 		

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Map {
+public class Map1 {
 
 	private int width;
 	private int height; 
@@ -12,7 +12,7 @@ public class Map {
 	
 	
 	
-	public Map(int width, int height){
+	public Map1(int width, int height){
 		int id = 1; 
 		this.width = width;
 		this.height = height;		
@@ -24,11 +24,11 @@ public class Map {
 		} 		
 	}//end Map
 	
-	public Map(){
-		new Map(1,1);
+	public Map1(){
+		new Map1(1,1);
 	}
 	
-	public Map(Character mc, int width, int height){
+	public Map1(Character mc, int width, int height){
 		int id = 1; 
 		this.mc = mc;
 		mc.map_ = this;
@@ -72,7 +72,7 @@ public class Map {
 		getArea(x,y).containsObj.add(mc);
 	}
 	
-	public void placeCreatureAndRemove(Creature c, int x, int y) {
+	public void placeCreatureAndRemove(Character c, int x, int y) {
 		getArea(c.position_.x, c.position_.y).containsObj.remove(c);
 		c.position_.x = x;
 		c.position_.y = y;
@@ -143,9 +143,9 @@ public class Map {
 		String row = "";
 		for(Area a : this.areas ) {
 			for(Object o : a.containsObj) {
-				if(o instanceof Creature) {
-					row = ((Creature) o).name;
-					row = row + " : (" + ((Creature) o).position_.x + "," + ((Creature) o).position_.y;
+				if(o instanceof Character) {
+					row = ((Character) o).name;
+					row = row + " : (" + ((Character) o).position_.x + "," + ((Character) o).position_.y;
 					s.out(row);
 				}
 			}
