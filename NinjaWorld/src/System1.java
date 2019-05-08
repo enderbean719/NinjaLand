@@ -1,9 +1,17 @@
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class System1 {
 
-	Scanner reader = new Scanner(System.in);
+	private Scanner reader = new Scanner(System.in);
+	
+	
+	public void clear() {
+//		System.out.println("\033[H\033[2J");  
+//	    System.out.flush(); 
+	}
+	
 	
 	//prints 1 line to the screen and ends the line
 	public void out(String input)  {		
@@ -59,6 +67,14 @@ public class System1 {
 		}
 		return i;
 	}
+	
+	public int getRandomIntBetween(int min, int max) {
+		if (min >= max) {
+			throw new IllegalArgumentException("max must be greater than min");
+		}
+		Random r = new Random();
+		return r.nextInt((max - min) + 1) + min;		
+	}//end random
 	
 	
 }//end System1

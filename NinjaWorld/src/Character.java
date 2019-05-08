@@ -31,15 +31,24 @@ public class Character  {
 	
 	public Character() {
 		//from CREATURE
-		name = "Name"; 
-		lvl = 0;
-	    stats_ = new Stats();
-		abilities_ = new Abilities(this);
-		position_ = new Position();
-		status_ = new Status();
+//		name = "Name"; 
+//		lvl = 0;
+//	    stats_ = new Stats();
+//		abilities_ = new Abilities(this);
+//		position_ = new Position();
+//		status_ = new Status();
 		 
 	}
 	
+	public Character(boolean isAI) {
+		this.AI_.isAI = isAI;
+//		name = "Name"; 
+//		lvl = 0;
+//	    stats_ = new Stats();
+//		abilities_ = new Abilities(this);
+//		position_ = new Position();
+//		status_ = new Status();
+	}
 	 
 	
 	 
@@ -98,13 +107,66 @@ public class Character  {
 	}
 	
 	
-	public void transition(String t) {
-		 //sky, land, water, tree, earth, none
+	public void doTransitionHuman() {
+		int choice = -1;
+		choice = getTransition();
+		while(processTransition(choice) == false || choice !=7){
+			s.out("");
+			choice = getTransition();
+		}
+	}
+	
+	public void doTransitionAI() {
+		processTransition(s.getRandomIntBetween(1, 6));
+	}
+	
+	public int getTransition() {
+		s.out(this.name + this.position_.getFormalEnviPosition());
+		s.out("Select destination");
+		s.out("1. Land");
+		s.out("2. Into the trees");
+		s.out("3. Underwater (swimming)");
+		s.out("4. Walking on water");
+		s.out("5. Underground (tunneling)");
+		s.out("6. Into the sky (flying)");
+		s.out("7. Cancel transition");
+		return s.getIntBetween(1, 7);
+	}
+	
+	public boolean processTransition(int t) {
+		boolean success = false;
+		switch(t) {
+		case 1:
+			success = transition("land");
+			break;
+		case 2:
+			success = transition("tree");
+			break;
+		case 3:
+			success = transition("inWater");
+			break;
+		case 4:
+			success = transition("onWater");
+			break;
+		case 5:
+			success = transition("earth");
+			break;
+		case 6:
+			success = transition("sky");
+			break;
+		}
+		return success;
+	}
+	
+	public boolean transition(String t) {
+		 //sky, land, inWater, onWater, tree, earth, none
+		boolean tSuccess = false;
 		Area a = this.map_.getArea(this.position_.getX(), this.position_.getY());
 		if(t.equals("sky")) {
 			if(this.status_.isCanFly() == true) {
 				this.position_.setInSky(true);
 				s.out(this.name + " has begun flying.");
+				tSuccess = true;
 			}else {
 				s.out(this.name + " can't fly.");
 			}
@@ -112,6 +174,7 @@ public class Character  {
 			if(this.status_.isCanGoUnderground() == true) {
 				this.position_.setUnderGround(true);
 				s.out(this.name + " has gone underground.");
+				tSuccess = true;
 			}else {
 				s.out(this.name + " can't go underground.");
 			}
@@ -119,6 +182,7 @@ public class Character  {
 			if(this.status_.isCanSwim() == true) {
 				this.position_.setInWater(true);
 				s.out(this.name + " has gone into the water.");
+				tSuccess = true;
 			}else {
 				s.out(this.name + " can't swim.");
 			}
@@ -126,6 +190,7 @@ public class Character  {
 			if(this.status_.isCanWalkOnWater() == true) {
 				this.position_.setOnWater(true);
 				s.out(this.name + " has gone onto the water.");
+				tSuccess = true;
 			}else {
 				s.out(this.name + " can't walk on water.");
 			}
@@ -133,13 +198,16 @@ public class Character  {
 			if(this.status_.isCanClimbWalls() == true) {
 				this.position_.setInTree(true);
 				s.out(this.name + " has gone into the trees.");
+				tSuccess = true;
 			}else {
 				s.out(this.name + " can't climb trees.");
 			}
 		}else if(t.equals("land")) {
 			this.position_.setOnLand(true);
 			s.out(this.name + " has gone onto the land.");
+			tSuccess = true;
 		}
+		return tSuccess;
 	}//end transition
 	
 	public void move(String m) { //input cardinal direction

@@ -80,7 +80,7 @@ public class Mission1 implements Story {
 				s.out("2. Wager one bag of gold");
 				double random = Math.random();
 				double enemyRandom = Math.random();
-				random = random * mc.stats_.brains;
+				random = random * mc.stats_.getBrains();
 				enemyRandom = enemyRandom * 3;
 				if(answer == 1) {
 					

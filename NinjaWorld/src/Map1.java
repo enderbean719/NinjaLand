@@ -93,6 +93,64 @@ public class Map1 {
 		printMapOf("names");
 	}
 	
+
+	public void printBattleMap() {
+
+		Area a = new Area();
+		for(int xx = 0; xx < this.width; xx++) {
+			s.print("_______");										//roof of entire map
+		}
+		s.print("_");												//finish roof
+		s.out("");
+		for(int yy = 0; yy<height; yy++) {
+			//one row			
+			for(int xx = 0; xx < this.width; xx++) {
+				a = getArea(xx,yy);
+				s.print("|"); 										// beginning of cell wall left side 
+				s.print(String.format("%6d", a.getId()));			//1st row data	
+			}			
+			s.print("|");									//end row
+			s.out("");										//next row
+			for(int xx = 0; xx < this.width; xx++) {
+				a = getArea(xx,yy);
+				s.print("|"); 										// beginning of cell wall left side 
+				s.print(String.format("%6s", a.getNames6())); 		//2nd row data
+			}		
+			s.print("|");									//end row
+			s.out("");										//next row
+			for(int xx = 0; xx < this.width; xx++) {
+				a = getArea(xx,yy);
+				s.print("|"); 										// beginning of cell wall left side 
+				if(a.getSumOfHP()==0) {
+					s.print(String.format("%6s", "") );				//3rd row empty OR
+				}else {
+					s.print(String.format("%6d", a.getSumOfHP() ));	//3rd row data
+				}
+				
+			}	
+			s.print("|");									//end row
+			s.out("");										//next row
+			for(int xx = 0; xx < this.width; xx++) {
+				a = getArea(xx,yy);
+				s.print("|"); 										// beginning of cell wall left side 
+				s.print(String.format("%6s", a.getLegendChar())); 	//4th row data
+			}	
+			s.print("|");									//end row
+			s.out("");										//next row			 
+			for(int xx = 0; xx < this.width; xx++) {
+				s.print("|______");									//5th row closed			
+			}
+			s.print("|");
+			s.out("");
+			
+		}//end 				
+	}//printBattleMap
+	
+	
+	
+	
+	
+	
 	private void printMapOf(String output) {
 
 		Area a = new Area();

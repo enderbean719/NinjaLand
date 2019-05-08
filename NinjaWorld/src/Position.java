@@ -92,8 +92,43 @@ public class Position {
 	}
 	
 	
+	public String getEnviPosition() {
+		 //sky, land, water, tree, earth, none
+		if(this.inSky == true) {
+			return "inSky";
+		}else if(this.onLand == true) {
+			return "onLand";
+		}else if(this.inWater == true ) {
+			return "inWater";
+		}else if(this.onWater == true) {
+			return "onWater";
+		}else if(this.inTree == true) {
+			return "inTree";
+		}else if(this.underGround == true) {
+			return "underGround";
+		}else {
+			return "none";
+		} 
+	}
 	
-	
+	public String getFormalEnviPosition() {
+		 //sky, land, water, tree, earth, none
+		if(this.inSky == true) {
+			return " is in the sky";
+		}else if(this.onLand == true) {
+			return " is on land";
+		}else if(this.inWater == true ) {
+			return " is in the water";
+		}else if(this.onWater == true) {
+			return " is on the water";
+		}else if(this.inTree == true) {
+			return " is in a tree";
+		}else if(this.underGround == true) {
+			return " is underground";
+		}else {
+			return "none";
+		} 
+	}
 
 	public int getX() {
 		return x;

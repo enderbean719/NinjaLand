@@ -85,6 +85,48 @@ public class Area {
 	}//end getNames
 	
 	
+	
+	
+
+	public String getNames6() {
+		String output = "";
+		String nameCr = "";
+		int numCr = 0 ;
+		//count characters and creatures in this area
+		for(Object n : this.containsObj) {
+			if(n instanceof Character) {
+				numCr++;
+				nameCr = ((Character) n).name;
+			}
+		}
+		
+		if(numCr == 0) {
+			output = "      ";  					//empty 6 char
+		}else if(numCr == 1) {
+			int len = nameCr.length();
+			if(len>=6) {							//(len>=6)
+				output = nameCr.substring(0, 6);	
+			}else {
+				output = nameCr.substring(0, len);
+			}			
+		}else if(numCr > 1) {
+			output = String.format("%6d", numCr)+"c";
+//			output = numCr + "c  ";
+//			if(numCr >= 10) {
+//				output = "#c  ";
+//			}
+		}else {
+			output = "xxxxxx";
+			s.out(nameCr + numCr);
+		}
+		
+		return output;
+		
+	}//end getNames6
+	
+	
+	
+	
 	public boolean passableBy(String travelType) {
 		//sky, land, water, tree, earth, none
 		if(travelType.equals("sky") && this.passableBySky == true) {
@@ -105,64 +147,15 @@ public class Area {
 		return false;
 	}//end passableBy
 	
-	
-//
-//	public String getNames() {
-//		String output = "";
-//		String nameCh = "";
-//		String nameCr = "";
-//		int numCh = 0 ;
-//		int numCr = 0 ;
-//		//count characters and creatures in this area
-//		for(Object n : this.containsObj) {
-//			if(n instanceof Character) {
-//				numCh++;
-//				nameCh = ((Character) n).name;
-//			}
-//			if(n instanceof Creature) {
-//				numCr++;
-//				nameCr = ((Creature) n).name;
-//			}
-//		}
-//		
-//		if(numCh == 0 && numCr == 0) {
-//			output = "none";
-//		}else if(numCh == 1 && numCr == 0) {
-//			output = nameCh.substring(0, 3);
-//		}else if(numCh == 0 && numCr == 1) {
-//			output = nameCr.substring(0, 3);
-//		}else if(numCh > 1 && numCr == 0) {
-//			output = numCh + "n  ";
-//			if(numCh >= 10) {
-//				output = "#n  ";
-//			}
-//		}else if(numCh == 0 && numCr > 1) {
-//			output = numCr + "c  ";
-//			if(numCr >= 10) {
-//				output = "#c  ";
-//			}
-//		}else if(numCh >= 1 && numCr >= 1) { 
-//			if(numCh >= 10) {
-//				nameCh = "#n";
-//			}else {
-//				nameCh = numCh + "n";
-//			}
-//			if(numCh >= 10) {
-//				nameCr = "#c";
-//			}else {
-//				nameCr = numCr + "c";
-//			}
-//			output = nameCh + nameCr;
-//		}else {
-//			output = "xxxx";
-//			s.out(nameCh + numCh);
-//			s.out(nameCr + numCr);
-//		}
-//		
-//		return output;
-//		
-//	}//end getNames
-	
+	public int getSumOfHP() {
+		int sum = 0;
+		for(Object c: this.containsObj) {
+			if(c instanceof Character) {
+				sum += ((Character) c).stats_.getCurrentHP();
+			}
+		}
+		return sum;
+	}
 	
 	
 

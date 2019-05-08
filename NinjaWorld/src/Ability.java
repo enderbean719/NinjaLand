@@ -238,48 +238,48 @@ public class Ability {
 			
 			switch(attribute) {
 			case "maxHP":
-				cc1 = c1.stats_.maxHP;
-				cc2 = c2.stats_.maxHP;
+				cc1 = c1.stats_.getMaxHP();
+				cc2 = c2.stats_.getMaxHP();
 				break;
 			case "maxChakra":
-				cc1 = c1.stats_.maxChakra;
-				cc2 = c2.stats_.maxChakra;
+				cc1 = c1.stats_.getMaxChakra();
+				cc2 = c2.stats_.getMaxChakra();
 				break;
 			case "hpRegen":
-				cc1 = c1.stats_.hpRegen;
-				cc2 = c2.stats_.hpRegen;
+				cc1 = c1.stats_.getHpRegen();
+				cc2 = c2.stats_.getHpRegen();
 				break;
 			case "chakraRegen":
-				cc1 = c1.stats_.chakraRegen;
-				cc2 = c2.stats_.chakraRegen;
+				cc1 = c1.stats_.getChakraRegen();
+				cc2 = c2.stats_.getChakraRegen();
 				break;
 			case "basicAtk" : 
-				cc1 = c1.stats_.basicAtk;
-				cc2 = c2.stats_.basicAtk;
+				cc1 = c1.stats_.getBasicAtk();
+				cc2 = c2.stats_.getBasicAtk();
 				break;
 			case "chakraAtk":
-				cc1 = c1.stats_.chakraAtk;
-				cc2 = c2.stats_.chakraAtk;
+				cc1 = c1.stats_.getChakraAtk();
+				cc2 = c2.stats_.getChakraAtk();
 				break;
 			case "basicDef":
-				cc1 = c1.stats_.chakraAtk;
-				cc2 = c2.stats_.chakraAtk;
+				cc1 = c1.stats_.getChakraAtk();
+				cc2 = c2.stats_.getChakraAtk();
 				break;
 			case "chakraDef":
-				cc1 = c1.stats_.chakraAtk;
-				cc2 = c2.stats_.chakraAtk;
+				cc1 = c1.stats_.getChakraAtk();
+				cc2 = c2.stats_.getChakraAtk();
 				break;
 			case "speed":
-				cc1 = c1.stats_.chakraAtk;
-				cc2 = c2.stats_.chakraAtk;
+				cc1 = c1.stats_.getChakraAtk();
+				cc2 = c2.stats_.getChakraAtk();
 				break;
 			case "brains":
-				cc1 = c1.stats_.chakraAtk;
-				cc2 = c2.stats_.chakraAtk;
+				cc1 = c1.stats_.getChakraAtk();
+				cc2 = c2.stats_.getChakraAtk();
 				break;
 			case "sensing":
-				cc1 = c1.stats_.chakraAtk;
-				cc2 = c2.stats_.chakraAtk;
+				cc1 = c1.stats_.getChakraAtk();
+				cc2 = c2.stats_.getChakraAtk();
 				break;
 			default: 
 				break;
@@ -344,13 +344,13 @@ public class Ability {
 			testC.name = "Naruto";
 			testC.stats_.loadCreatureStats("clawed", i);
 			//testC.printStatsFormal();
-			double cc1 = testC.stats_.maxHP;
+			double cc1 = testC.stats_.getMaxHP();
 			
 			Character monster = new Character();
 			monster.name = "Evil Crane";
 			monster.stats_.loadCreatureStats("flying", i);
 			//monster.printStatsFormal();
-			double cc2 = monster.stats_.maxHP;
+			double cc2 = monster.stats_.getMaxHP();
 			double average = (cc1 + cc2)/2;
 			if(i<10) {
 				genin += average;

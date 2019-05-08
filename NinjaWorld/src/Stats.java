@@ -1,7 +1,7 @@
 
 public class Stats {
 	
-	System1 s = new System1();
+	private System1 s = new System1();
 //base stats
 //	maxHP
 //	maxChakra
@@ -15,25 +15,26 @@ public class Stats {
 //	brains
 //	sensing
 
-	public double currentHP;
-	public double currentChakra;
+	private double currentHP;
+	private double currentChakra;
 	
-	public double maxHP;
-	public double maxChakra;
-	public double hpRegen;
-	public double chakraRegen;	
-	public double basicAtk;
-	public double chakraAtk;
-	public double basicDef;
-	public double chakraDef;
-	public double speed;
-	public double brains;
-	public double sensing;
+	private double maxHP;
+	private double maxChakra;
+	private double hpRegen;
+	private double chakraRegen;	
+	private double basicAtk;
+	private double chakraAtk;
+	private double basicDef;
+	private double chakraDef;
+	private double speed;
+	private double brains;
+	private double sensing;
 	
 	//special item influenced stats
 	private double armor;
 	private double weight;
 	
+
 	public Stats() {
 
 		currentHP = 40;
@@ -303,6 +304,142 @@ public class Stats {
 			sum += a;
 		}
 		return sum;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+	public System1 getS() {
+		return s;
+	}
+
+	public void setS(System1 s) {
+		this.s = s;
+	}
+
+	public double getCurrentHP() {
+		return currentHP;
+	}
+
+	public void setCurrentHP(double currentHP) {
+		this.currentHP = currentHP;
+	}
+
+	public double getCurrentChakra() {
+		return currentChakra;
+	}
+
+	public void setCurrentChakra(double currentChakra) {
+		this.currentChakra = currentChakra;
+	}
+
+	public double getMaxHP() {
+		return maxHP;
+	}
+
+	public void setMaxHP(double maxHP) {
+		this.maxHP = maxHP;
+	}
+
+	public double getMaxChakra() {
+		return maxChakra;
+	}
+
+	public void setMaxChakra(double maxChakra) {
+		this.maxChakra = maxChakra;
+	}
+
+	public double getHpRegen() {
+		return hpRegen;
+	}
+
+	public void setHpRegen(double hpRegen) {
+		this.hpRegen = hpRegen;
+	}
+
+	public double getChakraRegen() {
+		return chakraRegen;
+	}
+
+	public void setChakraRegen(double chakraRegen) {
+		this.chakraRegen = chakraRegen;
+	}
+
+	public double getBasicAtk() {
+		return basicAtk;
+	}
+
+	public void setBasicAtk(double basicAtk) {
+		this.basicAtk = basicAtk;
+	}
+
+	public double getChakraAtk() {
+		return chakraAtk;
+	}
+
+	public void setChakraAtk(double chakraAtk) {
+		this.chakraAtk = chakraAtk;
+	}
+
+	public double getBasicDef() {
+		return basicDef;
+	}
+
+	public void setBasicDef(double basicDef) {
+		this.basicDef = basicDef;
+	}
+
+	public double getChakraDef() {
+		return chakraDef;
+	}
+
+	public void setChakraDef(double chakraDef) {
+		this.chakraDef = chakraDef;
+	}
+
+	public double getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
+	public double getBrains() {
+		return brains;
+	}
+
+	public void setBrains(double brains) {
+		this.brains = brains;
+	}
+
+	public double getSensing() {
+		return sensing;
+	}
+
+	public void setSensing(double sensing) {
+		this.sensing = sensing;
+	}
+
+	public double getArmor() {
+		return armor;
+	}
+
+	public void setArmor(double armor) {
+		this.armor = armor;
+	}
+
+	public double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 	
 }//end stats

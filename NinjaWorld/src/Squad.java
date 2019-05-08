@@ -2,10 +2,11 @@ import java.util.ArrayList;
 
 public class Squad {
 	
-	public String squadName;
-	public int squadId = 0;
-	public ArrayList<Character> members = new ArrayList<Character>();
+	private String squadName;
+	private int squadId = 0;
+	private ArrayList<Character> members = new ArrayList<Character>();
 	
+
 	public Squad(){
 		
 	}
@@ -30,6 +31,35 @@ public class Squad {
 			}
 		}
 		return null;
+	}
+	
+	
+	
+	
+	
+
+	public String getSquadName() {
+		return squadName;
+	}
+
+	public void setSquadName(String squadName) {
+		this.squadName = squadName;
+	}
+
+	public int getSquadId() {
+		return squadId;
+	}
+
+	public void setSquadId(int squadId) {
+		this.squadId = squadId;
+	}
+
+	public ArrayList<Character> getMembers() {
+		return members;
+	}
+
+	public void setMembers(ArrayList<Character> members) {
+		this.members = members;
 	}
 	
 }//end squad
