@@ -3,28 +3,29 @@ import java.util.HashMap;
 
 public class Character  {
 	//from CREATURE 
-	 public String name = "";
-	 public int lvl = 0 ;
-	 public Stats stats_ = new Stats();
-	 public Abilities abilities_ = new Abilities(this);
-	 public Position position_ = new Position();
-	 public Status status_ = new Status();
-	 public AI AI_ = new AI();
-	public String clan;
-	public String gender;
-	public int age;	
-	public int money;
-	public int id;
-	public Relationships rel_ = new Relationships();
-	public Map1 map_ = new Map1();
-	public Squad squad_ = new Squad();
-	public Summonings summonings_ = new Summonings();
-	public Battle battle_ = new Battle();
-	public Commands commands_ = new Commands(this); 
-	public Items items_ = new Items();
-	public int exp;
+	private String name = "";
+	private int lvl = 0 ;
+	private String clan;
+	private String gender;
+	private int age;	
+	private int money;
+	private int id;
+	private int exp;
 	private int expToLevelUp; 
-	public String[] image = {""};
+	private String[] image = {""};
+	private Stats stats_ = new Stats();
+	private Abilities abilities_ = new Abilities(this);
+	private Position position_ = new Position();
+	private Status status_ = new Status();
+	private AI AI_ = new AI();
+	private Relationships rel_ = new Relationships();
+	private Map1 map_ = new Map1();
+	private Squad squad_ = new Squad();
+	private Summonings summonings_ = new Summonings();
+	private Battle battle_ = new Battle();
+	private Commands commands_ = new Commands(this); 
+	private Items items_ = new Items();
+	
 	
 	
 	private System1 s = new System1();
@@ -40,18 +41,36 @@ public class Character  {
 		 
 	}
 	
-	public Character(boolean isAI) {
-		this.AI_.isAI = isAI;
-//		name = "Name"; 
-//		lvl = 0;
-//	    stats_ = new Stats();
-//		abilities_ = new Abilities(this);
-//		position_ = new Position();
-//		status_ = new Status();
+	public Character(boolean isAI, String nameInput, int lvlInput, String gender) {
+		
+
+	 	 name = nameInput;
+		 lvl = lvlInput ;
+		 clan = "unknown";
+		 gender = "male";
+		 age = 13;	
+		 money = 100;
+		 id = 0;
+		 exp = 0;
+		 expToLevelUp = 0; 
+		 //image = {""};
+		 stats_ = new Stats();   			//doesn't need reference to this		 
+		 position_ = new Position();		//doesn't need reference to this
+		 status_ = new Status();			//doesn't need reference to this		 
+		 rel_ = new Relationships();		//doesn't need reference to this		 	
+		 squad_ = new Squad();				//doesn't need reference to this
+		 summonings_ = new Summonings();	//doesn't need reference to this
+		 battle_ = new Battle();			//doesn't need reference to this		 
+		 items_ = new Items();				//doesn't need reference to this
+		 
+		 abilities_ = new Abilities(this);
+		 AI_ = new AI(this);
+		 this.AI_.setAI(isAI);
+		 map_ = new Map1(this, 1, 1);	
+		 commands_ = new Commands(this); 	
 	}
 	 
 	
-	 
 	public boolean isDead() {
 		// TODO Auto-generated method stub
 		return false;
@@ -107,20 +126,27 @@ public class Character  {
 	}
 	
 	
-	public void doTransitionHuman() {
+	public boolean doTransitionHuman() {
+		boolean tranSuccess = false;
 		int choice = -1;
-		choice = getTransition();
-		while(processTransition(choice) == false || choice !=7){
+		choice = getTransitionNum();
+		
+		while(processTransitionNum(choice) == false && choice !=7){
 			s.out("");
-			choice = getTransition();
+			choice = getTransitionNum();
 		}
+		tranSuccess = true;		
+		if(choice == 7) {
+			tranSuccess = false;
+		}
+		return tranSuccess;
 	}
 	
-	public void doTransitionAI() {
-		processTransition(s.getRandomIntBetween(1, 6));
+	public boolean doTransitionAI() {
+		return processTransitionNum(s.getRandomIntBetween(1, 6));
 	}
 	
-	public int getTransition() {
+	public int getTransitionNum() {
 		s.out(this.name + this.position_.getFormalEnviPosition());
 		s.out("Select destination");
 		s.out("1. Land");
@@ -133,7 +159,7 @@ public class Character  {
 		return s.getIntBetween(1, 7);
 	}
 	
-	public boolean processTransition(int t) {
+	public boolean processTransitionNum(int t) {
 		boolean success = false;
 		switch(t) {
 		case 1:
@@ -210,61 +236,72 @@ public class Character  {
 		return tSuccess;
 	}//end transition
 	
-	public void move(String m) { //input cardinal direction
+	public boolean move(String m) { //input cardinal direction
+		boolean moveSuccess = false;
 		int x, y, maxX, maxY;
 		x = this.position_.getX();
 		y = this.position_.getY();
 		maxX = this.map_.getWidth() - 1;
 		maxY = this.map_.getHeight() - 1;
+		
 		if(m=="north") {
 			if(y > 0) {
 				y--;
+				moveSuccess = true;
 			}else {
 				s.out("Cannot go any furthur north");
 			}			
 		}else if(m=="south") {
 			if(y < maxY) {
 				y++;
+				moveSuccess = true;
 			}else {
 				s.out("Cannot go any furthur south");
 			}
 		}else if(m=="east") {
 			if(x < maxX) {
 				x++;
+				moveSuccess = true;
 			}else {
 				s.out("Cannot go any furthur east");
 			}
 		}else if(m=="west") {
 			if(x > 0) {
 				x--;
+				moveSuccess = true;
 			}else {
 				s.out("Cannot go any furthur west");
 			}
 		}else {
 			s.out( m + "?");
 		}
-		Area targetA = this.map_.getArea(x,y);
-		String travel = this.position_.getTravelType();
-		if(targetA.passableBy(travel) ) {
-			this.map_.placeCreatureAndRemove(this, x, y);  //places on the new x,y removes from the old x,y in  this.position_
-		}else {
-			s.out("That area is not passable by " + travel);
+		
+		if(moveSuccess == true) {
+			Area targetA = this.map_.getArea(x,y);
+			String travel = this.position_.getTravelType();
+			if(targetA.passableBy(travel) ) {
+				this.map_.placeCreatureAndRemove(this, x, y);  //places on the new x,y removes from the old x,y in  this.position_
+			}else {
+				s.out("That area is not passable by " + travel);
+			}
 		}
+		return moveSuccess;
+		
 		
 	}//end move
 	
 	
-	public void moveNorth() {
-		move("north");
+	public boolean moveNorth() {
+		return move("north");
 	}
-	public void moveSouth() {
-		move("south");
+	public boolean moveSouth() {
+		return move("south");
 	}
-	public void moveEast() {
-		move("east");
+	public boolean moveEast() {
+		return move("east");
 	}
-	public void moveWest() {
-		move("west");
+	public boolean moveWest() {
+		return move("west");
 	}
 	
 	
@@ -278,4 +315,189 @@ public class Character  {
 	 
 	 
 	
+ 
+ 
+	 public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Map1 getMap_() {
+		return map_;
+	}
+
+	public void setMap_(Map1 map_) {
+		this.map_ = map_;
+	}
+
+	public int getLvl() {
+		return lvl;
+	}
+
+	public void setLvl(int lvl) {
+		this.lvl = lvl;
+	}
+
+	public String getClan() {
+		return clan;
+	}
+
+	public void setClan(String clan) {
+		this.clan = clan;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public int getMoney() {
+		return money;
+	}
+
+	public void setMoney(int money) {
+		this.money = money;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Stats getStats_() {
+		return stats_;
+	}
+
+	public void setStats_(Stats stats_) {
+		this.stats_ = stats_;
+	}
+
+	public Abilities getAbilities_() {
+		return abilities_;
+	}
+
+	public void setAbilities_(Abilities abilities_) {
+		this.abilities_ = abilities_;
+	}
+
+	public Position getPosition_() {
+		return position_;
+	}
+
+	public void setPosition_(Position position_) {
+		this.position_ = position_;
+	}
+
+	public Status getStatus_() {
+		return status_;
+	}
+
+	public void setStatus_(Status status_) {
+		this.status_ = status_;
+	}
+
+	public AI getAI_() {
+		return AI_;
+	}
+
+	public void setAI_(AI aI_) {
+		AI_ = aI_;
+	}
+
+	public Relationships getRel_() {
+		return rel_;
+	}
+
+	public void setRel_(Relationships rel_) {
+		this.rel_ = rel_;
+	}
+
+	public Squad getSquad_() {
+		return squad_;
+	}
+
+	public void setSquad_(Squad squad_) {
+		this.squad_ = squad_;
+	}
+
+	public Summonings getSummonings_() {
+		return summonings_;
+	}
+
+	public void setSummonings_(Summonings summonings_) {
+		this.summonings_ = summonings_;
+	}
+
+	public Battle getBattle_() {
+		return battle_;
+	}
+
+	public void setBattle_(Battle battle_) {
+		this.battle_ = battle_;
+	}
+
+	public Commands getCommands_() {
+		return commands_;
+	}
+
+	public void setCommands_(Commands commands_) {
+		this.commands_ = commands_;
+	}
+
+	public Items getItems_() {
+		return items_;
+	}
+
+	public void setItems_(Items items_) {
+		this.items_ = items_;
+	}
+
+	public int getExp() {
+		return exp;
+	}
+
+	public void setExp(int exp) {
+		this.exp = exp;
+	}
+
+	public int getExpToLevelUp() {
+		return expToLevelUp;
+	}
+
+	public void setExpToLevelUp(int expToLevelUp) {
+		this.expToLevelUp = expToLevelUp;
+	}
+
+	public String[] getImage() {
+		return image;
+	}
+
+	public void setImage(String[] image) {
+		this.image = image;
+	}
+
+	public System1 getS() {
+		return s;
+	}
+
+	public void setS(System1 s) {
+		this.s = s;
+	}
+		 
 }//end Character

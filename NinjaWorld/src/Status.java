@@ -2,75 +2,76 @@
 public class Status {
 
 	// unmoveable and unconscious
-	private boolean isAsleep;
-	private boolean inGenjutsu;
-	private boolean isKO;
+	private boolean isAsleep			=false;
+	private boolean inGenjutsu			=false;
+	private boolean isKO				=false;
 	// unmoveable
-	private boolean isStunned;
-	private boolean isDisabled;
-	private boolean gatheringChakra;
+	private boolean isStunned			=false;
+	private boolean isDisabled			=false;
+	private boolean gatheringChakra		=false;
 
-	// movable
-	private boolean isPoisoned;
-	private boolean beingTortured;
-	private boolean isBleeding;
-	private boolean isOnFire;
-	private boolean isDrowning;
-	private boolean isChoking;
-	private boolean oneHandFree;
-	private boolean twoHandsFree; 
-	private boolean canFly;
-	private boolean canGoUnderground;
-	private boolean canSwim;
-	private boolean canWalkOnWater;
-	private boolean canClimbWalls;
+	// movable bad
+	private boolean isPoisoned			=false;
+	private boolean beingTortured		=false;
+	private boolean isBleeding			=false;
+	private boolean isOnFire			=false;
+	private boolean isDrowning			=false;
+	private boolean isChoking			=false;
+	//movable good
+	private boolean oneHandFree				=true;
+	private boolean twoHandsFree			=true; 
+	private boolean canFly				=false;
+	private boolean canGoUnderground	=false;
+	private boolean canSwim					=true;
+	private boolean canWalkOnWater		=false;
+	private boolean canClimbWalls		=false;
 	
 
 	//sensing
-	private boolean isAware;  //aware of enemy nearby
-	private boolean canHear;
-	private boolean canSmell;
-	private boolean canSee;
-	private boolean canSense;
+	private boolean isAware				=false;  //aware of enemy nearby
+	private boolean canHear					=true;
+	private boolean canSmell				=true;
+	private boolean canSee					=true;
+	private boolean canSense				=true;
 	
 	// battle intent
 	// battle
 	
-	private boolean retreatAttempt;
-	private boolean retreatSuccess;
-	private boolean chasing;
-	private boolean haveMercy;
-	private boolean pauseFighting;
-	private boolean hasBeenTargeted;//?
+	private boolean retreatAttempt		=false;
+	private boolean retreatSuccess		=false;
+	private boolean chasing				=false;
+	private boolean haveMercy			=false;
+	private boolean pauseFighting		=false;
+	private boolean hasBeenTargeted		=false;
 
 	
 	
 	public Status() {  //defaults
-		isAsleep 		= false;
-		inGenjutsu 		= false;
-		isKO			= false;
-		isStunned 		= false;
-		isDisabled		= false;
-		gatheringChakra = false;
-		isPoisoned 		= false;
-		beingTortured 	= false;
-		isBleeding 		= false;
-		isOnFire 		= false;
-		isDrowning 		= false;
-		isChoking 		= false;
-		oneHandFree 	= true;
-		twoHandsFree 	= true;
-		canFly 			= false;
-		isAware 		= false;
-		canHear 		= true;
-		canSmell 		= true;
-		canSee 			= true;
-		canSense 		= true;
-		retreatAttempt  = false;
-		retreatSuccess  = false;
-		chasing 		= false;
-		haveMercy 		= false;
-		pauseFighting 	= false;
+//		isAsleep 		= false;
+//		inGenjutsu 		= false;
+//		isKO			= false;
+//		isStunned 		= false;
+//		isDisabled		= false;
+//		gatheringChakra = false;
+//		isPoisoned 		= false;
+//		beingTortured 	= false;
+//		isBleeding 		= false;
+//		isOnFire 		= false;
+//		isDrowning 		= false;
+//		isChoking 		= false;
+//		oneHandFree 	= true; //
+//		twoHandsFree 	= true;//
+//		canFly 			= false;
+//		isAware 		= false;
+//		canHear 		= true;//
+//		canSmell 		= true;//
+//		canSee 			= true;//
+//		canSense 		= true;//
+//		retreatAttempt  = false;
+//		retreatSuccess  = false;
+//		chasing 		= false;
+//		haveMercy 		= false;
+//		pauseFighting 	= false;
 	}
 	
 	

@@ -20,10 +20,20 @@ public class Position {
 	
 	
 	//hiding status
-	private boolean inBush;  //land 
-	private boolean behindObject; //land
+	private boolean inBush;  //land ?
+	private boolean behindObject; //land?
 	
-	
+	public Position() {
+		x = 0;
+		y = 0;
+		hidden = false;
+		invisible = false;
+		silent = false;
+		oderless = false;
+		setPositionStatus("onLand");
+		inBush = false;
+		behindObject = false;
+	}
 
 	public void setPositionStatus(String input) {
 		setAllFalse();		
@@ -66,12 +76,13 @@ public class Position {
 	public void setAllFalse() {
 		inWater = false;
 		inSky = false;
-		inTree = false;
-		inBush = false;
+		inTree = false;		
 		onLand = false;
 		onWater = false; 
 		underGround = false;
 
+		inBush = false; 		//?
+		behindObject = false;	//?
 	}//end setAllFalse
 	
 	public String getTravelType() {

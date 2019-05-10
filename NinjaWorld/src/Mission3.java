@@ -11,7 +11,7 @@ public class Mission3 implements Story {
 				
 		
 		s.out("ALfin: All right team 3! We've been called for our first D rank mission outside the village.");
-		s.out("Lets meet up in 10 minutes at the Hokoges waiting room. Geeno, "+mc.name+", Mintly, are you ready? ");
+		s.out("Lets meet up in 10 minutes at the Hokoges waiting room. Geeno, "+mc.getName()+", Mintly, are you ready? ");
 		
 		s.out("1. Accept Mission");
 		s.out("2. Reject Mission");
@@ -37,7 +37,7 @@ public class Mission3 implements Story {
 			s.out("2. Race with Geno to the meeting spot.");
 			answer = s.getIntBetween(1,2);
 			if(answer == 1) {
-				s.out(mc.name+" sat next to Thaku.");
+				s.out(mc.getName()+" sat next to Thaku.");
 				
 			}
 		

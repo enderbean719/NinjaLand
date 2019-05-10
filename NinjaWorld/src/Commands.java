@@ -2,10 +2,10 @@ import com.sun.org.apache.xalan.internal.xslt.Process;
 
 public class Commands {
 
-	
-	public String input;
-	private System1 s = new System1();
 	private Character mc;
+	private String input;
+	private System1 s = new System1();
+	
 	
 	public Commands(Character mc) {
 		this.mc = mc;
@@ -66,7 +66,7 @@ public class Commands {
 	
 	
 	public void cMap() {
-		mc.map_.printMapOfLabels();
+		mc.getMap_().printMapOfLabels();
 		s.out("=========================");
 		s.out("Map Commands");
 		processMapCommand(getCommand());
@@ -78,22 +78,22 @@ public class Commands {
 		if(c.equals("north")) {
 			commandFound = true;
 			mc.moveNorth();
-			mc.map_.printMapOfNames();
+			mc.getMap_().printMapOfNames();
 		}else if(c.equals("south")) {
 			commandFound = true;
 			mc.moveSouth();
-			mc.map_.printMapOfNames();
+			mc.getMap_().printMapOfNames();
 		}else if(c.equals("east")) {
 			commandFound = true;
 			mc.moveEast();
-			mc.map_.printMapOfNames();
+			mc.getMap_().printMapOfNames();
 		}else if(c.equals("west")) {
 			commandFound = true;
 			mc.moveWest();
-			mc.map_.printMapOfNames();
+			mc.getMap_().printMapOfNames();
 		}else if(c.equals("look")) {
 			commandFound = true;
-			Area current = mc.map_.getAreaMC();
+			Area current = mc.getMap_().getAreaMC();
 			if(current.getLookCount() == 0) {
 				s.out(current.getLook());
 				current.setLookCount(current.getLookCount() + 1);
@@ -103,16 +103,16 @@ public class Commands {
 			}			
 		}else if(c.equals("characters") || c.equals("names")) {
 			commandFound = true;
-			mc.map_.printMapOfNames();
+			mc.getMap_().printMapOfNames();
 		}else if(c.equals("land") || c.equals("labels") ) {
 			commandFound = true;
-			mc.map_.printMapOfLabels();
+			mc.getMap_().printMapOfLabels();
 		}else if(c.equals("ids")) {
 			commandFound = true;
-			mc.map_.printMapOfIds();
+			mc.getMap_().printMapOfIds();
 		}else if(c.equals("positions")) {
 			commandFound = true;
-			mc.map_.printPositionList();
+			mc.getMap_().printPositionList();
 		}else if(c.equals("help")) {
 			commandFound = true;
 			//help menu
@@ -128,27 +128,57 @@ public class Commands {
 	
 	
 	
-	public boolean processBattleMovementCommand(String c) {
-		boolean commandFound = false;
-		if(c.equals("north")) {
-			commandFound = true;
-			mc.moveNorth();
-			mc.map_.printMapOfNames();
-		}else if(c.equals("south")) {
-			commandFound = true;
-			mc.moveSouth();
-			mc.map_.printMapOfNames();
-		}else if(c.equals("east")) {
-			commandFound = true;
-			mc.moveEast();
-			mc.map_.printMapOfNames();
-		}else if(c.equals("west")) {
-			commandFound = true;
-			mc.moveWest();
-			mc.map_.printMapOfNames();
-		}
-		return false;
-	}
+//	public boolean processBattleMovementCommand(String c) { //?
+//		boolean commandFound = false;
+//		if(c.equals("north")) {
+//			commandFound = true;
+//			mc.moveNorth();
+//			mc.getMap_().printBattleMap();
+//		}else if(c.equals("south")) {
+//			commandFound = true;
+//			mc.moveSouth();
+//			mc.getMap_().printBattleMap();
+//		}else if(c.equals("east")) {
+//			commandFound = true;
+//			mc.moveEast();
+//			mc.getMap_().printBattleMap();
+//		}else if(c.equals("west")) {
+//			commandFound = true;
+//			mc.moveWest();
+//			mc.getMap_().printBattleMap();
+//		}
+//		return false;
+//	}
+	
+	
+
+	public boolean processBattleMapCommand(String c) {
+		boolean moveSuccess = false;
+		while(   !(c.equals("back") || c.equals("cancel") )   &&    moveSuccess == false ){
+			if(c.equals("north")) {
+				moveSuccess = mc.moveNorth();
+			}else if(c.equals("south")) {
+				moveSuccess = mc.moveSouth();
+			}else if(c.equals("east")) {
+				moveSuccess = mc.moveEast();
+			}else if(c.equals("west")) {
+				moveSuccess = mc.moveWest();
+			}else if(c.equals("help")) {
+				//help menu
+				this.printBattleMapCmds();
+			}else {
+				this.printBattleMapCmds();
+			}
+			if(moveSuccess == false) {
+				s.out("Enter a different direction or cancel");
+				c = this.getCommand();
+			}
+			
+		}//while
+		return moveSuccess;
+	}//processBattleMapCommand
+	
+	
 	
 	
 
@@ -156,8 +186,8 @@ public class Commands {
 		s.out("=========================");
 		s.out("         STATS           ");
 		s.out("=========================");
-		this.mc.stats_.printStats();
-		
+		this.mc.getStats_().printStats();
+		s.out("=========================");
 	}
 	
 	public void printGeneralCmds() {
@@ -173,7 +203,7 @@ public class Commands {
 		s.out("summonings");
 		s.out("battles");
 		s.out("quit");
-
+		s.out("=========================");
 	}
 	
 	public void printMapCmds() {
@@ -190,8 +220,20 @@ public class Commands {
 		s.out("land");
 		s.out("ids");
 		s.out("positions");
+		s.out("=========================");
 	}
 	
+	public void printBattleMapCmds() {
+		s.out("=========================");
+		s.out("     MAP COMMANDS    ");
+		s.out("=========================");
+		s.out("north = go 1 sqare up");
+		s.out("south = go 1 sqare down");
+		s.out("east = go 1 to the left");
+		s.out("west = go 1 to the right");
+		s.out("back = cancel move action");
+		s.out("=========================");
+	}
 	//public void 
 	
 	

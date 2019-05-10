@@ -12,7 +12,7 @@ public class Squad {
 	}
 	
 	public Squad(Character c1){
-		squadName = c1.name;
+		squadName = c1.getName();
 		members.add(c1);
 	}
 	
@@ -26,7 +26,7 @@ public class Squad {
 	
 	public Character getCharById(int id) {
 		for(Character c : members) {
-			if (c.id == id) {
+			if (c.getId() == id) {
 				return c;
 			}
 		}

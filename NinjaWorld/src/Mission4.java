@@ -28,24 +28,24 @@ public class Mission4 implements Story {
 	
 	
 				if(accepted == true) {
-					s.out("A few minutes later "+mc.name+" arrived at the ramen shop. "+mc.name+" opened to door to the shop and was greeted by the pleasant smell");
-					s.out("of beef flavored ramen. "+mc.name+" noticed 3 ninja, one was quite tall with short dark hair with leaf village ninja attire, another was");
+					s.out("A few minutes later "+mc.getName()+" arrived at the ramen shop. "+mc.getName()+" opened to door to the shop and was greeted by the pleasant smell");
+					s.out("of beef flavored ramen. "+mc.getName()+" noticed 3 ninja, one was quite tall with short dark hair with leaf village ninja attire, another was");
 					s.out("average height with black clothes and blonde hair, and the last was obviously Thaku, the sand ninja. Thaku was tall and massively built.");
 					s.out("He was wearing dark blue and brown, loosely-fitted sand village clothes and had a stern expression on his face. ");
 					s.out("1. Approach Thaku");
 					s.out("2. Buy ramen");
 					answer = s.getIntBetween(1,2);
 					if(answer == 1) {
-						s.out(mc.name+" sat next to Thaku.");
-						s.out(mc.name+": \"Are you Thaku?\"");
+						s.out(mc.getName()+" sat next to Thaku.");
+						s.out(mc.getName()+": \"Are you Thaku?\"");
 						s.out("Thaku: \"You're the ninja the leaf village sent me?\" Thaku said incredulously.");
-						s.out(mc.name+": Yes, I'm more powerful than I appear.");
+						s.out(mc.getName()+": Yes, I'm more powerful than I appear.");
 						s.out("Thaku: \"Well, let's hope you're right.\"");
 						
 						
 						
 					}else if(answer == 2) {
-						s.out(mc.name+" started walking up to the store clerk and passed the sand ninja. The ninja quickly stood up and blocked "+mc.name+"'s path.");
+						s.out(mc.getName()+" started walking up to the store clerk and passed the sand ninja. The ninja quickly stood up and blocked "+mc.getName()+"'s path.");
 						s.out("Thaku: \"My name is Thaku. I can tell by that look on your face that you are the ninja the leaf village sent to help me.\"");
 					}
 					

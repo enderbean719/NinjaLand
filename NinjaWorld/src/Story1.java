@@ -30,20 +30,20 @@ public class Story1 implements Story {
 		//peek inside scroll = lose trust but gain a forbidden jutsu
 		
 		Character saisu = new Character();
-		saisu.name = "Saisu Kamano";
-		mc.rel_.newRelationship75(saisu.name);
+		saisu.setName("Saisu Kamano");
+		mc.getRel_().newRelationship75(saisu.getName());
 		//https://naruto.fandom.com/wiki/Saisu_Kamano
 		//someone build loader function inside Character Class file for Saisu's stats
 		//print nice character image;
-		s.out(saisu.name + ": Hey " + mc.name ) ;		
+		s.out(saisu.getName() + ": Hey " + mc.getName() ) ;		
 		s.out("Do you hear that loud roaring?");
 		s.out("1. yeah, whats all the commotion?");
 		s.out("2. no, what's up?");
 		s.out("3. no, are you hearing things? ");
 		answer = s.getIntBetween(1,3);
 		if(answer == 1) {
-			mc.rel_.addGoodDeedAgainst(saisu.name);
-			s.out("<" + saisu.name + " noticed your positive attitude.>");
+			mc.getRel_().addGoodDeedAgainst(saisu.getName());
+			s.out("<" + saisu.getName() + " noticed your positive attitude.>");
 			s.out("I was wondering when you would finally notice!");
 			s.out("It's the chuunin exams!  We're late for the show!");
 			s.out("Let's go find some seats in the audience.");
@@ -57,8 +57,8 @@ public class Story1 implements Story {
 			s.out("1. Sure lets go!");
 			s.out("2. Nah...You go ahead.");
 		}else {
-			s.out("<" + saisu.name + " noticed your negative attitude.>");
-			mc.rel_.addBadDeedAgainst(saisu.name);
+			s.out("<" + saisu.getName() + " noticed your negative attitude.>");
+			mc.getRel_().addBadDeedAgainst(saisu.getName());
 			s.out("What?? You're kidding, right?");
 			s.out("It's the chuunin exams!  We're late for the show!");
 			s.out("Let's go find some seats in the audience.");
@@ -67,14 +67,14 @@ public class Story1 implements Story {
 		}
 		answer = s.getIntBetween(1,2);
 		Map1 mainmap = new Map1(mc,10,5);  //max x = 9, max y = 4
-		mc.map_ = mainmap;
+		mc.setMap_(mainmap);
 		Character arenaBuilding = new Character();
-		arenaBuilding.name = "Arena";
+		arenaBuilding.setName("Arena");
 		mainmap.placeCreatureAndRemove(arenaBuilding,5,2);
 		if(true) {  //answer == 1
 			mainmap.printMapOfNames();
 			while(e.arrivedAtChar(arenaBuilding)==false) {   
-				mc.commands_.runCommands();
+				mc.getCommands_().runCommands();
 			}
 		}
 		
@@ -82,11 +82,11 @@ public class Story1 implements Story {
 		//Kakashi is jonin at this time - maybe a sensei
 		
 		Character ibiki = new Character();
-		ibiki.name = "Ibiki Morino";
+		ibiki.setName("Ibiki Morino");
 		s.out("THE STORY CONTINUES....");
 		s.out("6 months later...");
 		s.out("");
-		s.out(ibiki.name + ": " + mc.name + ", its time for you to begin a mission.");
+		s.out(ibiki.getName() + ": " + mc.getName() + ", its time for you to begin a mission.");
 		s.out("Please select a mission");
 		s.out("1. Sam's mission - C rank - $500 gold");
 		s.out("2. Chris's mission - C rank - $500 gold");

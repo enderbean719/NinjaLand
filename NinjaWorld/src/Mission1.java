@@ -54,7 +54,7 @@ public class Mission1 implements Story {
 			s.out("2. Accept amount given and begin mission");
 			answer = s.getIntBetween(1,2);
 			if(answer == 1) {
-				s.out(mc.name +": You think they'll take me seriously with this small bag of gold?");
+				s.out(mc.getName() +": You think they'll take me seriously with this small bag of gold?");
 				s.out("Danzo Assistant: You're not buying the artifact you noodle head!");
 				s.out("The gold is suppose to get you close to the robbers and get them to lower their guard.");
 				s.out("But since you asked, here are two small bags of metal nuts and bolts. Act like it's gold.");
@@ -63,7 +63,7 @@ public class Mission1 implements Story {
 			}else if(answer == 2) {
 			}
 			s.out("Good luck on the mission.");
-			s.out(mc.name +": Leaves the secret AMBU Black Ops building.");
+			s.out(mc.getName() +": Leaves the secret AMBU Black Ops building.");
 			
 			s.out("As you make your way to the city gate you see some men gambling in an alley.");
 			s.out("Do you want to gamble with the mission money?");
@@ -71,16 +71,16 @@ public class Mission1 implements Story {
 			s.out("2. Gamble with mission money");
 			answer = s.getIntBetween(1,2);
 			if(answer == 1) {
-				s.out(mc.name +" leaves the city");
+				s.out(mc.getName() +" leaves the city");
 			}else if(answer == 2) {
-				s.out(mc.name +" approaches the men gambling. You guys got room for one more?");
+				s.out(mc.getName() +" approaches the men gambling. You guys got room for one more?");
 				s.out("Gambling Man: Sure, take seat.  We're playing Donkey Dice. Place you wager on the table.");
-				s.out(mc.name+": I have some bags of gold.");
+				s.out(mc.getName()+": I have some bags of gold.");
 				s.out("1. Wager one bag of metal nuts and bolts [deceive]");
 				s.out("2. Wager one bag of gold");
 				double random = Math.random();
 				double enemyRandom = Math.random();
-				random = random * mc.stats_.getBrains();
+				random = random * mc.getStats_().getBrains();
 				enemyRandom = enemyRandom * 3;
 				if(answer == 1) {
 					

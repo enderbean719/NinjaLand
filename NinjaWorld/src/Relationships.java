@@ -3,12 +3,12 @@ import java.util.HashMap;
 public class Relationships {
 
 
-	public int goodDeeds;
-	public int badDeeds;
-	public int goodDeedsSeen;
-	public int badDeedsSeen;
-	public double percentGood;  	// = good deeds		 / (good deeds + bad deeds)
-	public double percentTrusted;	// = good deeds seen / (good deeds seen + bad deeds seen)
+	private int goodDeeds;
+	private int badDeeds;
+	private int goodDeedsSeen;
+	private int badDeedsSeen;
+	private double percentGood;  	// = good deeds		 / (good deeds + bad deeds)
+	private double percentTrusted;	// = good deeds seen / (good deeds seen + bad deeds seen)
 	private HashMap<String, Integer> goodDeedsPer = new HashMap<String,Integer>();
 	private HashMap<String, Integer> badDeedsPer = new HashMap<String,Integer>();
 	private HashMap<String, Double> relationships = new HashMap<String,Double>();
@@ -86,6 +86,78 @@ public class Relationships {
 	
 	public double getRelationship(String name) {
 		return relationships.get(name);		
+	}
+
+	public int getGoodDeeds() {
+		return goodDeeds;
+	}
+
+	public void setGoodDeeds(int goodDeeds) {
+		this.goodDeeds = goodDeeds;
+	}
+
+	public int getBadDeeds() {
+		return badDeeds;
+	}
+
+	public void setBadDeeds(int badDeeds) {
+		this.badDeeds = badDeeds;
+	}
+
+	public int getGoodDeedsSeen() {
+		return goodDeedsSeen;
+	}
+
+	public void setGoodDeedsSeen(int goodDeedsSeen) {
+		this.goodDeedsSeen = goodDeedsSeen;
+	}
+
+	public int getBadDeedsSeen() {
+		return badDeedsSeen;
+	}
+
+	public void setBadDeedsSeen(int badDeedsSeen) {
+		this.badDeedsSeen = badDeedsSeen;
+	}
+
+	public double getPercentGood() {
+		return percentGood;
+	}
+
+	public void setPercentGood(double percentGood) {
+		this.percentGood = percentGood;
+	}
+
+	public double getPercentTrusted() {
+		return percentTrusted;
+	}
+
+	public void setPercentTrusted(double percentTrusted) {
+		this.percentTrusted = percentTrusted;
+	}
+
+	public HashMap<String, Integer> getGoodDeedsPer() {
+		return goodDeedsPer;
+	}
+
+	public void setGoodDeedsPer(HashMap<String, Integer> goodDeedsPer) {
+		this.goodDeedsPer = goodDeedsPer;
+	}
+
+	public HashMap<String, Integer> getBadDeedsPer() {
+		return badDeedsPer;
+	}
+
+	public void setBadDeedsPer(HashMap<String, Integer> badDeedsPer) {
+		this.badDeedsPer = badDeedsPer;
+	}
+
+	public HashMap<String, Double> getRelationships() {
+		return relationships;
+	}
+
+	public void setRelationships(HashMap<String, Double> relationships) {
+		this.relationships = relationships;
 	}
 	
 }//end relationship

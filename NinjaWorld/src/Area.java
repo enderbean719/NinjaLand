@@ -56,7 +56,7 @@ public class Area {
 		for(Object n : this.containsObj) {
 			if(n instanceof Character) {
 				numCr++;
-				nameCr = ((Character) n).name;
+				nameCr = ((Character) n).getName();
 			}
 		}
 		
@@ -96,7 +96,7 @@ public class Area {
 		for(Object n : this.containsObj) {
 			if(n instanceof Character) {
 				numCr++;
-				nameCr = ((Character) n).name;
+				nameCr = ((Character) n).getName();
 			}
 		}
 		
@@ -110,7 +110,7 @@ public class Area {
 				output = nameCr.substring(0, len);
 			}			
 		}else if(numCr > 1) {
-			output = String.format("%6d", numCr)+"c";
+			output = String.format("%5d", numCr)+"c";
 //			output = numCr + "c  ";
 //			if(numCr >= 10) {
 //				output = "#c  ";
@@ -151,7 +151,7 @@ public class Area {
 		int sum = 0;
 		for(Object c: this.containsObj) {
 			if(c instanceof Character) {
-				sum += ((Character) c).stats_.getCurrentHP();
+				sum += ((Character) c).getStats_().getCurrentHP();
 			}
 		}
 		return sum;

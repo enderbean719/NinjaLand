@@ -9,12 +9,13 @@ public class Menu {
 	
 	
 	public void start() {
-		mc.AI_.isAI = false;
+		mc.getAI_().setAI(false);
 		printTitle();
 		s.out("1. New Game");
 		s.out("2. Load Game");
 		s.out("3. Multiplayer Match");
-		s.out("4. Quit Game"); 
+		s.out("4. Quit Game");
+		s.out("5. Testing Sandbox");
 		answer = s.getIntBetween(1,5); 
 		//s.out("you chose " + answer);
 		if (answer == 1){
@@ -58,19 +59,19 @@ public class Menu {
 		//print image of teacher ninja
 		s.out("What is your name, ninja?");
 		answerS = s.getWord();
-		mc.name = answerS;
-		s.out("Welcome " + mc.name);
+		mc.setName(answerS);
+		s.out("Welcome " + mc.getName());
 		s.out("What do you identify as?");
 		s.out("1. Male");
 		s.out("2. Female");
 		answer = s.getIntBetween(1,2);
 		if (answer == 1) {
-			mc.gender = "male";
-			mc.image = Images.getImage("maleNinja");
+			mc.setGender("male");
+			mc.setImage(Images.getImage("maleNinja"));
 			mc.printImage();
 			s.out("Handsome guy!");
 		}else {
-			mc.gender = "female";
+			mc.setGender("female");
 		} 
 		s.out("Do you know what clan you are from?");
 		s.out("1. Yes, of course.");
@@ -79,11 +80,11 @@ public class Menu {
 		if (answer == 1) {
 			s.out("What clan are you from?");
 			answerS = s.getWord();
-			mc.clan = answerS;
-			s.out("Oh!! The " + mc.clan + "!!! \nI see... We will expect great things from you.");
+			mc.setClan(answerS);
+			s.out("Oh!! The " + mc.getClan() + "!!! \nI see... We will expect great things from you.");
 		}else {
 			s.out("I see. Your clan is unknown.  \nIt will be interesting to watch your development.");
-			mc.clan = "unknown";
+			mc.setClan("unknown");
 		}
 		
 		mc.levelUp();

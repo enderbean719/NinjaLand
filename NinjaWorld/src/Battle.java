@@ -19,6 +19,7 @@ public class Battle {
 	private boolean battleContinues;
 	private Character currentChar;
 	private HashMap<Integer, ArrayList<Ability>> activeAbilitiesByChar; 
+	private ArrayList<Ability> activeAbilitiesCurrentChar;
 	private int numActions;
 	private int currentAction;
 	private boolean canMove;
@@ -75,18 +76,19 @@ public class Battle {
 		//setup
 		boolean debug = false;
 		Result result = new Result();
-		this.map = map;
+		this.map = map;		
 		this.s1 = s1;
 		this.s2 = s2;
 		this.s1.setSquadId(1);
 		this.s2.setSquadId(2);
 		this.ss = new ArrayList<Squad>();
 		this.activeAbilitiesByChar = new HashMap<Integer, ArrayList<Ability>>();
-		ss.add(s1);
-		ss.add(s2);
+		this.ss.add(s1);
+		this.ss.add(s2);
 		this.turnCharacterId = 0;
 		this.turn = 0;
 		setCharIds();  //give each char a unique id for this battle
+		setMapForAll(); //insert battle map into each character
 		
 		//printBattleIntroMessage
 		s.out("===== BATTLE =====");
@@ -105,28 +107,31 @@ public class Battle {
 			//begin char turn
 				//find char
 				if(debug) s.out("i = " + i);
-				setCurrentCharByIndex(i);				
+				setCurrentCharByIndex(i);
 				//get active abilities
-				ArrayList<Ability> al = getActiveAbilityListByCurrentChar();
+				activeAbilitiesCurrentChar = getActiveAbilityListByCurrentChar();
 				//run preeffects of prior abilities
 				//()
 				//run movement choices
-				canMove = currentChar.status_.canMove();
-				canTransition = currentChar.status_.canMove();
-				canDefend = currentChar.status_.isHasBeenTargeted();
+				canMove = currentChar.getStatus_().canMove();
+				canTransition = currentChar.getStatus_().canMove();
+				canDefend = currentChar.getStatus_().isHasBeenTargeted();
 				canOffense = true;
-				if(debug) s.out(currentChar.name + " canMove = " + canMove + " canTransition = " + canTransition + " canDef= " + canDefend + " canOffense = " + canOffense);
+				if(debug) s.out(currentChar.getName() + " canMove = " + canMove + " canTransition = " + canTransition + " canDef= " + canDefend + " canOffense = " + canOffense);
 				
-				numActions = 2;
+				this.numActions = 2;
+				
 				if(debug) s.out("numActions = " + numActions);
-				
-				s.getInt();
-				s.clear();//no function
+				if(debug) s.out("Pause:");
+				if(debug) s.getInt();
+				//s.clear();//no function
 			    map.printBattleMap();
-			    
+				s.out("**"+ currentChar.getName() + "'s turn begins. **");
+
 				while(numActions > 0) {
 					if(debug) s.out("numActions = " +numActions);
-					if(currentChar.AI_.isAI == true) {
+					
+					if(currentChar.getAI_().isAI() == true) {
 						//AI action
 						currentAction = validatedRandomAction();						
 					}else {
@@ -134,26 +139,12 @@ public class Battle {
 						currentAction = getBattleAction();
 					}
 					numActions--;
+					while(processAction() == false);
 				}
 				
 				 
 			//get new choices
-				if(currentAction == 0) {
-					Ability defensive = currentChar.abilities_.chooseDefensive();
-					al.add(defensive);	
-					activeAbilitiesByChar.put(currentChar.id, al );
-				}
-				if(currentAction == 3) {
-					Ability offensive = currentChar.abilities_.chooseOffensive();
-					al.add(offensive);
-					activeAbilitiesByChar.put(currentChar.id, al );
-				} 
-				if(currentAction == 1) {
-					s.out("lets transition");
-				}
-				if(currentAction == 2) {
-					s.out("lets move");
-				}
+				
 				
 			}//loop to next character
 			
@@ -168,16 +159,78 @@ public class Battle {
 	}//end beginSquadBattle
 	
 	
+	public boolean processAction() {
+		boolean actionSuccess = false;
+		//rest
+		if(currentAction == 0) {
+			//rest
+			//gain chakra and HP
+			s.out(currentChar.getName() + " rests.");
+			s.out("+ 0 chakra");
+			s.out("+ 0 HP");
+			actionSuccess = true;
+		}
+		//transition
+		if(currentAction == 1) {			 
+			if(currentChar.getAI_().isAI() ) {
+				actionSuccess = currentChar.doTransitionAI();   //change later
+			}else {
+				actionSuccess = currentChar.doTransitionHuman();
+			}
+		}
+		//move
+		if(currentAction == 2) {			 
+			String com = currentChar.getCommands_().getCommand();
+			actionSuccess = currentChar.getCommands_().processBattleMapCommand(com);
+			if(actionSuccess) {
+				this.getMap().printBattleMap();
+				s.out("Moved " + com);
+			}			
+		}
+		//offensive
+		if(currentAction == 3) {
+			Ability offensive = currentChar.getAbilities_().chooseOffensive();
+			activeAbilitiesCurrentChar.add(offensive);
+			activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
+			//actionSuccess = processAbility();
+		}
+		//defensive
+		if(currentAction == 4) {
+			Ability defensive = currentChar.getAbilities_().chooseDefensive();
+			activeAbilitiesCurrentChar.add(defensive);	
+			activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
+			//actionSuccess = processAbility();
+		}
+		return actionSuccess;
+	}//processAction
+	
+	
+	
+	
+	public void setMapForAll() {
+		for(Squad s : this.ss) {
+			for(Character c: s.getMembers()) {
+				c.setMap_(this.map);
+			}
+		}
+		
+	}//setMapForAll
+	
+	
 	public int validatedRandomAction() { 
 		int v = -1;
 		while(validateAction(v) == false) {
-			v = s.getRandomIntBetween(1, 4); 
+			v = s.getRandomIntBetween(0, 4); 
 		}
 		return v;
 	}
 	
+	
+	
 	public boolean validateAction(int v) {
 		switch(v) {		
+		case 0:
+			return true;
 		case 1:
 			if(canTransition) {
 				return true;
@@ -208,7 +261,7 @@ public class Battle {
 		int a = -1;
 		while(validateAction(a) == false) {
 			s.out("Choose an action. (" + numActions + " actions)" );
-			
+			s.out("0. Rest");
 			if(canTransition){
 				s.out("1. Utilize environment");
 			}
@@ -221,7 +274,7 @@ public class Battle {
 			if(canDefend){
 				s.out("4. Defensive ability");
 			}
-			a = s.getIntBetween(1, 4);
+			a = s.getIntBetween(0, 4);
 		} 
 		return a;
 	}//end getBattleAction
@@ -231,8 +284,8 @@ public class Battle {
 	public ArrayList<Ability> getActiveAbilityListByCurrentChar(){
 		ArrayList<Ability> al = new ArrayList<Ability>();
 		try {
-			if(activeAbilitiesByChar.get(currentChar.id) != null) {
-				al = activeAbilitiesByChar.get(currentChar.id);
+			if(activeAbilitiesByChar.get(currentChar.getId()) != null) {
+				al = activeAbilitiesByChar.get(currentChar.getId());
 			}
 		}catch(Exception e) {
 			
@@ -261,14 +314,14 @@ public class Battle {
 		int i = 1;
 		for(Squad squad : ss) {
 			for(Character c : squad.getMembers()) {
-				c.id = i;
+				c.setId(i);
 				i++;
 			}
 		}
 	}//setCharIds
 	
 	public double getCharSpeedScore(Character c) {
-		if(c.status_.canMove() == false) {
+		if(c.getStatus_().canMove() == false) {
 			return 0.0;
 		}
 		double cSpeed = 0.0;
@@ -276,9 +329,9 @@ public class Battle {
 		double cRandom = Math.random();
 		double cRandom2 = Math.random();
 		double score = 0.0;
-		cSpeed = c.stats_.getSpeed();
+		cSpeed = c.getStats_().getSpeed();
 		cSpeed = cSpeed * 10;   //give speed a weight of 10
-		cLvl = c.lvl;
+		cLvl = c.getLvl();
 		cLvl = cLvl * 2;		//give lvl a weight of 2
 		cRandom = (cRandom * cSpeed/2) + cSpeed/2;  //50% speed + 50% rand
 		cRandom2 =  (cRandom * cLvl/2) + cLvl/2;
@@ -318,21 +371,21 @@ public class Battle {
 		int id;
 		double score;
 		for(Squad sq : ss) {
-			s.out("check squad");
+			//s.out("check squad");
 			for(Character c : sq.getMembers()) {
-				s.out("check character");
-				id = c.id;
+				//s.out("check character");
+				id = c.getId();
 				score = getCharSpeedScore(c);
 				idAndScore.put(id,score);
 			}
 		}
-		s.out("speed scores");
-		s.out(idAndScore.toString());
+		//s.out("speed scores");
+		//s.out(idAndScore.toString());
 		idAndScore = sortByValue(idAndScore);
-		s.out("speed scores ordered");
-		s.out(idAndScore.toString());
+		//s.out("speed scores ordered");
+		//s.out(idAndScore.toString());
 		atkOrder = new ArrayList<>( idAndScore.keySet() );
-		s.out(atkOrder.toString());
+		//s.out(atkOrder.toString());
 		return atkOrder;
 	}
 	
@@ -341,7 +394,7 @@ public class Battle {
 	public boolean isAmbush(Squad sq) {
 		boolean allHidden = true;
 		for(Character c : sq.getMembers()) {
-			if(c.position_.isHidden() != true) {
+			if(c.getPosition_().isHidden() != true) {
 				allHidden =  false;
 			}
 		}
@@ -472,5 +525,19 @@ public class Battle {
 		this.canOffense = canOffense;
 	}
 	
-	
+	public ArrayList<Ability> getActiveAbilitiesCurrentChar() {
+		return activeAbilitiesCurrentChar;
+	}
+
+	public void setActiveAbilitiesCurrentChar(ArrayList<Ability> activeAbilitiesCurrentChar) {
+		this.activeAbilitiesCurrentChar = activeAbilitiesCurrentChar;
+	}
+
+	public int getCurrentAction() {
+		return currentAction;
+	}
+
+	public void setCurrentAction(int currentAction) {
+		this.currentAction = currentAction;
+	}
 }//end Battle

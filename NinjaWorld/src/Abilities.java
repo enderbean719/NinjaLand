@@ -22,7 +22,7 @@ public class Abilities {
 	public Ability choose() {
 		Ability a = new Ability();
 		int answer = 0;
-		s.out("+++++ " + owner.name + " +++++");
+		s.out("+++++ " + owner.getName() + " +++++");
 		s.out(" Choose an ability ");
 		s.out("___________________");
 		showList();
@@ -35,7 +35,7 @@ public class Abilities {
 	public Ability chooseOffensive() {
 		Ability a = new Ability();
 		int answer = 0;
-		s.out("+++++ " + owner.name + " +++++");
+		s.out("+++++ " + owner.getName() + " +++++");
 		s.out(" Choose an offensive ability ");
 		s.out("_____________________________");
 		showListOffensive();
@@ -54,7 +54,7 @@ public class Abilities {
 	public Ability chooseDefensive() {
 		Ability a = new Ability();
 		int answer = 0;
-		s.out("+++++ " + owner.name + " +++++");
+		s.out("+++++ " + owner.getName() + " +++++");
 		s.out(" Choose a defensive ability ");
 		s.out("____________________________");
 		showListOffensive();

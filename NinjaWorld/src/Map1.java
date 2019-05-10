@@ -2,12 +2,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Map1 {
-
+	
+	private Character mc;
 	private int width;
 	private int height; 
-	public ArrayList<Area> areas = new ArrayList<Area>();
-	System1 s = new System1();
-	Character mc;
+	private ArrayList<Area> areas = new ArrayList<Area>();
+	private System1 s = new System1();
+	
 	
 	
 	
@@ -31,7 +32,7 @@ public class Map1 {
 	public Map1(Character mc, int width, int height){
 		int id = 1; 
 		this.mc = mc;
-		mc.map_ = this;
+		mc.setMap_(this);
 		this.width = width;
 		this.height = height;		
 		for(int y=0; y<height; y++) {
@@ -66,16 +67,16 @@ public class Map1 {
 	
 	
 	public void placeMC(int x, int y) {
-		getArea(mc.position_.getX(),mc.position_.getY()).getContainsObj().remove(mc);
-		mc.position_.setX(x);
-		mc.position_.setY(y);
+		getArea(mc.getPosition_().getX(),mc.getPosition_().getY()).getContainsObj().remove(mc);
+		mc.getPosition_().setX(x);
+		mc.getPosition_().setY(y);
 		getArea(x,y).getContainsObj().add(mc);
 	}
 	
 	public void placeCreatureAndRemove(Character c, int x, int y) {
-		getArea(c.position_.getX(), c.position_.getY()).getContainsObj().remove(c);
-		c.position_.setX(x);
-		c.position_.setY(y);
+		getArea(c.getPosition_().getX(), c.getPosition_().getY()).getContainsObj().remove(c);
+		c.getPosition_().setX(x);
+		c.getPosition_().setY(y);
 		getArea(x,y).getContainsObj().add(c);
 	}
 	
@@ -143,7 +144,7 @@ public class Map1 {
 			s.print("|");
 			s.out("");
 			
-		}//end 				
+		}//end for loop on y axis				
 	}//printBattleMap
 	
 	
@@ -191,8 +192,8 @@ public class Map1 {
 	
 	public Area getAreaMC() { 
 			int x, y;
-			x = this.mc.position_.getX();
-			y = this.mc.position_.getY();
+			x = this.mc.getPosition_().getX();
+			y = this.mc.getPosition_().getY();
 			return getArea(x,y);
 	}
 	
@@ -202,8 +203,8 @@ public class Map1 {
 		for(Area a : this.areas ) {
 			for(Object o : a.getContainsObj()) {
 				if(o instanceof Character) {
-					row = ((Character) o).name;
-					row = row + " : (" + ((Character) o).position_.getX() + "," + ((Character) o).position_.getY();
+					row = ((Character) o).getName();
+					row = row + " : (" + ((Character) o).getPosition_().getX() + "," + ((Character) o).getPosition_().getY();
 					s.out(row);
 				}
 			}
