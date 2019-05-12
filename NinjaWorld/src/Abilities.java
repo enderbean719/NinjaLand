@@ -2,12 +2,12 @@ import java.util.ArrayList;
 
 public class Abilities {
 
-	public ArrayList<Ability> aList = new ArrayList<Ability>();
+	private ArrayList<Ability> aList = new ArrayList<Ability>();
 	private System1 s = new System1();
-	public Character owner;
+	private Character mc;
 	
 	public Abilities(Character c) {
-		this.owner = c;
+		this.mc = c;
 	}
 	
 
@@ -22,29 +22,40 @@ public class Abilities {
 	public Ability choose() {
 		Ability a = new Ability();
 		int answer = 0;
-		s.out("+++++ " + owner.getName() + " +++++");
+		s.out("+++++ " + mc.getName() + " +++++");
 		s.out(" Choose an ability ");
 		s.out("___________________");
 		showList();
-		s.print("Ability: ");
-		answer = s.getIntBetween(1, aList.size());
-		a = aList.get(answer-1);
+		s.out("___________________");
+		s.print(":");
+		answer = s.getIntBetween(0, aList.size());
+		if(answer==0) {
+			a = null;  				 	//0 = cancel
+		}else {
+			a = aList.get(answer-1);   //adjust answer for +1 offset
+		}
 		return a;
 	}
 	
 	public Ability chooseOffensive() {
 		Ability a = new Ability();
 		int answer = 0;
-		s.out("+++++ " + owner.getName() + " +++++");
+		s.out("+++++ " + mc.getName() + " +++++");
 		s.out(" Choose an offensive ability ");
 		s.out("_____________________________");
 		showListOffensive();
-		s.print("Ability: ");
-		answer = s.getIntBetween(1, aList.size());
-		a = aList.get(answer-1);
-		while(a.isOffensive() == false) {
+		s.out("_____________________________");
+		s.print(":");
+		answer = s.getIntBetween(0, aList.size());
+		if(answer==0) {
+			a = null;  				 	//0 = cancel
+		}else {
+			a = aList.get(answer-1);   //adjust answer for +1 offset
+		}
+		while(a != null && a.isOffensive() == false) {
 			s.out("Sorry, please re-enter a valid number");
-			s.print("Ability: ");
+			s.out("_____________________________");
+			s.print(":");
 			answer = s.getIntBetween(1, aList.size());
 			a = aList.get(answer-1);
 		}
@@ -54,16 +65,22 @@ public class Abilities {
 	public Ability chooseDefensive() {
 		Ability a = new Ability();
 		int answer = 0;
-		s.out("+++++ " + owner.getName() + " +++++");
+		s.out("+++++ " + mc.getName() + " +++++");
 		s.out(" Choose a defensive ability ");
 		s.out("____________________________");
 		showListOffensive();
-		s.print("Ability: ");
-		answer = s.getIntBetween(1, aList.size());
-		a = aList.get(answer-1);
-		while(a.isDefensive() == false) {
+		s.out("_____________________________");
+		s.print(":");
+		answer = s.getIntBetween(0, aList.size());
+		if(answer==0) {
+			a = null;   				//0 = cancel
+		}else {
+			a = aList.get(answer-1);   //adjust answer for +1 offset
+		}		
+		while(a != null && a.isDefensive() == false) {
 			s.out("Sorry, please re-enter a valid number");
-			s.print("Ability: ");
+			s.out("_____________________________");
+			s.print(":");
 			answer = s.getIntBetween(1, aList.size());
 			a = aList.get(answer-1);
 		}
@@ -77,19 +94,57 @@ public class Abilities {
 	}
 	
 	public void showListOffensive() {
+		s.out("0. Cancel");
 		for(int i=0; i< aList.size(); i++) {
 			if(aList.get(i).isOffensive()	) {
-				s.out(i+": " + aList.get(i).getName() );
+				s.out(   (i+1) + ": " + aList.get(i).getName() );
 			}			
 		}
 	}
 	
 	public void showListDefensive() {
+		s.out("0. Cancel");
 		for(int i=0; i< aList.size(); i++) {
 			if(aList.get(i).isDefensive()	) {
-				s.out(i+": " + aList.get(i).getName() );
+				s.out(  (i+1) + ": " + aList.get(i).getName() );
 			}			
 		}
+	}
+
+
+
+	public ArrayList<Ability> getaList() {
+		return aList;
+	}
+
+
+
+	public void setaList(ArrayList<Ability> aList) {
+		this.aList = aList;
+	}
+
+
+
+	public System1 getS() {
+		return s;
+	}
+
+
+
+	public void setS(System1 s) {
+		this.s = s;
+	}
+
+
+
+	public Character getMc() {
+		return mc;
+	}
+
+
+
+	public void setMc(Character mc) {
+		this.mc = mc;
 	}
 	
 	

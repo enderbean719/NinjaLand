@@ -131,12 +131,12 @@ public class Character  {
 		int choice = -1;
 		choice = getTransitionNum();
 		
-		while(processTransitionNum(choice) == false && choice !=7){
+		while(processTransitionNum(choice) == false && choice !=0){
 			s.out("");
 			choice = getTransitionNum();
 		}
 		tranSuccess = true;		
-		if(choice == 7) {
+		if(choice == 0) {
 			tranSuccess = false;
 		}
 		return tranSuccess;
@@ -149,14 +149,15 @@ public class Character  {
 	public int getTransitionNum() {
 		s.out(this.name + this.position_.getFormalEnviPosition());
 		s.out("Select destination");
+		s.out("0. Cancel transition");
 		s.out("1. Land");
 		s.out("2. Into the trees");
 		s.out("3. Underwater (swimming)");
 		s.out("4. Walking on water");
 		s.out("5. Underground (tunneling)");
 		s.out("6. Into the sky (flying)");
-		s.out("7. Cancel transition");
-		return s.getIntBetween(1, 7);
+		//s.out(7. Onto the rocks");
+		return s.getIntBetween(0, 6);
 	}
 	
 	public boolean processTransitionNum(int t) {
@@ -190,41 +191,61 @@ public class Character  {
 		Area a = this.map_.getArea(this.position_.getX(), this.position_.getY());
 		if(t.equals("sky")) {
 			if(this.status_.isCanFly() == true) {
-				this.position_.setInSky(true);
-				s.out(this.name + " has begun flying.");
-				tSuccess = true;
+				if(a.isPassableBySky()) {
+					this.position_.setInSky(true);
+					s.out(this.name + " has begun flying.");
+					tSuccess = true;
+				}else {
+					s.out("Can't access the sky here.");
+				}
 			}else {
 				s.out(this.name + " can't fly.");
 			}
 		}else if(t.equals("earth")) {
 			if(this.status_.isCanGoUnderground() == true) {
-				this.position_.setUnderGround(true);
-				s.out(this.name + " has gone underground.");
-				tSuccess = true;
+				if(a.isPassableByEarth()) {
+					this.position_.setUnderGround(true);
+					s.out(this.name + " has gone underground.");
+					tSuccess = true;
+				}else {
+					s.out("Can't access the earth here.");
+				}
 			}else {
 				s.out(this.name + " can't go underground.");
 			}
 		}else if(t.equals("inWater")) {
 			if(this.status_.isCanSwim() == true) {
-				this.position_.setInWater(true);
-				s.out(this.name + " has gone into the water.");
-				tSuccess = true;
+				if(a.isPassableByWater()) {
+					this.position_.setInWater(true);
+					s.out(this.name + " has gone into the water.");
+					tSuccess = true;
+				}else {
+					s.out("Can't access any water here.");
+				}
 			}else {
 				s.out(this.name + " can't swim.");
 			}
 		}else if(t.equals("onWater")) {
 			if(this.status_.isCanWalkOnWater() == true) {
-				this.position_.setOnWater(true);
-				s.out(this.name + " has gone onto the water.");
-				tSuccess = true;
+				if(a.isPassableByWater()) {
+					this.position_.setOnWater(true);
+					s.out(this.name + " has gone onto the water.");
+					tSuccess = true;
+				}else {
+					s.out("Can't access any water here.");
+				}
 			}else {
 				s.out(this.name + " can't walk on water.");
 			}
 		}else if(t.equals("tree")) {
 			if(this.status_.isCanClimbWalls() == true) {
-				this.position_.setInTree(true);
-				s.out(this.name + " has gone into the trees.");
-				tSuccess = true;
+				if(a.isPassableByTree()) {
+					this.position_.setInTree(true);
+					s.out(this.name + " has gone into the trees.");
+					tSuccess = true;
+				}else {
+					s.out("Can't access any trees here.");
+				}
 			}else {
 				s.out(this.name + " can't climb trees.");
 			}
@@ -232,7 +253,7 @@ public class Character  {
 			this.position_.setOnLand(true);
 			s.out(this.name + " has gone onto the land.");
 			tSuccess = true;
-		}
+		}		
 		return tSuccess;
 	}//end transition
 	
@@ -314,7 +335,11 @@ public class Character  {
 	 }
 	 
 	 
-	
+	public boolean canDo(Ability ab) {
+		//chakra, range, status can move, hands free etc
+		//s.out(mc.name + " doesn't have enough chakra for " + ab.getName);
+		return true;
+	}
  
  
 	 public String getName() {

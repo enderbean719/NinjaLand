@@ -22,6 +22,9 @@ public class Battle {
 	private ArrayList<Ability> activeAbilitiesCurrentChar;
 	private int numActions;
 	private int currentAction;
+	private int currentTargetAreaID;
+	private Area currentTargetArea;
+	private Ability currentAbility;
 	private boolean canMove;
 	private boolean canTransition;
 	private boolean canDefend;
@@ -91,9 +94,9 @@ public class Battle {
 		setMapForAll(); //insert battle map into each character
 		
 		//printBattleIntroMessage
-		s.out("===== BATTLE =====");
+		s.out("=========== BATTLE ===========");
 		s.out("Squad " + s1.getSquadName() + " vs. Squad " + s2.getSquadName());
-		s.out("===== BEGIN! =====");
+		s.out("=========== BEGIN! ===========");
 		//battle loop
 		battleContinues = true;
 		while(battleContinues==true) {
@@ -138,8 +141,10 @@ public class Battle {
 						//human action
 						currentAction = getBattleAction();
 					}
-					numActions--;
-					while(processAction() == false);
+					
+					if(processAction() == true) {
+						numActions--;
+					}//if processAction fails, infinite loop
 				}
 				
 				 
@@ -166,8 +171,7 @@ public class Battle {
 			//rest
 			//gain chakra and HP
 			s.out(currentChar.getName() + " rests.");
-			s.out("+ 0 chakra");
-			s.out("+ 0 HP");
+			processRest();
 			actionSuccess = true;
 		}
 		//transition
@@ -190,21 +194,115 @@ public class Battle {
 		//offensive
 		if(currentAction == 3) {
 			Ability offensive = currentChar.getAbilities_().chooseOffensive();
-			activeAbilitiesCurrentChar.add(offensive);
-			activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
-			//actionSuccess = processAbility();
+			
+			if(offensive != null) {
+				if(currentChar.canDo(offensive) ){
+					activeAbilitiesCurrentChar.add(offensive);
+					activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
+					currentAbility = offensive;
+					actionSuccess = prepareAbility();
+					actionSuccess = true;
+				}
+			}
+			
 		}
 		//defensive
 		if(currentAction == 4) {
 			Ability defensive = currentChar.getAbilities_().chooseDefensive();
-			activeAbilitiesCurrentChar.add(defensive);	
-			activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
-			//actionSuccess = processAbility();
+			if(defensive != null) {
+				if(currentChar.canDo(defensive) ){
+					activeAbilitiesCurrentChar.add(defensive);	
+					activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
+					currentAbility = defensive;
+					actionSuccess = prepareAbility();
+					actionSuccess = true;			
+				}
+			}
 		}
 		return actionSuccess;
 	}//processAction
 	
 	
+	
+	
+	
+	public boolean prepareAbility() {
+		s.out("Activating ability \"" + currentAbility.getName() + "\"");
+		double cost = currentAbility.getChakraCost();
+		if(currentAbility.isBoostable()) {
+			s.out("Would you like to boost this ability for " + currentAbility.getBoostChakraCost() + " chakra?");
+			s.out("1. Yes");
+			s.out("2. No");
+			int a = s.getIntBetween(1, 2);
+			if(a == 1) {
+				currentAbility.setBoosted(true);
+				cost += currentAbility.getBoostChakraCost();
+			}			
+		}//boost
+		
+		double cc = currentChar.getStats_().getCurrentChakra();
+		currentChar.getStats_().setCurrentChakra(cc - cost);
+		
+		double nt = currentAbility.getNumTargets();
+		if( nt > 0){
+			Commands com = currentChar.getCommands_();
+			int input = 0;
+			String target = "";
+			int max = this.getMap().getMaxAreaID();
+			while (nt > 0) {
+				s.out(currentAbility.getName() + " has " + nt + " target(s)");
+				s.out("");
+				s.out("  Target Area ID ");
+				s.out("=====================");
+				s.print(":");
+				input = s.getIntBetween(1, max);
+				currentTargetAreaID = input;
+				currentTargetArea = this.map.getAreaFromID(input);
+				getAndSetTargetForCurrentTargetArea();
+				nt--;
+			}
+		}
+	
+		return true;
+		//if(ab.includesDash){processDash}
+	}//prepareAbility
+	
+	
+	public void getAndSetTargetForCurrentTargetArea() {
+		//Area targetA = this.map.getAreaFromID(id);
+		int startingId = 1;
+		HashMap<Integer,Character> potentialChar = currentTargetArea.outputValidTargetChar(startingId);
+		startingId = potentialChar.size() + 1;
+		HashMap<Integer,String> potentialEnvi = currentTargetArea.outputValidTargetEnvi(startingId);
+		HashMap<Integer,String> list = new HashMap<Integer,String>();
+		
+		Iterator it = potentialChar.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pair = (Map.Entry)it.next();
+	        list.put( ((int)pair.getKey()), ((Character)pair.getValue()).getName() ) ;
+	     //   it.remove(); // avoids a ConcurrentModificationException
+	    }
+	    list.putAll(potentialEnvi);
+	    String t = "";
+	    s.out("  Targets on Area " + currentTargetArea.getId());
+	    s.out("=======================");
+	    for(int i = 1; i<= list.size(); i++) {
+	    	t = list.get(i);
+	    	s.out(i + ": " + t);
+	    }	    
+	    s.out("=======================");
+		s.print(":");
+		int choice = -1;
+		choice = s.getIntBetween(1,list.size());
+		if(choice <= potentialChar.size()) {
+			currentAbility.getTargetObjs().add(potentialChar.get(choice)  );
+		}else {
+			String envi = potentialEnvi.get(choice);
+			AreaEnvi ae = new AreaEnvi(currentTargetArea, envi);
+			currentAbility.getTargetObjs().add(ae);
+		} 
+		
+	}//getAndSetTargetForCurrentTargetArea
 	
 	
 	public void setMapForAll() {
@@ -391,17 +489,43 @@ public class Battle {
 	
 	
 	
-	public boolean isAmbush(Squad sq) {
-		boolean allHidden = true;
-		for(Character c : sq.getMembers()) {
-			if(c.getPosition_().isHidden() != true) {
-				allHidden =  false;
-			}
+//	public boolean isAmbush(Squad sq) {
+//		boolean allHidden = true;
+//		for(Character c : sq.getMembers()) {
+//			if(c.getPosition_().isHidden() != true) {
+//				allHidden =  false;
+//			}
+//		}
+//		return allHidden;
+//	}
+	
+	public void processRest() {
+		double c = currentChar.getStats_().getChakraRegen();
+		double h = currentChar.getStats_().getHpRegen();
+		//apply random boost to c & h? 
+		double currentC = currentChar.getStats_().getCurrentChakra();
+		double currentH = currentChar.getStats_().getCurrentHP();
+		double maxC = currentChar.getStats_().getMaxChakra();
+		double maxH = currentChar.getStats_().getMaxHP();
+		//chakra regen
+		if(currentC + c > maxC) {
+			currentChar.getStats_().setCurrentChakra(maxC);
+			s.out("+" + (int)(maxC-currentC) + " chakra   (at max chakra)");
+		}else {
+			currentChar.getStats_().setCurrentChakra(currentC + c);
+			s.out("+" + (int)(c) + " chakra");
 		}
-		return allHidden;
-	}
-	
-	
+		//HP regen
+		if(currentH + h > maxH) {
+			currentChar.getStats_().setCurrentHP(maxH);
+			s.out("+" + (int)(maxH-currentH) + " HP   (at max HP)");
+		}else {
+			currentChar.getStats_().setCurrentHP(currentH + h);
+			s.out("+" + (int)(h) + " HP");
+		}
+		s.out("");
+
+	}//processRest
 	 
 	
 

@@ -52,6 +52,10 @@ public class Map1 {
 		return height;
 	}
 	
+	public int getMaxAreaID() {
+		return width * height;
+	}
+	
 	
 	public Area getArea(int xx, int yy) {
 		Area a = new Area();
@@ -65,6 +69,14 @@ public class Map1 {
 		return a;
 	}
 	
+	public Area getAreaFromID(int id) {
+		for(Area a : this.areas) {
+			if(a.getId() == id) {
+				return a;
+			}
+		}
+		return null;
+	}
 	
 	public void placeMC(int x, int y) {
 		getArea(mc.getPosition_().getX(),mc.getPosition_().getY()).getContainsObj().remove(mc);
@@ -210,5 +222,37 @@ public class Map1 {
 			}
 		}
 	}//end printPositionList
+
+	public Character getMc() {
+		return mc;
+	}
+
+	public void setMc(Character mc) {
+		this.mc = mc;
+	}
+
+	public ArrayList<Area> getAreas() {
+		return areas;
+	}
+
+	public void setAreas(ArrayList<Area> areas) {
+		this.areas = areas;
+	}
+
+	public System1 getS() {
+		return s;
+	}
+
+	public void setS(System1 s) {
+		this.s = s;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
 	
 }//end map

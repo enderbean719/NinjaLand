@@ -10,19 +10,19 @@ public class Story4 implements Story {
  	
 		Character naruto = new Character(false,"Naruto",2,"male");
 		naruto.getStats_().loadCreatureStats("clawed", 4);
-		naruto.getAbilities_().aList.add(new Ability() );
-		naruto.getAbilities_().aList.add(new Ability() );
-		naruto.getAbilities_().aList.get(0).loadChargingPunch();
-		naruto.getAbilities_().aList.get(1).loadKunaiThrow();
+		naruto.getAbilities_().getaList().add(new Ability() );
+		naruto.getAbilities_().getaList().add(new Ability() );
+		naruto.getAbilities_().getaList().get(0).loadChargingPunch();
+		naruto.getAbilities_().getaList().get(1).loadKunaiThrow();
 
 		s.out("naruto AI = " + naruto.getAI_().isAI());
 		
 		Character sasuke = new Character(false,"Sasuke",2,"male");
 		sasuke.getStats_().loadCreatureStats("flying", 2);
-		sasuke.getAbilities_().aList.add(new Ability());
-		sasuke.getAbilities_().aList.add(new Ability());
-		sasuke.getAbilities_().aList.get(0).loadChargingPunch();
-		sasuke.getAbilities_().aList.get(1).loadKunaiThrow();
+		sasuke.getAbilities_().getaList().add(new Ability());
+		sasuke.getAbilities_().getaList().add(new Ability());
+		sasuke.getAbilities_().getaList().get(0).loadChargingPunch();
+		sasuke.getAbilities_().getaList().get(1).loadKunaiThrow();
 		
 		s.out("sasuke AI = " + sasuke.getAI_().isAI());
 		 

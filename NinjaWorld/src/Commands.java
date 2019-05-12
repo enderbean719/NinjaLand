@@ -20,6 +20,8 @@ public class Commands {
 		String command = "help";
 		s.out("=========================");
 		s.print("Command: ");
+		s.out("=========================");
+		s.print(":");
 		command = s.getWord();
 		return command;
 	}
@@ -28,9 +30,23 @@ public class Commands {
 		String command = "help";
 		s.out("=========================");
 		s.print("Movement Command: ");
+		s.out("=========================");
+		s.print(":");
 		command = s.getWord();
 		return command;
 	}
+	
+	
+//	public String getBattleTarget() {
+//		String command = "help";
+//		s.out("=========================");
+//		s.print("Target Command: (square id + target) Ex. 11 ninja, 11 tree, 11 water, 11 land");
+//		s.out("=========================");
+//		s.print(":");
+//		command = s.getWord();
+//		return command;
+//	}
+	
 	
 	public boolean processCommand(String c) {
 		boolean commandFound = false;

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import sun.print.resources.serviceui;
 
@@ -36,6 +37,44 @@ public class Area {
 	public Area(){
 		
 	}
+	
+	public HashMap<Integer,Character> outputValidTargetChar(int startingId){
+		Character targetChar;
+		HashMap<Integer,Character> listChar = new HashMap<Integer,Character>();
+		for(Object o: this.containsObj) {
+			if(o instanceof Character) {
+				targetChar = ((Character) o);
+				listChar.put(startingId, targetChar);
+				startingId++;
+			} 
+		}
+		return listChar;
+	}//outputValidTargetChar
+	
+	public HashMap<Integer,String> outputValidTargetEnvi(int startingId){
+		HashMap<Integer,String> list = new HashMap<Integer,String>();
+		if(this.isPassableByLand()) {
+			list.put(startingId,"land");
+			startingId++;
+		}
+		if(this.isPassableByWater()) {
+			list.put(startingId,"water");
+			startingId++;
+		}
+		if(this.isPassableByEarth()) {
+			list.put(startingId,"earth");
+			startingId++;
+		}
+		if(this.isPassableByTree()) {
+			list.put(startingId,"tree");
+			startingId++;
+		}
+		if(this.isPassableBySky()) {
+			list.put(startingId,"sky");
+			startingId++;
+		}
+		return list;
+	}//outputValidTargetEnvi
 	
 	public int getId() {
 		return this.id;

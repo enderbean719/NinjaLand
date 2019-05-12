@@ -19,8 +19,9 @@ public class Ability {
 	private double durationAfterStrike;
 	
 	private boolean boostable;
+	private boolean boosted;
 	private double boostChakraCost;
-	private HashMap<String, Double> boostCategory;
+	private HashMap<String, Double> boostCategory = new HashMap<String,Double>();
 	
 	private double visibility; 	//0 - 1
 	private double sensibility;	//0 - 1
@@ -28,8 +29,8 @@ public class Ability {
 	private double basicDamage;
 	private double chakraDamage;
 	private String damageType;  //fire , water
-	private HashMap<String,Double> bdScalingBonus;
-	private HashMap<String,Double> cdScalingBonus;  
+	private HashMap<String,Double> bdScalingBonus = new HashMap<String,Double>();
+	private HashMap<String,Double> cdScalingBonus = new HashMap<String,Double>();  
 	
 	private String specialEffect;  			//genjutsu, sleep, paralysis, 
 	private double seChance;  				//special effect chance of succeeding  (0.0 - 1.0)
@@ -37,7 +38,7 @@ public class Ability {
 	private double seDamage;				
 	private double seVisibility;		//0 - 1		
 	private double seSensibility;		//0 - 1
-	private HashMap<String,Double> seScalingBonus;
+	private HashMap<String,Double> seScalingBonus = new HashMap<String,Double>();
 	
 	
 	private boolean projectile;   //false if attached to user's body
@@ -54,9 +55,15 @@ public class Ability {
 	private double aoeRange; //0 = only target, 1 = entire square of characters, 2 = target square + 1 range of squares
 	private String aoeShape;  //circle = expands outwards evenly, 1 square, 9 squares, 25 squares //triangle = 1 sq, 4 sq, 9 sq fanning outwards
 
-	private ArrayList<Character> targetCharacter; //can be null
-	private ArrayList<Area> targetArea;
-	private ArrayList<Ability> targetAbility; //can be null	
+	//private int targetAreaID;
+	//private String targetString;
+	private ArrayList<Object> targetObjs = new ArrayList<Object>();;  //Character, Area, ability
+	//private boolean atCharacter;	//battle processing
+	//private boolean atArea;			//battle processing
+	//private boolean atAbility;		//battle processing
+	//private ArrayList<Character> targetCharacter; //can be null
+	//private ArrayList<Area> targetArea;
+	//private ArrayList<Ability> targetAbility; //can be null	
 	private boolean targetLand;
 	private boolean targetTrees;
 	private boolean targetSky;
@@ -97,19 +104,20 @@ public class Ability {
 		durationAfterStrike = 0.0;
 
 		boostable 			= false;
+		boosted				= false;
 		boostChakraCost 	= 0.0;
 		boostCategory 		= null;
 
 		visibility			= 0.8;
 		sensibility			= 0.8;
 
-		basicDamage			= 1.0;
+		basicDamage			= 2.0;
 		chakraDamage		= 0.0;
 		damageType			= "physical";
 		bdScalingBonus		=  new HashMap<String,Double>();
 		bdScalingBonus.put("basicAtk", 0.5);
-		cdScalingBonus		=  new HashMap<String,Double>();
-		cdScalingBonus.put("chakraAtk", 0.1);
+		//cdScalingBonus		=  new HashMap<String,Double>();
+		bdScalingBonus.put("brains", 0.1);  //critical hits on intelligence
 		 
 		specialEffect		= "stun";
 		seChance			= 0.1;
@@ -382,6 +390,29 @@ public class Ability {
 		s.out("");
 	}
 	
+	
+	
+//	public void setTargetArea(Area a) {
+//		this.targetArea.add(a);
+//	}
+	
+	public void setTargetEnvi(String e) {
+		switch (e){
+		case "land":
+			this.targetLand = true;
+			break;
+		case "water":
+			this.targetWater = true;
+			break;
+		case "tree":
+		case "trees":
+			this.targetTrees = true;
+			break;
+		case "sky":
+			this.targetSky = true;
+			break;
+		}
+	}//setTargetEnvi
 	
 	public String getName() {
 		return name;
@@ -790,14 +821,14 @@ public class Ability {
 		this.aoeShape = aoeShape;
 	}
  
-	public ArrayList<Area> getTargetArea() {
-		return targetArea;
-	}
-
-
-	public void setTargetArea(ArrayList<Area> targetArea) {
-		this.targetArea = targetArea;
-	}
+//	public ArrayList<Area> getTargetArea() {
+//		return targetArea;
+//	}
+//
+//
+//	public void setTargetArea(ArrayList<Area> targetArea) {
+//		this.targetArea = targetArea;
+//	}
 
 
 	public boolean isTargetLand() {
@@ -904,13 +935,93 @@ public class Ability {
 	}
 
 
-	public void setTargetCharacter(ArrayList<Character> targetCharacter) {
-		this.targetCharacter = targetCharacter;
+//	public void setTargetCharacter(ArrayList<Character> targetCharacter) {
+//		this.targetCharacter = targetCharacter;
+//	}
+//
+//
+//	public void setTargetAbility(ArrayList<Ability> targetAbility) {
+//		this.targetAbility = targetAbility;
+//	}
+
+
+	public boolean isBoosted() {
+		return boosted;
 	}
 
 
-	public void setTargetAbility(ArrayList<Ability> targetAbility) {
-		this.targetAbility = targetAbility;
+	public void setBoosted(boolean boosted) {
+		this.boosted = boosted;
+	}
+
+
+//	public ArrayList<Character> getTargetCharacter() {
+//		return targetCharacter;
+//	}
+//
+//
+//	public ArrayList<Ability> getTargetAbility() {
+//		return targetAbility;
+//	}
+//
+//
+//	public boolean isAtCharacter() {
+//		return atCharacter;
+//	}
+//
+//
+//	public void setAtCharacter(boolean atCharacter) {
+//		this.atCharacter = atCharacter;
+//	}
+//
+//
+//	public boolean isAtArea() {
+//		return atArea;
+//	}
+//
+//
+//	public void setAtArea(boolean atArea) {
+//		this.atArea = atArea;
+//	}
+
+//
+//	public int getTargetAreaID() {
+//		return targetAreaID;
+//	}
+//
+//
+//	public void setTargetAreaID(int targetAreaID) {
+//		this.targetAreaID = targetAreaID;
+//	}
+
+
+//	public String getTargetString() {
+//		return targetString;
+//	}
+//
+//
+//	public void setTargetString(String targetString) {
+//		this.targetString = targetString;
+//	}
+//
+//
+//	public boolean isAtAbility() {
+//		return atAbility;
+//	}
+//
+//
+//	public void setAtAbility(boolean atAbility) {
+//		this.atAbility = atAbility;
+//	}
+
+
+	public ArrayList<Object> getTargetObjs() {
+		return targetObjs;
+	}
+
+
+	public void setTargetObjs(ArrayList<Object> targetObjs) {
+		this.targetObjs = targetObjs;
 	}
 }//end ability
 
