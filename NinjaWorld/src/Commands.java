@@ -19,7 +19,7 @@ public class Commands {
 	public String getCommand() {
 		String command = "help";
 		s.out("=========================");
-		s.print("Command: ");
+		s.out("Command: ");
 		s.out("=========================");
 		s.print(":");
 		command = s.getWord();
@@ -29,7 +29,7 @@ public class Commands {
 	public String getBattleMovement() {
 		String command = "help";
 		s.out("=========================");
-		s.print("Movement Command: ");
+		s.out("Movement Command: ");
 		s.out("=========================");
 		s.print(":");
 		command = s.getWord();
@@ -85,6 +85,8 @@ public class Commands {
 		mc.getMap_().printMapOfLabels();
 		s.out("=========================");
 		s.out("Map Commands");
+		s.out("=========================");
+		s.print(":");
 		processMapCommand(getCommand());
 		
 	}

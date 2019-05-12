@@ -124,12 +124,11 @@ public class Battle {
 				
 				this.numActions = 2;
 				
-				if(debug) s.out("numActions = " + numActions);
-				if(debug) s.out("Pause:");
-				if(debug) s.getInt();
 				//s.clear();//no function
-			    map.printBattleMap();
+			    this.map.printBattleMap();
+				s.out("====================================");
 				s.out("**"+ currentChar.getName() + "'s turn begins. **");
+				s.out("====================================");
 
 				while(numActions > 0) {
 					if(debug) s.out("numActions = " +numActions);
@@ -194,17 +193,14 @@ public class Battle {
 		//offensive
 		if(currentAction == 3) {
 			Ability offensive = currentChar.getAbilities_().chooseOffensive();
-			
 			if(offensive != null) {
 				if(currentChar.canDo(offensive) ){
 					activeAbilitiesCurrentChar.add(offensive);
 					activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
 					currentAbility = offensive;
 					actionSuccess = prepareAbility();
-					actionSuccess = true;
 				}
 			}
-			
 		}
 		//defensive
 		if(currentAction == 4) {
@@ -214,8 +210,7 @@ public class Battle {
 					activeAbilitiesCurrentChar.add(defensive);	
 					activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
 					currentAbility = defensive;
-					actionSuccess = prepareAbility();
-					actionSuccess = true;			
+					actionSuccess = prepareAbility();		
 				}
 			}
 		}
@@ -227,7 +222,9 @@ public class Battle {
 	
 	
 	public boolean prepareAbility() {
+		boolean abilityReady = false;
 		s.out("Activating ability \"" + currentAbility.getName() + "\"");
+		//calc cost + boost cost
 		double cost = currentAbility.getChakraCost();
 		if(currentAbility.isBoostable()) {
 			s.out("Would you like to boost this ability for " + currentAbility.getBoostChakraCost() + " chakra?");
@@ -237,38 +234,57 @@ public class Battle {
 			if(a == 1) {
 				currentAbility.setBoosted(true);
 				cost += currentAbility.getBoostChakraCost();
-			}			
+			}else {
+				currentAbility.setBoosted(false);
+				cost = currentAbility.getChakraCost();
+			}
 		}//boost
 		
+		//set targets
+		double nt = currentAbility.getNumTargets();
+		if( nt > 0){
+			int input = 0;
+			int max = this.getMap().getMaxAreaID();
+			while (nt > 0) {
+				this.map.printBattleMap();
+			    s.out("");
+			    s.out(currentAbility.getName() + " has " + nt + " target(s)");
+				s.out("");
+				s.out("  Target Area ID (or 0: Cancel)");
+				s.out("=====================");
+				s.print(":");
+				input = s.getIntBetween(0, max);				
+				if(input == 0) {
+					return false;
+				}
+				
+				currentTargetAreaID = input;
+				currentTargetArea = this.map.getAreaFromID(input);
+				
+				//validate range of ability
+				if(targetAreaWithinRange() == false) {
+					s.out("Sorry, Area " + input + " is out of range.");
+					s.out(currentAbility.getName() + " range : " + (int)currentAbility.getRange() );
+					s.out("");
+					return false;
+				}
+				
+				abilityReady = getAndSetTargetForCurrentTargetArea();
+				if(abilityReady == true) {
+					nt--;
+				}
+			}
+		}
+		//abilityReady == success --->subtract chakra
 		double cc = currentChar.getStats_().getCurrentChakra();
 		currentChar.getStats_().setCurrentChakra(cc - cost);
 		
-		double nt = currentAbility.getNumTargets();
-		if( nt > 0){
-			Commands com = currentChar.getCommands_();
-			int input = 0;
-			String target = "";
-			int max = this.getMap().getMaxAreaID();
-			while (nt > 0) {
-				s.out(currentAbility.getName() + " has " + nt + " target(s)");
-				s.out("");
-				s.out("  Target Area ID ");
-				s.out("=====================");
-				s.print(":");
-				input = s.getIntBetween(1, max);
-				currentTargetAreaID = input;
-				currentTargetArea = this.map.getAreaFromID(input);
-				getAndSetTargetForCurrentTargetArea();
-				nt--;
-			}
-		}
-	
-		return true;
+		return abilityReady;
 		//if(ab.includesDash){processDash}
 	}//prepareAbility
 	
 	
-	public void getAndSetTargetForCurrentTargetArea() {
+	public boolean getAndSetTargetForCurrentTargetArea() {
 		//Area targetA = this.map.getAreaFromID(id);
 		int startingId = 1;
 		HashMap<Integer,Character> potentialChar = currentTargetArea.outputValidTargetChar(startingId);
@@ -286,6 +302,7 @@ public class Battle {
 	    String t = "";
 	    s.out("  Targets on Area " + currentTargetArea.getId());
 	    s.out("=======================");
+	    s.out("0. Cancel");
 	    for(int i = 1; i<= list.size(); i++) {
 	    	t = list.get(i);
 	    	s.out(i + ": " + t);
@@ -293,16 +310,33 @@ public class Battle {
 	    s.out("=======================");
 		s.print(":");
 		int choice = -1;
-		choice = s.getIntBetween(1,list.size());
-		if(choice <= potentialChar.size()) {
+		choice = s.getIntBetween(0,list.size());
+		if(choice == 0) {
+			return false;
+		}else if( choice <= potentialChar.size() ) {
 			currentAbility.getTargetObjs().add(potentialChar.get(choice)  );
 		}else {
 			String envi = potentialEnvi.get(choice);
 			AreaEnvi ae = new AreaEnvi(currentTargetArea, envi);
 			currentAbility.getTargetObjs().add(ae);
 		} 
-		
+		return true;
 	}//getAndSetTargetForCurrentTargetArea
+	
+	
+	public boolean targetAreaWithinRange() {
+		boolean valid = false;
+		double r = currentAbility.getRange();
+		Area charA = currentChar.getMap_().getAreaMC();
+		double cx = charA.getX();
+		double cy = charA.getY();
+		double tx = currentTargetArea.getX();
+		double ty = currentTargetArea.getY();
+		if( (Math.abs(tx - cx) < r) && (Math.abs(ty - cy) < r)  ){
+			valid = true;
+		}
+		return valid;
+	}
 	
 	
 	public void setMapForAll() {
