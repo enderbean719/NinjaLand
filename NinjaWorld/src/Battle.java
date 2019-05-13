@@ -455,7 +455,7 @@ public class Battle {
 		double cy = charA.getY();
 		double tx = currentTargetArea.getX();
 		double ty = currentTargetArea.getY();
-		if( (Math.abs(tx - cx) < r) && (Math.abs(ty - cy) < r)  ){
+		if( (Math.abs(tx - cx) <= r) && (Math.abs(ty - cy) <= r)  ){
 			valid = true;
 		}
 		return valid;
