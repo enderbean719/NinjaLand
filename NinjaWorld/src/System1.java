@@ -1,6 +1,7 @@
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
+import java.io.*;
 
 public class System1 {
 
@@ -11,7 +12,21 @@ public class System1 {
 //		System.out.println("\033[H\033[2J");  
 //	    System.out.flush(); 
 	}
-	
+
+	public static Object deepClone(Object object) {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			oos.writeObject(object);
+			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+			ObjectInputStream ois = new ObjectInputStream(bais);
+			return ois.readObject();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}//deepClone
 	
 	//prints 1 line to the screen and ends the line
 	public void out(String input)  {		

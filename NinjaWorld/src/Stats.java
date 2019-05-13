@@ -309,7 +309,35 @@ public class Stats {
 	
 	
 	
-	
+	public double getStatFromName(String name){
+
+		switch (name){
+			case "maxHP":
+				return this.maxHP;
+			case "maxChakra":
+				return this.maxChakra;
+			case "hpRegen":
+				return this.hpRegen;
+			case "chakraRegen":
+				return this.chakraRegen;
+			case "basicAtk":
+				return this.basicAtk;
+			case "chakraAtk":
+				return this.chakraAtk;
+			case "basicDef":
+				return this.basicDef;
+			case "chakraDef":
+				return this.chakraDef;
+			case "speed":
+				return this.speed;
+			case "brains":
+				return this.brains;
+			case "sensing":
+				return this.sensing;
+			default:
+				return 0.0;
+		}
+	}//getStatFromName
 	
 	
 	

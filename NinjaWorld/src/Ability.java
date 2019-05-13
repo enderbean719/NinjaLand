@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.io.Serializable;
 
-public class Ability {
+public class Ability implements Serializable {
 
 	//private Character mc;
 	private String name;

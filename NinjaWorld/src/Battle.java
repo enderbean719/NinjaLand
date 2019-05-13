@@ -144,25 +144,132 @@ public class Battle {
 					if(processAction() == true) {
 						numActions--;
 					}//if processAction fails, infinite loop
-				}
-				
-				 
-			//get new choices
-				
-				
+				}//finish 2 actions -->
 			}//loop to next character
 			
 			//begin calculating results of first round of battling
-			
-			
+			processAbilitiesByChar();
+
 		}//end battle loop
-		
+
+
 		
 		return result;
 
 	}//end beginSquadBattle
 	
-	
+
+	public boolean processAbilitiesByChar(){
+		for(int i=characterIdOrder.size()-1; i>=0; i--) {
+			setCurrentCharByIndex(i);
+			for(Ability a : activeAbilitiesByChar.get(i) ) {
+				processAbility(a);
+			}
+
+		}
+	}//processAbilitiesByChar
+
+
+
+	public boolean processAbility(Ability a){
+		s.out( currentChar.getName() + " does " + a.getName()	);
+		//look to see if ability was countered
+		//if(counterSuccess == true) { return false; }
+
+		for(Object o : a.getTargetObjs() ){
+			if(o instanceof Character){
+				processAbilityAgainstChar((Character)o) ;
+			}else if(o instanceof AreaEnvi){
+				processAbilityAgainstAreaEnvi((AreaEnvi)o) ;
+			}else if(o instanceof Ability){
+				processAbilityAgainstAbility((Ability)a);
+			}
+		}
+		return true;
+	}//processAbility
+
+	public boolean processAbilityAgainstChar(Character tc){
+		//Stats cs = currentChar.getStats_();
+		double cbDamage = currentAbility.getBasicDamage();
+		double ccDamage = currentAbility.getChakraDamage();
+
+		s.out("Base damage        = " + (cbDamage + ccDamage) + " (physical dmg = " + cbDamage + " / chakra dmg = " + ccDamage + ")");
+
+		scaleAbility();
+		double cbDamageScaled = currentAbility.getBasicDamage();
+		double ccDamageScaled = currentAbility.getChakraDamage();
+		double totalBonus = (cbDamageScaled + ccDamageScaled) - (cbDamage + ccDamage);
+		s.out("Bonus Damage = "  + totalBonus );
+		s.out("_______________________________________");
+		s.out(currentChar.getName() + "'s " + currentAbility.getName() + " strikes for " + (cbDamageScaled+ccDamageScaled) );
+
+		//cancel damage with defense
+		Stats ts = tc.getStats_();
+
+		double tbDef = ts.getBasicDef();
+		double tcDef = ts.getChakraDef();
+		tbDef = (double)s.getRandomIntBetween(0,(int)tbDef);
+		tcDef = (double)s.getRandomIntBetween(0,(int)tcDef);
+		s.out(tc.getName() + " blocks " + tbDef + " physical dmg and " + tcDef + " chakra dmg");
+		s.out("_______________________________________");
+		cbDamageScaled = cbDamageScaled - tbDef;
+		ccDamageScaled = ccDamageScaled - tcDef;
+		double total = cbDamageScaled + ccDamageScaled;
+		s.out("Total Damage = " + total	);
+		double tchp = ts.getCurrentHP();
+		ts.setCurrentHP( tchp - total);
+		return true;
+
+	}
+
+	public boolean processAbilityAgainstAreaEnvi(AreaEnvi tae){
+
+		return true;
+
+	}
+
+	public boolean processAbilityAgainstAbility(Ability ta){
+
+		return true;
+
+	}
+
+	public void scaleAbility(){
+
+		String[] t = {"maxHP","maxChakra","hpRegen","chakraRegen","basicAtk","chakraAtk","basicDef","chakraDef","speed","brains","sensing"};
+		for(String tt : t){
+			scaleAbilityOnTrait(tt);
+		}
+	}//scaleAbility
+
+
+
+	public void scaleAbilityOnTrait(String trait){
+		Double scale = currentAbility.getBdScalingBonus().get(trait);
+
+		if( scale != null){
+			double t = currentChar.getStats_().getStatFromName(trait);
+			double bonus = (double)s.getRandomIntBetween((int)t/2, (int)t*2);
+			bonus = bonus * scale;
+			s.out("+ " + bonus + " physical damage, boosted by "  + trait + " @ " + (int)(scale*100) + "%" );
+			double bd = currentAbility.getBasicDamage();
+			currentAbility.setBasicDamage(bd + bonus);
+		}
+
+		Double scale2 = currentAbility.getCdScalingBonus().get(trait);
+
+		if( scale2 != null){
+			double t = currentChar.getStats_().getStatFromName(trait);
+			double bonus = (double)s.getRandomIntBetween((int)t/2, (int)t*2);
+			bonus = bonus * scale2;
+			s.out("+ " + bonus + " chakra damage, boosted by "  + trait + " @ " + (int)(scale2*100) + "%" );
+			double cd = currentAbility.getChakraDamage();
+			currentAbility.setBasicDamage(cd + bonus);
+		}
+	}//scaleAbilityOnTrait
+
+
+
 	public boolean processAction() {
 		boolean actionSuccess = false;
 		//rest
@@ -174,7 +281,9 @@ public class Battle {
 			actionSuccess = true;
 		}
 		//transition
-		if(currentAction == 1) {			 
+		if(currentAction == 1) {
+			//change this part ---> make movements a request , not an immediate action
+			//create a moveNorth ability, if ability name = north, movement ==true, run movement
 			if(currentChar.getAI_().isAI() ) {
 				actionSuccess = currentChar.doTransitionAI();   //change later
 			}else {
@@ -184,6 +293,8 @@ public class Battle {
 		//move
 		if(currentAction == 2) {			 
 			String com = currentChar.getCommands_().getCommand();
+			//change this part ---> make movements a request , not an immediate action
+			//create a moveNorth ability, if ability name = north, movement ==true, run movement
 			actionSuccess = currentChar.getCommands_().processBattleMapCommand(com);
 			if(actionSuccess) {
 				this.getMap().printBattleMap();
@@ -193,24 +304,31 @@ public class Battle {
 		//offensive
 		if(currentAction == 3) {
 			Ability offensive = currentChar.getAbilities_().chooseOffensive();
+			Ability offensiveCopy = (Ability)s.deepClone(offensive) ;
 			if(offensive != null) {
 				if(currentChar.canDo(offensive) ){
-					activeAbilitiesCurrentChar.add(offensive);
-					activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
-					currentAbility = offensive;
+					currentAbility = offensiveCopy;
 					actionSuccess = prepareAbility();
+					if(actionSuccess){
+						activeAbilitiesCurrentChar.add(offensiveCopy);
+						activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
+					}
 				}
 			}
 		}
 		//defensive
 		if(currentAction == 4) {
 			Ability defensive = currentChar.getAbilities_().chooseDefensive();
+			Ability defensiveCopy = (Ability)s.deepClone(defensive) ;
+
 			if(defensive != null) {
 				if(currentChar.canDo(defensive) ){
-					activeAbilitiesCurrentChar.add(defensive);	
-					activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
-					currentAbility = defensive;
-					actionSuccess = prepareAbility();		
+					currentAbility = defensiveCopy;
+					actionSuccess = prepareAbility();
+					if(actionSuccess){
+						activeAbilitiesCurrentChar.add(defensiveCopy);
+						activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
+					}
 				}
 			}
 		}
@@ -424,11 +542,12 @@ public class Battle {
 		}
 		return al;
 	}
-	
-	
-	
-	
-	public void setCurrentCharByIndex(int i) throws Exception {
+
+
+
+	//public void setCurrentCharByIndex(int i) throws Exception {
+
+	public void setCurrentCharByIndex(int i) {
 		currentChar = null;
 		for(Squad s : ss) {
 			currentChar = s.getCharById(characterIdOrder.get(i));
@@ -437,7 +556,8 @@ public class Battle {
 			}
 		}
 		if(currentChar == null) {
-			throw new Exception("No character found for id = " + i);
+			//throw new Exception("No character found for id = " + i);
+			s.out("error, character not found");
 		}
 	}//end setCurrentCharByIndex
 	
