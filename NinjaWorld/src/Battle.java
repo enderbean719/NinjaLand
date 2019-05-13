@@ -162,11 +162,16 @@ public class Battle {
 	public boolean processAbilitiesByChar(){
 		for(int i=characterIdOrder.size()-1; i>=0; i--) {
 			setCurrentCharByIndex(i);
-			for(Ability a : activeAbilitiesByChar.get(i) ) {
-				processAbility(a);
+			try {
+				for (Ability a : activeAbilitiesByChar.get(i)) {
+					processAbility(a);
+				}
+			}catch(Exception e){
+				//do nothing
 			}
 
 		}
+		return true;
 	}//processAbilitiesByChar
 
 
