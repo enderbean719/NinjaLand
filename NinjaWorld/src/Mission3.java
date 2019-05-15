@@ -76,7 +76,7 @@ public class Mission3 implements Story {
 			}
 			s.out("1. Walk with Alfin to the meeting spot.");
 			s.out("2. Offer to race against Geeno to the meeting spot.");
-			s.out("3. chat with Mintly on your way to the meeting spot");
+			s.out("3. chat with Mintly on your way to the meeting spot"); 
 			s.out("4. Take your own route to the meeting spot");
 			answer = s.getIntBetween(1,4);
 			if(answer == 1) {

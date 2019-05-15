@@ -13,6 +13,19 @@ public class System1 {
 //	    System.out.flush(); 
 	}
 
+	public void pause() {
+		this.out("");
+		this.out("....................................................<press ENTER to continue>");
+		this.out("");
+		try
+        {
+            System.in.read();
+        }  
+        catch(Exception e)
+        {}  
+	}
+	
+	
 	public static Object deepClone(Object object) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();

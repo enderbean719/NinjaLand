@@ -25,6 +25,7 @@ public class Character  {
 	private Battle battle_ = new Battle();
 	private Commands commands_ = new Commands(this); 
 	private Items items_ = new Items();
+	private Action action_ = new Action();
 	
 	
 	
@@ -62,12 +63,14 @@ public class Character  {
 		 summonings_ = new Summonings();	//doesn't need reference to this
 		 battle_ = new Battle();			//doesn't need reference to this		 
 		 items_ = new Items();				//doesn't need reference to this
-		 
+		action_ = new Action();				//doesn't need reference to this
+
 		 abilities_ = new Abilities(this);
 		 AI_ = new AI(this);
 		 this.AI_.setAI(isAI);
 		 map_ = new Map1(this, 1, 1);	
-		 commands_ = new Commands(this); 	
+		 commands_ = new Commands(this);
+
 	}
 	 
 	
@@ -523,6 +526,14 @@ public class Character  {
 
 	public void setS(System1 s) {
 		this.s = s;
+	}
+
+	public Action getAction_() {
+		return action_;
+	}
+
+	public void setAction_(Action action_) {
+		this.action_ = action_;
 	}
 		 
 }//end Character

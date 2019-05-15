@@ -8,6 +8,11 @@ public class Story4 implements Story {
 		// TESTING BATTLES
 		System1 s = new System1();
  	
+		s.out("hi");
+		s.pause();
+		s.out("done");
+		
+		
 		Character naruto = new Character(false,"Naruto",2,"male");
 		naruto.getStats_().loadCreatureStats("clawed", 4);
 		naruto.getAbilities_().getaList().add(new Ability() );

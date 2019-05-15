@@ -99,53 +99,44 @@ public class Battle {
 		s.out("=========== BEGIN! ===========");
 		//battle loop
 		battleContinues = true;
-		while(battleContinues==true) {
-			if(debug) s.out("Next round of battle begins!");
-			//recalculate the order of attacks randomly each turn
-			this.characterIdOrder  = characterIdOrder();
-			if(debug) s.out("characterIdOrder = "  + characterIdOrder);
+		while(battleContinues==true) {			
+			this.characterIdOrder  = characterIdOrder();   //recalculate the order of attacks randomly each turn
 			
 			//loop characters for one round
 			for(int i=characterIdOrder.size()-1; i>=0; i--) {
-			//begin char turn
-				//find char
-				if(debug) s.out("i = " + i);
-				setCurrentCharByIndex(i);
-				//get active abilities
-				activeAbilitiesCurrentChar = getActiveAbilityListByCurrentChar();
+				//begin char turn
+				setCurrentCharByIndex(i);  //find and set currentChar
+				currentChar.getAction_().refresh();				
+				activeAbilitiesCurrentChar = getActiveAbilityListByCurrentChar();  //get active abilities
 				//run preeffects of prior abilities
-				//()
 				//run movement choices
 				canMove = currentChar.getStatus_().canMove();
 				canTransition = currentChar.getStatus_().canMove();
 				canDefend = currentChar.getStatus_().isHasBeenTargeted();
-				canOffense = true;
-				if(debug) s.out(currentChar.getName() + " canMove = " + canMove + " canTransition = " + canTransition + " canDef= " + canDefend + " canOffense = " + canOffense);
-				
+				canOffense = true;				
 				this.numActions = 2;
-				
-				//s.clear();//no function
+				//s.clear();  //no function
+				//s.pause();  //excessive
 			    this.map.printBattleMap();
 				s.out("====================================");
 				s.out("**"+ currentChar.getName() + "'s turn begins. **");
 				s.out("====================================");
 
-				while(numActions > 0) {
-					if(debug) s.out("numActions = " +numActions);
-					
-					if(currentChar.getAI_().isAI() == true) {
-						//AI action
-						currentAction = validatedRandomAction();						
-					}else {
-						//human action
-						currentAction = getBattleAction();
+				while(numActions > 0) {					
+					if(currentChar.getAI_().isAI() == true) {						
+						currentAction = validatedRandomAction();		 //AI action				
+					}else {						
+						currentAction = getBattleAction(); 				//human action 1 - 4
 					}
 					
-					if(processAction() == true) {
+					if(processAction() == true) {						//process
 						numActions--;
 					}//if processAction fails, infinite loop
 				}//finish 2 actions -->
 			}//loop to next character
+			
+			//loop on abilities that havent had a chance to be defended
+			
 			
 			//begin calculating results of first round of battling
 			processAbilitiesByChar();
@@ -177,6 +168,7 @@ public class Battle {
 
 
 	public boolean processAbility(Ability a){
+		s.pause();
 		s.out( currentChar.getName() + " does " + a.getName()	);
 		//look to see if ability was countered
 		//if(counterSuccess == true) { return false; }
@@ -205,7 +197,8 @@ public class Battle {
 		double ccDamageScaled = currentAbility.getChakraDamage();
 		double totalBonus = (cbDamageScaled + ccDamageScaled) - (cbDamage + ccDamage);
 		s.out("Bonus Damage = "  + totalBonus );
-		s.out("_______________________________________");
+		//s.out("_______________________________________");
+		s.pause();
 		s.out(currentChar.getName() + "'s " + currentAbility.getName() + " strikes for " + (cbDamageScaled+ccDamageScaled) );
 
 		//cancel damage with defense
@@ -216,13 +209,15 @@ public class Battle {
 		tbDef = (double)s.getRandomIntBetween(0,(int)tbDef);
 		tcDef = (double)s.getRandomIntBetween(0,(int)tcDef);
 		s.out(tc.getName() + " blocks " + tbDef + " physical dmg and " + tcDef + " chakra dmg");
-		s.out("_______________________________________");
-		cbDamageScaled = cbDamageScaled - tbDef;
-		ccDamageScaled = ccDamageScaled - tcDef;
+		//s.out("_______________________________________");
+		s.pause();
+		cbDamageScaled = (cbDamageScaled - tbDef <0) ? 0 : (cbDamageScaled - tbDef);
+		ccDamageScaled = (ccDamageScaled - tcDef <0) ? 0 : (ccDamageScaled - tcDef);
 		double total = cbDamageScaled + ccDamageScaled;
 		s.out("Total Damage = " + total	);
 		double tchp = ts.getCurrentHP();
 		ts.setCurrentHP( tchp - total);
+		s.pause();
 		return true;
 
 	}
@@ -273,9 +268,13 @@ public class Battle {
 		}
 	}//scaleAbilityOnTrait
 
-
-
 	public boolean processAction() {
+		//prevalidated
+		return processValidatedAction();
+
+	}//processAction
+
+	public boolean processValidatedAction() {
 		boolean actionSuccess = false;
 		//rest
 		if(currentAction == 0) {
@@ -294,6 +293,9 @@ public class Battle {
 			}else {
 				actionSuccess = currentChar.doTransitionHuman();
 			}
+			if(actionSuccess){
+				currentChar.getAction_().setUsedEnvi(true);
+			}
 		}
 		//move
 		if(currentAction == 2) {			 
@@ -304,6 +306,8 @@ public class Battle {
 			if(actionSuccess) {
 				this.getMap().printBattleMap();
 				s.out("Moved " + com);
+				s.pause();
+				currentChar.getAction_().setUsedMove(true);
 			}			
 		}
 		//offensive
@@ -317,6 +321,7 @@ public class Battle {
 					if(actionSuccess){
 						activeAbilitiesCurrentChar.add(offensiveCopy);
 						activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
+						currentChar.getAction_().setUsedOffensive(true);
 					}
 				}
 			}
@@ -333,12 +338,16 @@ public class Battle {
 					if(actionSuccess){
 						activeAbilitiesCurrentChar.add(defensiveCopy);
 						activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
+						currentChar.getAction_().setUsedDefensive(true);
 					}
 				}
 			}
 		}
+		if(currentAction == 5) {
+			s.out("Sorry, you have no items.");
+		}
 		return actionSuccess;
-	}//processAction
+	}//processValidatedAction
 	
 	
 	
@@ -487,26 +496,32 @@ public class Battle {
 		case 0:
 			return true;
 		case 1:
-			if(canTransition) {
+			if(canTransition && currentChar.getAction_().isUsedEnvi() == false) {
 				return true;
 			}
 			break;
 		case 2:
-			if(canMove) {
+			if(canMove  && currentChar.getAction_().isUsedEnvi() == false) {
 				return true;
 			}
 			break;
 		case 3:
-			if(canOffense) {
+			if(canOffense && currentChar.getAction_().isUsedEnvi() == false) {
 				return true;
 			}
 			break;
 		case 4:
-			if(canDefend) {
+			if(canDefend && currentChar.getAction_().isUsedEnvi() == false) {
 				return true;
 			}
 			break;
-		}
+		case 5:
+			if(currentChar.getStatus_().isOneHandFree() && currentChar.getAction_().isUsedEnvi() == false){
+				return true;
+			}
+			break;
+		}//END SWITCH
+
 		return false;
 	}//end validateAction
 	
@@ -514,22 +529,26 @@ public class Battle {
 	
 	public int getBattleAction() {
 		int a = -1;
-		while(validateAction(a) == false) {
+		Action a_ = currentChar.getAction_();
+		while(validateAction(a) == false) {											//validates choice after entry
 			s.out("Choose an action. (" + numActions + " actions)" );
 			s.out("0. Rest");
-			if(canTransition){
+			if(canTransition && a_.isUsedEnvi() == false){
 				s.out("1. Utilize environment");
 			}
-			if(canMove) {
+			if(canMove && a_.isUsedMove() == false) {
 				s.out("2. Move to a new area");
 			}
-			if(canOffense) {
+			if(canOffense && a_.isUsedOffensive() == false) {
 				s.out("3. Offensive ability");
 			}
-			if(canDefend){
+			if(canDefend && a_.isUsedDefensive() == false){
 				s.out("4. Defensive ability");
 			}
-			a = s.getIntBetween(0, 4);
+			if(currentChar.getStatus_().isOneHandFree()  && a_.isUsedItem() == false){
+				s.out("5. Use item");
+			}
+			a = s.getIntBetween(0, 5);
 		} 
 		return a;
 	}//end getBattleAction
@@ -683,6 +702,7 @@ public class Battle {
 			s.out("+" + (int)(h) + " HP");
 		}
 		s.out("");
+		s.pause();
 
 	}//processRest
 	 
