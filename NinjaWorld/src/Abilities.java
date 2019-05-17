@@ -68,7 +68,7 @@ public class Abilities {
 		s.out("+++++ " + mc.getName() + " +++++");
 		s.out(" Choose a defensive ability ");
 		s.out("____________________________");
-		showListOffensive();
+		showListDefensive();
 		s.out("_____________________________");
 		s.print(":");
 		answer = s.getIntBetween(0, aList.size());

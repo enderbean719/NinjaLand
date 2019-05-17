@@ -74,7 +74,8 @@ public class Ability implements Serializable {
 	private Area moveSelfArea;
 	private boolean moveTarget;
 	private Area moveTargetToArea;
-	
+
+	private boolean multiTurn;
 	
 
 
@@ -142,7 +143,7 @@ public class Ability implements Serializable {
 		aoeSky				= false;
 		aoeRange			= 0.0;
 		aoeShape			= "";
-
+		multiTurn			= false;
 		
 		launchMessage		= "";
 		landMessage			= "";
@@ -202,7 +203,7 @@ public class Ability implements Serializable {
 		aoeSky				= false;
 		aoeRange			= 0.0;
 		aoeShape			= "";
-
+		multiTurn			= false;
 		
 		launchMessage		= "";
 		landMessage			= "";
@@ -1024,5 +1025,17 @@ public class Ability implements Serializable {
 	public void setTargetObjs(ArrayList<Object> targetObjs) {
 		this.targetObjs = targetObjs;
 	}
+
+
+
+	public boolean isMultiTurn() {
+		return multiTurn;
+	}
+
+	public void setMultiTurn(boolean multiTurn) {
+		this.multiTurn = multiTurn;
+	}
+
+
 }//end ability
 
