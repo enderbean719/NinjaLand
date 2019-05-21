@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Squad {
+
+public class Squad implements Serializable{
 	
 	private String squadName;
 	private int squadId = 0;

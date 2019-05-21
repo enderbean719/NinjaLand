@@ -6,7 +6,10 @@ public class Ability implements Serializable {
 
 	//private Character mc;
 	private String name;
-	
+	private String ownerName;  //character   (set by char method)
+	private int ownerId;		//char Id	  (set by char method)
+	private int id;					//ability id  (set by battle)
+
 	private boolean requireTwoHands;
 	private boolean requireOneHand;
 	private boolean defensive;
@@ -1034,6 +1037,34 @@ public class Ability implements Serializable {
 
 	public void setMultiTurn(boolean multiTurn) {
 		this.multiTurn = multiTurn;
+	}
+
+
+
+
+
+	public String getOwnerName() {
+		return ownerName;
+	}
+
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
+	}
+
+	public int getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(int ownerId) {
+		this.ownerId = ownerId;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 

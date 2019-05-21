@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class Event {
+ 
+public class Event implements Serializable{
 
 	Character mc;
 	

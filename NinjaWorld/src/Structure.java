@@ -1,4 +1,6 @@
+import java.io.Serializable;
 
-public class Structure {
+ 
+public class Structure implements Serializable{
 
 }

@@ -2,8 +2,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import sun.print.resources.serviceui;
+import java.io.Serializable;
 
-public class Area {
+public class Area implements Serializable{
 	private int id;
 	private int x;
 	private int y;

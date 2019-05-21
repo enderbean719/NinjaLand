@@ -1,6 +1,8 @@
+import java.io.Serializable;
 
 
-public class Menu {
+
+public class Menu  implements Serializable{
 
 	System1 s = new System1();
 	int answer = 0;

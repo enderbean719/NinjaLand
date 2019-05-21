@@ -1,10 +1,13 @@
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Abilities {
+public class Abilities  implements Serializable{
 
 	private ArrayList<Ability> aList = new ArrayList<Ability>();
 	private System1 s = new System1();
 	private Character mc;
+	//private int abilitiiesUsedCount;
 	
 	public Abilities(Character c) {
 		this.mc = c;

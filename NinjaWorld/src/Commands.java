@@ -1,6 +1,8 @@
 import com.sun.org.apache.xalan.internal.xslt.Process;
+import java.io.Serializable;
 
-public class Commands {
+
+public class Commands implements Serializable{
 
 	private Character mc;
 	private String input;
@@ -253,6 +255,30 @@ public class Commands {
 		s.out("=========================");
 	}
 	//public void 
+
+	public Character getMc() {
+		return mc;
+	}
+
+	public void setMc(Character mc) {
+		this.mc = mc;
+	}
+
+	public String getInput() {
+		return input;
+	}
+
+	public void setInput(String input) {
+		this.input = input;
+	}
+
+	public System1 getS() {
+		return s;
+	}
+
+	public void setS(System1 s) {
+		this.s = s;
+	}
 	
 	
 }//end Commands

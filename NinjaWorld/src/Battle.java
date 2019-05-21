@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.*;
 import java.lang.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.io.Serializable;
 
-public class Battle {
+
+public class Battle implements Serializable{
 
 	private System1 s = new System1();
 	private Squad s1;
@@ -18,7 +21,9 @@ public class Battle {
 	private Map1 map;
 	private boolean battleContinues;
 	private Character currentChar;
-	private HashMap<Integer, ArrayList<Ability>> activeAbilitiesByChar; 
+	//private HashMap<Integer, ArrayList<Ability>> activeAbilitiesByChar;
+	private ConcurrentHashMap<Integer, ArrayList<Ability>> activeAbilitiesByChar;
+
 	private ArrayList<Ability> activeAbilitiesCurrentChar;
 	private int numActions;
 	private int currentAction;
@@ -31,7 +36,7 @@ public class Battle {
 	private boolean canTransition;			//based on char.status_
 	private boolean canDefend;				//based on char.status_
 	private boolean canOffense;				//based on char.status_
-	
+	private int a_id = 0;	 //auto incrementing id assigned to each ability object by creation order
 	
 	public Battle(){
 		
@@ -86,7 +91,7 @@ public class Battle {
 		this.s1.setSquadId(1);
 		this.s2.setSquadId(2);
 		this.ss = new ArrayList<Squad>();
-		this.activeAbilitiesByChar = new HashMap<Integer, ArrayList<Ability>>();
+		this.activeAbilitiesByChar = new ConcurrentHashMap<>();
 		this.ss.add(s1);
 		this.ss.add(s2);
 		this.turnCharacterId = 0;
@@ -164,41 +169,43 @@ public class Battle {
 	public boolean processAbilitiesByChar(){
 		boolean abilityNotCanceledCompletely;
 		boolean correctCharFound = false;
+		//loop characters
 		for(int i=characterIdOrder.size()-1; i>=0; i--) {
+
 			setCurrentCharByIndex(i);
+			int charId = characterIdOrder.get(i);
 			try {
-				//https://stackoverflow.com/questions/1066589/iterate-through-a-hashmap
-//				Iterator it = activeAbilitiesByChar.entrySet().iterator();
-//				while (it.hasNext() && correctCharFound==true) {
-//					ArrayList<Ability> list = (ArrayList<Ability>)it.next();
-//					list.indexOf(activeAbilitiesByChar);
-//					for (Ability a : list ) {    //gets all abilities for 1 char and processes each one by one
-//						currentAbility = a;
-//						abilityNotCanceledCompletely = processAbility(a);
-//						if(abilityNotCanceledCompletely == false || a.isMultiTurn()==false){
-//							//remove ability from activeAbilitiesByChar
-//							activeAbilitiesByChar.get(i).remove(a);
-//						}
-//					}
-//				}
+				ArrayList<Ability> list = activeAbilitiesByChar.get(charId);
+				ArrayList<Ability>  copyList = (ArrayList<Ability>)s.deepClone(list);
+				//loop abilities per character
+				for(Iterator<Ability> itr = list.iterator(); itr.hasNext();){
+					Ability a = itr.next();
 
-				for(ArrayList<Ability> list : activeAbilitiesByChar){
-					for (Ability a : list ) {    //gets all abilities for 1 char and processes each one by one
-						currentAbility = a;
-						abilityNotCanceledCompletely = processAbility(a);
-						if(abilityNotCanceledCompletely == false || a.isMultiTurn()==false){
-							//remove ability from activeAbilitiesByChar
-							activeAbilitiesByChar.get(i).remove(a);
-						}
-					}
-				}
+					currentAbility = a;
+					abilityNotCanceledCompletely = processAbility(a);
+					if(abilityNotCanceledCompletely == false || a.isMultiTurn()==false){
+						//remove ability from activeAbilitiesByChar.arraylist
+						//activeAbilitiesByChar.get(i).remove(a);
 
+						int abilityId = a.getId();
+						for(Iterator<Ability> itr2 = copyList.iterator(); itr.hasNext();) {
+							Ability aa = itr2.next();
+							if(aa.getId() == abilityId){
+								copyList.remove(aa);
+							}
+						} //loop till find correct id to delete
+
+					}//if delete required
+				}//for
+
+				activeAbilitiesByChar.put(i,copyList);  //put updated list back in
 			}catch(Exception e){
 				//do nothing
-				e.printStackTrace();
+				//e.printStackTrace();
+				s.out("No more abilities to process");
 			}
 
-		}
+		}//for
 		return true;
 	}//processAbilitiesByChar
 
@@ -433,11 +440,14 @@ public class Battle {
 		if(currentAction == 3) {
 			Ability offensive = currentChar.getAbilities_().chooseOffensive();
 			Ability offensiveCopy = (Ability)s.deepClone(offensive) ;
+
 			if(offensive != null) {
 				if(currentChar.canDo(offensive) ){
 					currentAbility = offensiveCopy;
 					actionSuccess = prepareAbility();
 					if(actionSuccess){
+						offensiveCopy.setId(this.a_id);
+						this.a_id++;
 						activeAbilitiesCurrentChar.add(offensiveCopy);
 						activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
 						currentChar.getAction_().setUsedOffensive(true);
@@ -536,6 +546,8 @@ public class Battle {
 					currentAbility = defensiveCopy;
 					actionSuccess = prepareAbility();
 					if(actionSuccess){
+						defensiveCopy.setId(this.a_id);
+						this.a_id++;
 						activeAbilitiesCurrentChar.add(defensiveCopy);
 						activeAbilitiesByChar.put(tc.getId(), activeAbilitiesCurrentChar );
 						tc.getAction_().setUsedDefensive(true);
@@ -1017,11 +1029,11 @@ public class Battle {
 		this.currentChar = currentChar;
 	}
 
-	public HashMap<Integer, ArrayList<Ability>> getActiveAbilitiesByChar() {
+	public ConcurrentHashMap<Integer, ArrayList<Ability>> getActiveAbilitiesByChar() {
 		return activeAbilitiesByChar;
 	}
 
-	public void setActiveAbilitiesByChar(HashMap<Integer, ArrayList<Ability>> activeAbilitiesByChar) {
+	public void setActiveAbilitiesByChar(ConcurrentHashMap<Integer, ArrayList<Ability>> activeAbilitiesByChar) {
 		this.activeAbilitiesByChar = activeAbilitiesByChar;
 	}
 
@@ -1080,4 +1092,64 @@ public class Battle {
 	public void setCurrentAction(int currentAction) {
 		this.currentAction = currentAction;
 	}
+
+	public System1 getS() {
+		return s;
+	}
+
+	public void setS(System1 s) {
+		this.s = s;
+	}
+
+	public int getCurrentDefAction() {
+		return currentDefAction;
+	}
+
+	public void setCurrentDefAction(int currentDefAction) {
+		this.currentDefAction = currentDefAction;
+	}
+
+	public Character getTargetedChar() {
+		return targetedChar;
+	}
+
+	public void setTargetedChar(Character targetedChar) {
+		this.targetedChar = targetedChar;
+	}
+
+	public int getCurrentTargetAreaID() {
+		return currentTargetAreaID;
+	}
+
+	public void setCurrentTargetAreaID(int currentTargetAreaID) {
+		this.currentTargetAreaID = currentTargetAreaID;
+	}
+
+	public Area getCurrentTargetArea() {
+		return currentTargetArea;
+	}
+
+	public void setCurrentTargetArea(Area currentTargetArea) {
+		this.currentTargetArea = currentTargetArea;
+	}
+
+	public Ability getCurrentAbility() {
+		return currentAbility;
+	}
+
+	public void setCurrentAbility(Ability currentAbility) {
+		this.currentAbility = currentAbility;
+	}
+
+	public int getA_id() {
+		return a_id;
+	}
+
+	public void setA_id(int a_id) {
+		this.a_id = a_id;
+	}
+
+
+
+
 }//end Battle

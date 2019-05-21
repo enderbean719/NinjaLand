@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Result {
+
+public class Result implements Serializable{
 
 	public ArrayList<String> log = new ArrayList<String>();
 	public String summary;

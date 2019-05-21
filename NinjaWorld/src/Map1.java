@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class Map1 {
+
+public class Map1 implements Serializable{
 	
 	private Character mc;
 	private int width;

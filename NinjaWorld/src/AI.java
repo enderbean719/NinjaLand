@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class AI {
+public class AI  implements Serializable{
 	private Character c;
 	private boolean isAI = true;	
 	private boolean canFight = true;

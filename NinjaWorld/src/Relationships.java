@@ -1,6 +1,8 @@
 import java.util.HashMap;
+import java.io.Serializable;
 
-public class Relationships {
+
+public class Relationships implements Serializable{
 
 
 	private int goodDeeds;

@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class Story4 implements Story {
+  
+public class Story4 implements Story, Serializable{
 
 	private System1 s = new System1();
 	

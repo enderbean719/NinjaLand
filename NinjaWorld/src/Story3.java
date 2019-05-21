@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class Story3 implements Story {
+  
+public class Story3 implements Story, Serializable{
 
 	@Override
 	public void start_(Character mc) {

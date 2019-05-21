@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class Story1 implements Story {
+  
+public class Story1 implements Story, Serializable{
  
 	private int answer = 0;
 	

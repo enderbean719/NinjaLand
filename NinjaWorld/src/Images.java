@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class Images {
+ 
+public class Images implements Serializable{
 
 	public static String[] getImage(String name){
 		String[] img = {""};

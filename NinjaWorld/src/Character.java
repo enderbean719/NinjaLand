@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.HashMap;
 //import java.util.Math;
 
-public class Character  {
+public class Character   implements Serializable {
 	//from CREATURE 
 	private String name = "";
 	private int lvl = 0 ;

@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class Mission1 implements Story {
+
+public class Mission1 implements Story, Serializable{
 
 	@Override
 	public void start_(Character mc) {

@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class Stats {
+
+public class Stats implements Serializable {
 	
 	private System1 s = new System1();
 //base stats

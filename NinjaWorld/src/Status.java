@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class Status {
+
+public class Status  implements Serializable{
 
 	// unmoveable and unconscious
 	private boolean isAsleep			=false;

@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Action {
+public class Action  implements Serializable{
 
 	private int numActions;
 	private boolean usedOffensive;

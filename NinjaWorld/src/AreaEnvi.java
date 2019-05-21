@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class AreaEnvi {
+ 
+public class AreaEnvi implements Serializable{
 	private Area a;
 	private String envi;
 	

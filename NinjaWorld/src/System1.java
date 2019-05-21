@@ -2,11 +2,11 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 import java.io.*;
+import java.io.Serializable;
 
-public class System1 {
 
-	private Scanner reader = new Scanner(System.in);
-	
+public class System1 implements Serializable{
+ 
 	
 	public void clear() {
 //		System.out.println("\033[H\033[2J");  
@@ -14,6 +14,7 @@ public class System1 {
 	}
 
 	public void pause() {
+		Scanner reader = new Scanner(System.in);
 		this.out("");
 		this.out("....................................................<press ENTER to continue>");
 		this.out("");
@@ -55,6 +56,7 @@ public class System1 {
 	}
 	
 	public int getInt(){
+		Scanner reader = new Scanner(System.in);
 		int i = 0;
 		try {
 			i = reader.nextInt();
@@ -67,6 +69,7 @@ public class System1 {
 	}
 	
 	public double getDecimal() {
+		Scanner reader = new Scanner(System.in);
 		double d = 0;
 		try {
 			d = reader.nextDouble();
@@ -79,10 +82,12 @@ public class System1 {
 	}
 	
 	public String getLine() {
+		Scanner reader = new Scanner(System.in);
 		return reader.nextLine();
 	}
 	
 	public String getWord() {
+		Scanner reader = new Scanner(System.in);
 		return reader.next();
 	}
 	
@@ -103,6 +108,8 @@ public class System1 {
 		Random r = new Random();
 		return r.nextInt((max - min) + 1) + min;		
 	}//end random
+
+	 
 	
 	
 }//end System1
