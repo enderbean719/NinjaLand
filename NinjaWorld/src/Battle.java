@@ -146,6 +146,7 @@ public class Battle implements Serializable{
 					if(processAction(true) == true) {						//process
 						currentChar.getAction_().decrementNumActions();
 					}else{
+						s.out("");
 						s.out(this.getActionName(currentAction) + " action failed.");
 					}//if processAction fails, infinite loop
 				}//finish 2 actions -->
@@ -257,6 +258,7 @@ public class Battle implements Serializable{
 
 	public boolean runDefenseChoices(Character tc){
 		boolean abilityNotCanceledCompletely = true;
+		currentChar = tc;
 		int numActions = 1;
 		tc.getAction_().setNumActions(1);
 		while(numActions > 0) {
@@ -269,7 +271,10 @@ public class Battle implements Serializable{
 			if(processAction(false) == true) {						//processAction success
 				numActions--;
 			}else{
+				s.out("_______________________________");
+				s.out("");
 				s.out(this.getActionName(currentDefAction) + " action failed.");
+				s.out("_______________________________");
 			}//if processAction fails, infinite loop
 		}//finish 2 actions -->
 
@@ -537,7 +542,7 @@ public class Battle implements Serializable{
 //			}
 //		}
 		//defensive
-		if(currentAction == 4) {
+		if(currentDefAction == 4) {
 			Ability defensive = tc.getAbilities_().chooseDefensive();
 			Ability defensiveCopy = (Ability)s.deepClone(defensive) ;
 
@@ -551,11 +556,17 @@ public class Battle implements Serializable{
 						activeAbilitiesCurrentChar.add(defensiveCopy);
 						activeAbilitiesByChar.put(tc.getId(), activeAbilitiesCurrentChar );
 						tc.getAction_().setUsedDefensive(true);
+					}else{
+						s.out(defensiveCopy.getName() + " cancelled.");
 					}
+				}else{
+					s.out("Sorry, you can't use defensive moves right now.");
 				}
+			}else{
+				s.out("Sorry, you have no defensive abilities.");
 			}
 		}
-		if(currentAction == 5) {
+		if(currentDefAction == 5) {
 			s.out("Sorry, " + tc.getName() + " has no items.");
 		}
 		return actionSuccess;
@@ -594,7 +605,9 @@ public class Battle implements Serializable{
 			while (nt > 0) {
 				this.map.printBattleMap();
 			    s.out("");
-			    s.out(currentAbility.getName() + " has " + nt + " target(s)");
+			    s.out(currentAbility.getName() + " has a range of " + currentAbility.getRange()  );
+				s.out("");
+				s.out(currentAbility.getName() + " has " + nt + " target(s)");
 				s.out("");
 				s.out("  Target Area ID (or 0: Cancel)");
 				s.out("=====================");
@@ -609,8 +622,15 @@ public class Battle implements Serializable{
 				
 				//validate range of ability
 				if(targetAreaWithinRange() == false) {
+					s.out("___________________________________");
+					s.out("");
 					s.out("Sorry, Area " + input + " is out of range.");
+					s.out("");
+					s.out("___________________________________");
+					s.out("");
 					s.out(currentAbility.getName() + " range : " + (int)currentAbility.getRange() );
+					s.out("");
+					s.out("___________________________________");
 					s.out("");
 					return false;
 				}
@@ -673,7 +693,8 @@ public class Battle implements Serializable{
 	public boolean targetAreaWithinRange() {
 		boolean valid = false;
 		double r = currentAbility.getRange();
-		Area charA = currentChar.getMap_().getAreaMC();
+		//Area charA = currentChar.getMap_().getAreaMC();
+		Area charA = currentChar.getMap_().getAreaOfChar(currentChar);
 		double cx = charA.getX();
 		double cy = charA.getY();
 		double tx = currentTargetArea.getX();

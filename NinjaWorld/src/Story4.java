@@ -9,10 +9,7 @@ public class Story4 implements Story, Serializable{
 	public void start_(Character mc) {
 		// TESTING BATTLES
 		System1 s = new System1();
- 	
-		s.out("hi");
-		s.pause();
-		s.out("done");
+
 		
 		
 		Character naruto = new Character(false,"Naruto",2,"male");

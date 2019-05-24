@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
@@ -210,8 +211,28 @@ public class Map1 implements Serializable{
 			y = this.mc.getPosition_().getY();
 			return getArea(x,y);
 	}
-	
-	
+
+
+	public Area getAreaOfChar(Character c) {
+		int x, y;
+		ArrayList<Object> list = new ArrayList<>();
+		Area a = new Area();
+
+		for(int yy = 0; yy<height; yy++) {
+			for (int xx = 0; xx < this.width; xx++) {
+				a = this.getArea(xx,yy);
+				list = a.getContainsObj();
+				for(Object o : list){
+					if(o.equals(c)){
+						return a;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+
 	public void printPositionList() {
 		String row = "";
 		for(Area a : this.areas ) {
