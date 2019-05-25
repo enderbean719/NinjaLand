@@ -1342,5 +1342,24 @@ public class Ability implements Serializable {
 	}
 
 
+
+
+	public double getAccuracy() {
+		return accuracy;
+	}
+
+	public void setAccuracy(double accuracy) {
+		this.accuracy = accuracy;
+	}
+
+	public double getCritChance() {
+		return critChance;
+	}
+
+	public void setCritChance(double critChance) {
+		this.critChance = critChance;
+	}
+
+
 }//end ability
 

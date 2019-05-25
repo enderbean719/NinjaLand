@@ -174,6 +174,7 @@ public class Battle implements Serializable{
 		for(int i=characterIdOrder.size()-1; i>=0; i--) {
 
 			setCurrentCharByIndex(i);
+			s.out("Process " + currentChar.getName() + " abilities");
 			int charId = characterIdOrder.get(i);
 			try {
 				ArrayList<Ability> list = activeAbilitiesByChar.get(charId);
@@ -189,26 +190,32 @@ public class Battle implements Serializable{
 						//activeAbilitiesByChar.get(i).remove(a);
 
 						int abilityId = a.getId();
-						for(Iterator<Ability> itr2 = copyList.iterator(); itr.hasNext();) {
+						for(Iterator<Ability> itr2 = copyList.iterator(); itr2.hasNext();) {
 							Ability aa = itr2.next();
 							if(aa.getId() == abilityId){
-								s.out("list = " + copyList.size());
+								//s.out("list = " + copyList.size());
 								s.out(aa.getName() + " completed.");
 								copyList.remove(aa);
+								//itr2.remove();
 								s.out("list = " + copyList.size());
+								if(copyList.size() == 0){
+									break;
+								}
 							}
 						} //loop till find correct id to delete
 
 					}//if delete required
 				}//for
-				s.out("activeAbilitiesByChar size: "+ activeAbilitiesByChar.size());
-				activeAbilitiesByChar.put(i,copyList);  //put updated list back
-				s.out("activeAbilitiesByChar size: "+ activeAbilitiesByChar.size());
+				//s.out("activeAbilitiesByChar size: "+ activeAbilitiesByChar.size());
+				activeAbilitiesByChar.put(charId,copyList);  //put updated list back
+				//s.out("activeAbilitiesByChar size: "+ activeAbilitiesByChar.size());
+				s.out("Finished processing abilities for character id = "  + charId + " Name: " + this.getCharById(charId).getName());
 
 			}catch(Exception e){
 				//do nothing
-				//e.printStackTrace();
-				s.out("No more abilities to process");
+				e.printStackTrace();
+				s.out("Error processing abilities to process for character id = "  + charId + " Name: " + this.getCharById(charId).getName());
+				s.out("on index = " + i);
 			}
 
 		}//for
@@ -840,12 +847,41 @@ public class Battle implements Serializable{
 		}
 		if(currentChar == null) {
 			//throw new Exception("No character found for id = " + i);
-			s.out("error, character not found");
+			s.out("Error, character not found");
 		}
 	}//end setCurrentCharByIndex
-	
 
 
+	public Character getCharByIndex(int i) {
+		Character c = null;
+		for(Squad s : ss) {
+			c = s.getCharById(characterIdOrder.get(i));
+			if (!(c==null || c.equals(null) )) {
+				break;
+			}
+		}
+		if(c == null) {
+			//throw new Exception("No character found for id = " + i);
+			s.out("Error, character not found");
+		}
+		return c;
+	}//end setCurrentCharByIndex
+
+
+	public Character getCharById(int id) {
+		Character c = null;
+		for(Squad s : ss) {
+			c = s.getCharById(id);
+			if (!(c==null || c.equals(null) )) {
+				break;
+			}
+		}
+		if(c == null) {
+			//throw new Exception("No character found for id = " + i);
+			s.out("Error, character not found");
+		}
+		return c;
+	}//end setCurrentCharByIndex
 
 	public void setCharIds() {
 		int i = 1;
