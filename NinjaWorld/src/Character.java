@@ -128,6 +128,22 @@ public class Character   implements Serializable {
 			s.out(image[i]);
 		}
 	}
+
+	public void printBattleStatus(){
+		s.out("======================================");
+		s.out(this.getName() + " BATTLE STATUS");
+		s.out("Level: " + this.getLvl());
+		s.out("HP: " + this.getStats_().getCurrentHP() );
+		s.out("Chakra: " + this.getStats_().getCurrentChakra() );
+		s.out("Can move = " + this.getStatus_().canMove() );
+		s.out("Position: " + this.position_.getFormalEnviPosition() + "  at (" + this.position_.getX() + "," + this.position_.getY()  + ")");
+		s.out(" - STATS -");
+		this.getStats_().printStats();
+		s.out(" - ABILITIES -");
+		this.getAbilities_().showList();
+		s.out("======================================");
+		s.pause();
+	}
 	
 	
 	public boolean doTransitionHuman() {

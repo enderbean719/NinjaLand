@@ -1,6 +1,6 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.io.Serializable;
 
 public class Ability implements Serializable {
 
@@ -21,6 +21,8 @@ public class Ability implements Serializable {
 	private double speed;	
 	private double secondsToPrepare;
 	private double durationAfterStrike;
+	private double accuracy;
+	private double critChance;
 	
 	private boolean boostable;
 	private boolean boosted;
@@ -84,8 +86,8 @@ public class Ability implements Serializable {
 
 	private String launchMessage;   //?
 	private String landMessage;		//?
-	
-	
+
+
 	public Ability() {   //default ability		
 
 	
@@ -107,6 +109,8 @@ public class Ability implements Serializable {
 		speed				= 4.0;
 		secondsToPrepare	= 0.0;
 		durationAfterStrike = 0.0;
+		accuracy			= 0.5;
+		critChance			= 0.5;
 
 		boostable 			= false;
 		boosted				= false;
@@ -116,7 +120,7 @@ public class Ability implements Serializable {
 		visibility			= 0.8;
 		sensibility			= 0.8;
 
-		basicDamage			= 2.0;
+		basicDamage			= 5.0;
 		chakraDamage		= 0.0;
 		damageType			= "physical";
 		bdScalingBonus		=  new HashMap<String,Double>();
@@ -167,6 +171,8 @@ public class Ability implements Serializable {
 		speed				= 4.0;
 		secondsToPrepare	= 1.0;
 		durationAfterStrike = 0.0;
+		accuracy			= 0.5;
+		critChance   		= 0.1;
 
 		boostable 			= false;
 		boostChakraCost 	= 0.0;
@@ -176,7 +182,7 @@ public class Ability implements Serializable {
 		visibility			= 0.7;  
 		sensibility			= 0.8;
 
-		basicDamage			= 1.0;
+		basicDamage			= 5.0;
 		chakraDamage		= 0.0;
 		damageType			= "weapon";
 		bdScalingBonus		=  new HashMap<String,Double>();
@@ -213,7 +219,275 @@ public class Ability implements Serializable {
 
 	
 	}
-	
+
+
+
+	public void loadFireSpray() {
+
+		name 				= "Fire Spray";
+
+		requireTwoHands 	= true;
+		requireOneHand 		= false;
+		defensive 			= false;
+		offensive 			= true;
+
+		chakraCost 			= 10.0;
+		range 				= 5.0;  //1
+		size				= 1.0;
+		speed				= 4.0;
+		secondsToPrepare	= 1.0;
+		durationAfterStrike = 0.0;
+		accuracy			= 0.75;
+		critChance			= 0.1;
+
+		boostable 			= true;
+		boostChakraCost 	= 20.0;
+		//boostCategory 		= null;  // = new HashMap<String,Double>();
+		boostCategory.put("range", 2.0);  //multiply's ability's range by 2
+
+		visibility			= 1.0;
+		sensibility			= 1.0;
+
+		basicDamage			= 0.0;
+		chakraDamage		= 15.0;
+		damageType			= "fire";
+		bdScalingBonus		=  new HashMap<String,Double>();
+		//bdScalingBonus.put("basicAtk", 0.1);
+		cdScalingBonus		=  new HashMap<String,Double>();
+		cdScalingBonus.put("chakraAtk", 0.8);
+
+		specialEffect		= "burn";
+		seChance			= 1.0;
+		seDurationAfterStrike = 2.0;
+		seDamage			= 2.0;
+		seVisibility		= 1.0;
+		seSensibility		= 1.0;
+		seScalingBonus		= new HashMap<String,Double>();
+		seScalingBonus.put("brains", 0.5);
+
+		projectile			= true;
+		following			= false;
+		followSpeed			= 0.0;
+		numProjectiles		= 1.0;
+		numTargets			= 1.0;
+		canStrikeBeforeDestination = true;
+		canGoThroughTarget	= true;
+		canBeBlockedByJutsu = true;
+		aoeTrees			= true;
+		aoeWater			= false;
+		aoeSky				= true;
+		aoeRange			= 1.0;
+		aoeShape			= "triangle"; 		//circle = expands outwards evenly, 1 square, 9 squares, 25 squares //triangle = 1 sq, 4 sq, 9 sq fanning outwards
+		multiTurn			= false;
+
+		launchMessage		= "";
+		landMessage			= "";
+
+
+	}//firespray
+
+
+	public void loadWaterBlast() {
+
+		name 				= "Water Blast";
+
+		requireTwoHands 	= true;
+		requireOneHand 		= false;
+		defensive 			= false;
+		offensive 			= true;
+
+		chakraCost 			= 10.0;
+		range 				= 5.0;  //3
+		size				= 1.0;
+		speed				= 4.0;
+		secondsToPrepare	= 1.0;
+		durationAfterStrike = 0.0;
+		accuracy			= 0.4;
+		critChance			= 0.1;
+
+		boostable 			= true;
+		boostChakraCost 	= 20.0;
+		//boostCategory 		= null;  // = new HashMap<String,Double>();
+		boostCategory.put("chakraDamage", 2.0);  //multiply's ability's chakraDamage by 2
+
+		visibility			= 1.0;
+		sensibility			= 1.0;
+
+		basicDamage			= 0.0;
+		chakraDamage		= 8.0;
+		damageType			= "water";
+		bdScalingBonus		=  new HashMap<String,Double>();
+		//bdScalingBonus.put("basicAtk", 0.1);
+		cdScalingBonus		=  new HashMap<String,Double>();
+		cdScalingBonus.put("chakraAtk", 0.8);
+
+		specialEffect		= "burn";
+		seChance			= 1.0;
+		seDurationAfterStrike = 2.0;
+		seDamage			= 2.0;
+		seVisibility		= 1.0;
+		seSensibility		= 1.0;
+		seScalingBonus		= new HashMap<String,Double>();
+		seScalingBonus.put("brains", 0.5);
+
+		projectile			= true;
+		following			= false;
+		followSpeed			= 0.0;
+		numProjectiles		= 1.0;
+		numTargets			= 1.0;
+		canStrikeBeforeDestination = true;
+		canGoThroughTarget	= true;
+		canBeBlockedByJutsu = true;
+		aoeTrees			= true;
+		aoeWater			= false;
+		aoeSky				= true;
+		aoeRange			= 1.0;
+		aoeShape			= "triangle"; 		//circle = expands outwards evenly, 1 square, 9 squares, 25 squares //triangle = 1 sq, 4 sq, 9 sq fanning outwards
+		multiTurn			= false;
+
+		launchMessage		= "";
+		landMessage			= "";
+
+
+	}//
+
+
+
+
+	public void loadRasengan() {
+
+		name 				= "Rasengan";
+
+		requireTwoHands 	= true;
+		requireOneHand 		= false;
+		defensive 			= false;
+		offensive 			= true;
+
+		chakraCost 			= 70.0;
+		range 				= 0.0;  //self square + 4
+		size				= 1.0;
+		speed				= 4.0;
+		secondsToPrepare	= 1.0;
+		durationAfterStrike = 0.0;
+		accuracy			= 0.5;
+		critChance			= 0.5;
+
+		boostable 			= true;
+		boostChakraCost 	= 70.0;
+		//boostCategory 		= null;  // = new HashMap<String,Double>();
+		boostCategory.put("chakraDamage", 2.0);  //multiply's ability's chakraDamage by 2
+
+		visibility			= 1.0;
+		sensibility			= 1.0;
+
+		basicDamage			= 0.0;
+		chakraDamage		= 50.0;
+		damageType			= "water";
+		bdScalingBonus		=  new HashMap<String,Double>();
+		//bdScalingBonus.put("basicAtk", 0.1);
+		cdScalingBonus		=  new HashMap<String,Double>();
+		cdScalingBonus.put("maxChakra", 0.8);
+		cdScalingBonus.put("chakraRegen", 0.8);
+		cdScalingBonus.put("brains",0.1);
+		cdScalingBonus.put("chakraAtk", 0.1);
+
+		specialEffect		= "push";
+		seChance			= 1.0;
+		seDurationAfterStrike = 0.0;
+		seDamage			= 0.0;
+		seVisibility		= 1.0;
+		seSensibility		= 1.0;
+		seScalingBonus		= new HashMap<String,Double>();
+		//seScalingBonus.put("brains", 0.5);
+
+		projectile			= false;
+		following			= false;
+		followSpeed			= 0.0;
+		numProjectiles		= 1.0;
+		numTargets			= 1.0;
+		canStrikeBeforeDestination = true;
+		canGoThroughTarget	= false;
+		canBeBlockedByJutsu = false;
+		aoeTrees			= false;
+		aoeWater			= false;
+		aoeSky				= true;
+		aoeRange			= 0.0;
+		aoeShape			= "circle"; 		//circle = expands outwards evenly, 1 square, 9 squares, 25 squares //triangle = 1 sq, 4 sq, 9 sq fanning outwards
+		multiTurn			= false;
+
+		launchMessage		= "";
+		landMessage			= "";
+
+
+	}//
+
+
+
+	public void loadShadowParalysis() {
+
+		name 				= "Shadow Paralysis";
+
+		requireTwoHands 	= true;
+		requireOneHand 		= false;
+		defensive 			= false;
+		offensive 			= true;
+
+		chakraCost 			= 20.0;
+		range 				= 2.0;  //self square + 4
+		size				= 1.0;
+		speed				= 4.0;
+		secondsToPrepare	= 1.0;
+		durationAfterStrike = 3.0;
+		accuracy			= 0.5;
+		critChance			= 0.1;
+
+		boostable 			= true;
+		boostChakraCost 	= 10.0;
+		//boostCategory 		= null;  // = new HashMap<String,Double>();
+		boostCategory.put("range", 2.0);  //multiply's ability's chakraDamage by 2
+
+		visibility			= 0.2;
+		sensibility			= 0.2;
+
+		basicDamage			= 0.0;
+		chakraDamage		= 10.0;
+		damageType			= "shadow";
+		bdScalingBonus		=  new HashMap<String,Double>();
+		//bdScalingBonus.put("basicAtk", 0.1);
+		cdScalingBonus		=  new HashMap<String,Double>();
+		cdScalingBonus.put("brains",0.9);
+		cdScalingBonus.put("chakraAtk", 0.1);
+
+		specialEffect		= "paralysis";
+		seChance			= 1.0;
+		seDurationAfterStrike = 2.0;
+		seDamage			= 0.0;
+		seVisibility		= 1.0;
+		seSensibility		= 1.0;
+		seScalingBonus		= new HashMap<String,Double>();
+		//seScalingBonus.put("brains", 0.5);
+
+		projectile			= false;
+		following			= false;
+		followSpeed			= 0.0;
+		numProjectiles		= 1.0;
+		numTargets			= 1.0;
+		canStrikeBeforeDestination = true;
+		canGoThroughTarget	= false;
+		canBeBlockedByJutsu = false;
+		aoeTrees			= false;
+		aoeWater			= false;
+		aoeSky				= true;
+		aoeRange			= 0.0;
+		aoeShape			= "circle"; 		//circle = expands outwards evenly, 1 square, 9 squares, 25 squares //triangle = 1 sq, 4 sq, 9 sq fanning outwards
+		multiTurn			= false;
+
+		launchMessage		= "";
+		landMessage			= "";
+
+
+	}//
+
 	public void print() {
 		System1 s = new System1();
 		s.out(name);

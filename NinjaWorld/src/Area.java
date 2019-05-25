@@ -38,6 +38,28 @@ public class Area implements Serializable{
 	public Area(){
 		
 	}
+
+	public void listObjects(){
+
+		for( Object o : this.containsObj){
+			if (o instanceof  Character){
+				s.out(this.containsObj.indexOf(o) + ": " + ((Character) o).getName() );
+
+			}
+		}
+	}//end listObjects
+
+	public Character getCharacterFromIndex(int index){
+		for( Object o : this.containsObj){
+			if (o instanceof  Character){
+				if(this.containsObj.indexOf(o) == index){
+					return ((Character) o);
+				}
+
+			}
+		}
+		return null;
+	}
 	
 	public HashMap<Integer,Character> outputValidTargetChar(int startingId){
 		Character targetChar;
@@ -88,7 +110,7 @@ public class Area implements Serializable{
 	}
 	
 
-	public String getNames() {
+	public String getNames() {   //for map
 		String output = "";
 		String nameCr = "";
 		int numCr = 0 ;
@@ -128,7 +150,7 @@ public class Area implements Serializable{
 	
 	
 
-	public String getNames6() {
+	public String getNames6() {   //for map
 		String output = "";
 		String nameCr = "";
 		int numCr = 0 ;

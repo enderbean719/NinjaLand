@@ -192,14 +192,19 @@ public class Battle implements Serializable{
 						for(Iterator<Ability> itr2 = copyList.iterator(); itr.hasNext();) {
 							Ability aa = itr2.next();
 							if(aa.getId() == abilityId){
+								s.out("list = " + copyList.size());
+								s.out(aa.getName() + " completed.");
 								copyList.remove(aa);
+								s.out("list = " + copyList.size());
 							}
 						} //loop till find correct id to delete
 
 					}//if delete required
 				}//for
+				s.out("activeAbilitiesByChar size: "+ activeAbilitiesByChar.size());
+				activeAbilitiesByChar.put(i,copyList);  //put updated list back
+				s.out("activeAbilitiesByChar size: "+ activeAbilitiesByChar.size());
 
-				activeAbilitiesByChar.put(i,copyList);  //put updated list back in
 			}catch(Exception e){
 				//do nothing
 				//e.printStackTrace();
@@ -480,9 +485,17 @@ public class Battle implements Serializable{
 		if(currentAction == 5) {
 			s.out("Sorry, " + currentChar.getName() + "has no items.");
 		}
+		if(currentAction == 6){
+			this.map.printBattleMap();
+			int id = this.selectMapId();
+			Area aa = this.map.getAreaFromID(id);
+			aa.listObjects();
+			int ii = s.getInt();
+			Character cc = aa.getCharacterFromIndex(ii);
+			cc.printBattleStatus();
+		}
 		return actionSuccess;
 	}//processValidatedAction
-
 
 
 //DEFENSE
@@ -568,6 +581,14 @@ public class Battle implements Serializable{
 		}
 		if(currentDefAction == 5) {
 			s.out("Sorry, " + tc.getName() + " has no items.");
+		}
+		if(currentDefAction == 6){
+			int id = this.selectMapId();
+			Area aa = this.map.getAreaFromID(id);
+			aa.listObjects();
+			int ii = s.getInt();
+			Character cc = aa.getCharacterFromIndex(ii);
+			cc.printBattleStatus();
 		}
 		return actionSuccess;
 	}//processValidatedDefAction
@@ -719,7 +740,7 @@ public class Battle implements Serializable{
 	public int validatedRandomAction() { 
 		int v = -1;
 		while(validateAction(v) == false) {
-			v = s.getRandomIntBetween(0, 4); 
+			v = s.getRandomIntBetween(0, 5);
 		}
 		return v;
 	}
@@ -755,6 +776,8 @@ public class Battle implements Serializable{
 				return true;
 			}
 			break;
+		case 6:
+			return true;
 		}//END SWITCH
 
 		return false;
@@ -783,7 +806,8 @@ public class Battle implements Serializable{
 			if(currentChar.getStatus_().isOneHandFree()  && a_.isUsedItem() == false){
 				s.out("5. Use item");
 			}
-			a = s.getIntBetween(0, 5);
+			s.out("6. Get info on area");
+			a = s.getIntBetween(0, 6);
 		} 
 		return a;
 	}//end getBattleAction
@@ -970,6 +994,23 @@ public class Battle implements Serializable{
 	}
 
 
+
+
+	public int selectMapId(){
+
+		int input = 0;
+		int max = this.getMap().getMaxAreaID();
+		s.out("=========================");
+		s.out(" Area ID (or 0: Cancel)");
+		s.out("=========================");
+		s.print(":");
+		input = s.getIntBetween(0, max);
+		if(input == 0) {
+			return -1;
+		}else {
+			return input;
+		}
+	}//selectMapId
 
 
 
