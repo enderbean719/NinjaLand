@@ -132,9 +132,10 @@ public class Battle implements Serializable{
 				//s.clear();  //no function
 				//s.pause();  //excessive
 			    this.map.printBattleMap();
-				s.out("====================================");
-				s.out("**"+ currentChar.getName() + "'s turn begins. **");
-				s.out("====================================");
+			    s.out("");
+				s.out("===========================================================");
+				s.out("**"+ currentChar.getName() + "'s turn begins. **  Chakra: " + currentChar.getStats_().getCurrentChakra());
+				s.out("===========================================================");
 
 				while(currentChar.getAction_().getNumActions() > 0) {
 					if(currentChar.getAI_().isAI() == true) {						
@@ -157,7 +158,11 @@ public class Battle implements Serializable{
 			
 			//begin calculating results of first round of battling
 			processAbilitiesByChar();  //processes defense as abilities trigger
-
+			battleContinues = battleContinuesCheck();
+			Squad winner = winningSquad();
+			s.out("==================================================");
+			s.out(winner.getSquadName() + " is the winner!!!!!!!!!");
+			s.out("==================================================");
 		}//end battle loop
 
 
@@ -165,7 +170,53 @@ public class Battle implements Serializable{
 		return result;
 
 	}//end beginSquadBattle
-	
+
+
+	public boolean battleContinuesCheck() {
+		boolean onlyOneTeamAlive = false;
+		int teamAlive = 0;
+		for (Squad squad : ss) {
+			if (squadKO(squad) == false) {
+				teamAlive++;
+			}
+		}
+		if (teamAlive == 1 || teamAlive == 0) {
+			onlyOneTeamAlive = true;
+		} else{
+			onlyOneTeamAlive = false;
+		}
+		return onlyOneTeamAlive;
+	}//battleContinuesCheck
+
+
+
+	public boolean squadKO(Squad squad){
+		boolean atLeastOneAlive = false;
+
+		for(Character c : squad.getMembers()) {
+			if(c.getStats_().getCurrentHP()>0){
+				atLeastOneAlive = true;
+			}
+		}
+		return  atLeastOneAlive;
+	}//squadKO
+
+
+
+	public Squad winningSquad() {
+		boolean onlyOneTeamAlive = false;
+		Squad survivingTeam = null;
+		int teamAlive = 0;
+		for (Squad squad : ss) {
+			if (squadKO(squad) == false) {
+				return squad;
+			}
+		}
+		return null;
+	}//battleContinuesCheck
+
+
+
 
 	public boolean processAbilitiesByChar(){
 		boolean abilityNotCanceledCompletely;
