@@ -30,9 +30,10 @@ public class Story1 implements Story, Serializable{
 		//Your sensei tells you that he needs your help
 		//deliver a scroll to the hokage's assistant
 		//peek inside scroll = lose trust but gain a forbidden jutsu
-		
-		Character saisu = new Character();
-		saisu.setName("Saisu Kamano");
+
+		//boolean isAI, String nameInput, int lvlInput, String gender
+		Character saisu = new Character(true, "Saisu Kamano", 1, "male");
+		saisu.getStats_().loadClawed(saisu.getLvl());
 		mc.getRel_().newRelationship75(saisu.getName());
 		//https://naruto.fandom.com/wiki/Saisu_Kamano
 		//someone build loader function inside Character Class file for Saisu's stats
@@ -47,14 +48,14 @@ public class Story1 implements Story, Serializable{
 			mc.getRel_().addGoodDeedAgainst(saisu.getName());
 			s.out("<" + saisu.getName() + " noticed your positive attitude.>");
 			s.out("I was wondering when you would finally notice!");
-			s.out("It's the chuunin exams!  We're late for the show!");
+			s.out("It's the chunin exams!  We're late for the show!");
 			s.out("Let's go find some seats in the audience.");
 			s.out("1. Sure lets go!");
 			s.out("2. Nah...You go ahead.");
 		}else if(answer == 2) {
 			//no good deed, no bad deed, neutral response
 			s.out("Man, you must be deaf or something!");
-			s.out("It's the chuunin exams!  We're late for the show!");
+			s.out("It's the chunin exams!  We're late for the show!");
 			s.out("Let's go find some seats in the audience.");
 			s.out("1. Sure lets go!");
 			s.out("2. Nah...You go ahead.");
@@ -62,7 +63,7 @@ public class Story1 implements Story, Serializable{
 			s.out("<" + saisu.getName() + " noticed your negative attitude.>");
 			mc.getRel_().addBadDeedAgainst(saisu.getName());
 			s.out("What?? You're kidding, right?");
-			s.out("It's the chuunin exams!  We're late for the show!");
+			s.out("It's the chunin exams!  We're late for the show!");
 			s.out("Let's go find some seats in the audience.");
 			s.out("1. Sure lets go!");
 			s.out("2. Nah...You go ahead.");			
@@ -70,6 +71,13 @@ public class Story1 implements Story, Serializable{
 		answer = s.getIntBetween(1,2);
 		Map1 mainmap = new Map1(mc,10,5);  //max x = 9, max y = 4
 		mc.setMap_(mainmap);
+
+		//snake
+		Character snake = new Character(true,"snake",1, "male");
+		snake.getStats_().loadClawed(snake.getLvl());
+		mainmap.placeCreatureAndRemove(snake,1,2);
+
+		//arena
 		Character arenaBuilding = new Character();
 		arenaBuilding.setName("Arena");
 		mainmap.placeCreatureAndRemove(arenaBuilding,5,2);
@@ -78,13 +86,16 @@ public class Story1 implements Story, Serializable{
 			while(e.arrivedAtChar(arenaBuilding)==false) {   
 				mc.getCommands_().runCommands();
 			}
+
 		}
 		
 		//Yuki Minazuki = Itachi sensei
 		//Kakashi is jonin at this time - maybe a sensei
-		
-		Character ibiki = new Character();
-		ibiki.setName("Ibiki Morino");
+		//boolean isAI, String nameInput, int lvlInput, String gender
+		Character ibiki = new Character(true,"Ibiki Morino", 25, "male");
+		ibiki.getStats_().loadWeaponSummoner(ibiki.getLvl());
+		mc.getRel_().newRelationship75(ibiki.getName());
+
 		s.out("THE STORY CONTINUES....");
 		s.out("6 months later...");
 		s.out("");

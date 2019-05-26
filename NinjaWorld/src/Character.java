@@ -42,9 +42,8 @@ public class Character   implements Serializable {
 //		status_ = new Status();
 		 
 	}
-	
+	//boolean isAI, String nameInput, int lvlInput, String gender
 	public Character(boolean isAI, String nameInput, int lvlInput, String gender) {
-		
 
 	 	 name = nameInput;
 		 lvl = lvlInput ;
@@ -64,7 +63,7 @@ public class Character   implements Serializable {
 		 summonings_ = new Summonings();	//doesn't need reference to this
 		 battle_ = new Battle();			//doesn't need reference to this		 
 		 items_ = new Items();				//doesn't need reference to this
-		action_ = new Action();				//doesn't need reference to this
+		 action_ = new Action();			//doesn't need reference to this
 
 		 abilities_ = new Abilities(this);
 		 AI_ = new AI(this);

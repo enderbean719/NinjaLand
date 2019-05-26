@@ -163,11 +163,16 @@ public class Stats implements Serializable {
 	
 	
 	public void loadCreatureStats(String type, int level) {
-		//clawed --> dog, cat, bobcat, lion, fox, bear (speed, strength, hp)
-		//flying --> bird, bat, dragon  (sensing + ninjutsu + speed)
-		//elemental --> (ninjutsu + durable)
-		//tanky  --> bear, toad, golem, (durable and strength)
-		//tricky  --> goblin, ghost, sage animal (genjutsu)
+		//clawed --> dog, cat, bobcat, lion, fox, bear
+		// 			(speed, strength, hp)
+		//flying --> bird, bat, dragon
+		// 			(sensing + ninjutsu + speed)
+		//elemental -->
+		// 				(ninjutsu + durable)
+		//tanky  --> bear, toad, golem,
+		// 				(durable and strength)
+		//tricky  --> goblin, ghost, sage animal
+		// 				(genjutsu)
 		
 		
 		if(type == "clawed") {
@@ -175,11 +180,13 @@ public class Stats implements Serializable {
 		}else if(type == "flying") {
 			loadFlying(level);
 		}else if(type == "elemental") {
-			
+			loadElemental(level);
 		}else if(type =="tanky") {
-			
+			loadTanky(level);
 		}else if(type =="tricky") {
-			
+			loadTricky(level);
+		}else if(type == "weaponSummoner"){
+			loadWeaponSummoner(level);
 		}else {
 			
 		}
@@ -188,7 +195,7 @@ public class Stats implements Serializable {
 	}//end loadCreatureStats
 	
 	
-	private void loadClawed(int lvl) {
+	public void loadClawed(int lvl) {   //taijutsu
 		int points = calcPoints(lvl);
 		currentHP = 1;
 		currentChakra = 1;		
@@ -213,9 +220,9 @@ public class Stats implements Serializable {
 		currentHP = maxHP;
 		currentChakra = maxChakra;	
 	}
-	
 
-	private void loadFlying(int lvl) {
+
+	public void loadFlying(int lvl) {   //hyuuga
 		int points = calcPoints(lvl);
 		currentHP = 1;
 		currentChakra = 1;		
@@ -240,7 +247,114 @@ public class Stats implements Serializable {
 		currentHP = maxHP;
 		currentChakra = maxChakra;	
 	}
-	
+
+
+
+	public void loadElemental(int lvl) {
+		int points = calcPoints(lvl);
+		currentHP = 1;
+		currentChakra = 1;
+
+		maxHP = 40;  		//5%
+		maxChakra = 40;		//20%
+		hpRegen = 1;		//5%
+		chakraRegen = 1;	//5%
+		basicAtk = 1;		//5%
+		chakraAtk = 1;		//30%
+		basicDef = 1;		//5%
+		chakraDef = 1;		//10%
+		speed = 1;			//5%
+		brains = 1;			//5%
+		sensing = 1;		//5%
+		//11 stats total
+
+		armor = 1;
+		weight = 1;
+
+		applyPoints(points, .05, .20, .05, .05, .05, .30, .05, .10, .10, .05, .05);
+		currentHP = maxHP;
+		currentChakra = maxChakra;
+	}
+
+
+	public void loadTanky(int lvl) {
+		int points = calcPoints(lvl);
+		currentHP = 1;
+		currentChakra = 1;
+
+		maxHP = 40;  		//20%
+		maxChakra = 40;		//5%
+		hpRegen = 1;		//15%
+		chakraRegen = 1;	//5%
+		basicAtk = 1;		//5%
+		chakraAtk = 1;		//5%
+		basicDef = 1;		//20%
+		chakraDef = 1;		//10%
+		speed = 1;			//5%
+		brains = 1;			//5%
+		sensing = 1;		//5%
+		//11 stats total
+
+		armor = 1;
+		weight = 1;
+
+		applyPoints(points, .20, .05, .15, .05, .05, .05, .20, .10, .05, .05, .05);
+		currentHP = maxHP;
+		currentChakra = maxChakra;
+	}
+
+
+	public void loadTricky(int lvl) {
+		int points = calcPoints(lvl);
+		currentHP = 1;
+		currentChakra = 1;
+
+		maxHP = 40;  		//5%
+		maxChakra = 40;		//5%
+		hpRegen = 1;		//5%
+		chakraRegen = 1;	//10%
+		basicAtk = 1;		//5%
+		chakraAtk = 1;		//10%
+		basicDef = 1;		//5%
+		chakraDef = 1;		//10%
+		speed = 1;			//10%
+		brains = 1;			//30%
+		sensing = 1;		//5%
+		//11 stats total
+
+		armor = 1;
+		weight = 1;
+
+		applyPoints(points, .05, .05, .05, .10, .05, .10, .05, .10, .10, .30, .05);
+		currentHP = maxHP;
+		currentChakra = maxChakra;
+	}
+
+	public void loadWeaponSummoner(int lvl) {
+		int points = calcPoints(lvl);
+		currentHP = 1;
+		currentChakra = 1;
+
+		maxHP = 40;  		//5%
+		maxChakra = 40;		//20%
+		hpRegen = 1;		//5%
+		chakraRegen = 1;	//5%
+		basicAtk = 1;		//15%
+		chakraAtk = 1;		//5%
+		basicDef = 1;		//15%
+		chakraDef = 1;		//5%
+		speed = 1;			//10%
+		brains = 1;			//10%
+		sensing = 1;		//5%
+		//11 stats total
+
+		armor = 1;
+		weight = 1;
+
+		applyPoints(points, .05, .20, .05, .05, .15, .05, .15, .05, .10, .10, .05);
+		currentHP = maxHP;
+		currentChakra = maxChakra;
+	}
 	
 	private void applyPoints(int p, double a, double b, double c, double d, double e, double f, double g, double h, double i, double j, double k) {
 		//calculate ratios
@@ -299,6 +413,7 @@ public class Stats implements Serializable {
 		 
 		
 	}// end applyPoints
+
 	
 	private int sumIntArray(int[] array) {
 		int sum = 0;
