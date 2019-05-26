@@ -92,8 +92,75 @@ public class Ability implements Serializable {
 
 	
 	}
-	
-	
+
+
+
+
+	public void loadScratch() {
+
+		name 				= "scratch";
+
+		requireTwoHands 	= false;
+		requireOneHand 		= true;
+		defensive 			= true;
+		offensive 			= true;
+
+		chakraCost 			= 0.0;
+		range 				= 1.0;
+		size				= 1.0;
+		speed				= 6.0;
+		secondsToPrepare	= 0.0;
+		durationAfterStrike = 0.0;
+		accuracy			= 0.5;
+		critChance			= 0.5;
+
+		boostable 			= false;
+		boosted				= false;
+		boostChakraCost 	= 0.0;
+		boostCategory 		= null;
+
+		visibility			= 0.8;
+		sensibility			= 0.8;
+
+		basicDamage			= 5.0;
+		chakraDamage		= 0.0;
+		damageType			= "physical";
+		bdScalingBonus		=  new HashMap<String,Double>();
+		bdScalingBonus.put("basicAtk", 0.5);
+		//cdScalingBonus		=  new HashMap<String,Double>();
+		bdScalingBonus.put("speed", 0.1);  //critical hits on intelligence
+
+		specialEffect		= "none";
+		seChance			= 0.1;
+		seDurationAfterStrike = 1.0;
+		seDamage			= 2.0;
+		seVisibility		= 0.3;
+		seSensibility		= 0.3;
+		seScalingBonus		= new HashMap<String,Double>();
+		seScalingBonus.put("basicAtk", 0.5);
+
+		projectile			= false;
+		following			= false;
+		followSpeed			= 0.0;
+		numProjectiles		= 0.0;
+		numTargets			= 1.0;
+		canStrikeBeforeDestination = false;
+		canGoThroughTarget	= false;
+		canBeBlockedByJutsu = false;
+		aoeTrees			= false;
+		aoeWater			= false;
+		aoeSky				= false;
+		aoeRange			= 0.0;
+		aoeShape			= "";
+		multiTurn			= false;
+
+		launchMessage		= "";
+		landMessage			= "";
+	}
+
+
+
+
 	public void loadChargingPunch() {
 
 		name 				= "Charging punch";
@@ -104,7 +171,7 @@ public class Ability implements Serializable {
 		offensive 			= true;
 
 		chakraCost 			= 0.0;
-		range 				= 0.0;
+		range 				= 1.0;
 		size				= 1.0;
 		speed				= 4.0;
 		secondsToPrepare	= 0.0;

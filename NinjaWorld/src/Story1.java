@@ -73,19 +73,37 @@ public class Story1 implements Story, Serializable{
 		mc.setMap_(mainmap);
 
 		//snake
-		Character snake = new Character(true,"snake",1, "male");
-		snake.getStats_().loadClawed(snake.getLvl());
-		mainmap.placeCreatureAndRemove(snake,1,2);
+		Character rat = new Character(true,"snake",1, "male");
+		rat.getStats_().loadClawed(rat.getLvl());
+		rat.getAbilities_().getaList().add(new Ability() );
+		rat.getAbilities_().getaList().get(0).loadScratch();
+		mainmap.placeCreatureAndRemove(rat,1,2);
 
 		//arena
 		Character arenaBuilding = new Character();
 		arenaBuilding.setName("Arena");
 		mainmap.placeCreatureAndRemove(arenaBuilding,5,2);
 		if(true) {  //answer == 1
-			mainmap.printMapOfNames();
-			while(e.arrivedAtChar(arenaBuilding)==false) {   
+			//mainmap.printMapOfNames();
+			mainmap.printBattleMap();
+			while(e.mcArrivedAtChar(arenaBuilding)==false) {
+
+				if(e.mcArrivedAtChar(rat)==true){
+					Map1 ratBattleMap = new Map1(mc,3,3);
+					ratBattleMap.placeCreatureAndRemove(rat, 2, 2);
+					Squad s1 = new Squad(mc);
+					Squad s2 = new Squad(rat);
+					try {
+						mc.getBattle_().beginSquadBattle(ratBattleMap, s1, s2);
+					} catch (Exception ee) {
+						// TODO Auto-generated catch block
+						ee.printStackTrace();
+					}
+				}//end rat battle
+
 				mc.getCommands_().runCommands();
-			}
+
+			}//while loop
 
 		}
 		
@@ -101,15 +119,21 @@ public class Story1 implements Story, Serializable{
 		s.out("");
 		s.out(ibiki.getName() + ": " + mc.getName() + ", its time for you to begin a mission.");
 		s.out("Please select a mission");
-		s.out("1. Sam's mission - C rank - $500 gold");
-		s.out("2. Chris's mission - C rank - $500 gold");
-		s.out("3. Jake's mission - D rank - $300 gold");
-		s.out("4. Josh's mission - D rank - $300 gold");
-		answer = s.getInt();
+		s.out("0. Cancel");
+		s.out("1. Sam's mission    - D rank -  $300 gold");
+		s.out("2. Chris's mission  - D rank -  $300 gold");
+		s.out("3. Jake's mission   - C rank -  $600 gold");
+		s.out("4. Josh's mission   - C rank -  $600 gold");
+		s.out("5. Elias's mission  - B rank - $1200 gold");
+		s.out("6. Seth's mission   - B rank - $1200 gold");
+		answer = s.getIntBetween(0,6);
 		Mission1 m1 = new Mission1();
 		Mission2 m2 = new Mission2();
 		Mission3 m3 = new Mission3();
 		Mission4 m4 = new Mission4();
+		Mission5 m5 = new Mission5();
+		Mission6 m6 = new Mission6();
+
 		if(answer ==1) {
 			m1.start_(mc);
 		}else if(answer == 2) {
@@ -118,6 +142,10 @@ public class Story1 implements Story, Serializable{
 			m3.start_(mc);
 		}else if(answer == 4) {
 			m4.start_(mc);
+		}else if(answer == 5) {
+			m5.start_(mc);
+		}else if(answer == 6) {
+			m6.start_(mc);
 		}else {
 			s.out("Okay then.  No missions for you.");
 		}
