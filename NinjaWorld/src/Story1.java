@@ -1,17 +1,27 @@
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.ListIterator;
 
-  
+
 public class Story1 implements Story, Serializable{
  
 	private int answer = 0;
+	
 	
 	public int getAnswer() {
 		return answer;
 	}
 
+	
 	public void setAnswer(int answer) {
 		this.answer = answer;
 	}
+	public ArrayList<Character> snakeList = new ArrayList<>();
+
+	//public ListIterator<Character> snakeListIter = new ListIterator<Character>();
+
+
+
 
 	@Override
 	public void start_(Character mc) { 
@@ -72,34 +82,98 @@ public class Story1 implements Story, Serializable{
 		Map1 mainmap = new Map1(mc,10,5);  //max x = 9, max y = 4
 		mc.setMap_(mainmap);
 
-		//snake
-		Character rat = new Character(true,"snake",1, "male");
-		rat.getStats_().loadClawed(rat.getLvl());
-		rat.getAbilities_().getaList().add(new Ability() );
-		rat.getAbilities_().getaList().get(0).loadScratch();
-		mainmap.placeCreatureAndRemove(rat,1,2);
 
+		//Kakashi = Itachi + 8
+		//Itachi = Naruto + 6
+		
+		//ninja
+		
+		//children : Zaji, 
+		
+		//Genin
+		
+		//Team 1 - Ebisu (elite trainer for hokage)		
+		//Iruka Umino - naruto's teacher
+		//Muta Aburame - bug boy (cousin of Yoji) - good guy , lazy
+		//Hana Inuzuka - dog girl medical nin
+		
+		
+		//Team 2 - 		//Yuki Minazuki = Itachi sensei - jealous of itachi's skill
+		//Itachi Uchiha, 
+		//Tenma Izumo (fast taijutsu) (killed by masked man Madara on mission) bitter rival of itachi
+		//Shinko Inari, (girl) (quits ninja life) peace maker
+		
+		//Team 3 - Ibiki Sensei
+		//Himuka Suzukaze (girl) (added to itachi)worships itachi as master
+		//Yōji Aburame	(added to itachi) - bugs, killed father age 5, cant speak well (slit throat)
+		//MAIN CHAR
+		
+		//Team 4 - Asuma
+		//Mizuki (earth) killed ally secretly on mission so he wouldnt slow them down //Orochimaru secretly witnessed gave him a prototype cursemark as reward
+		//Tsubaki -(girl) fiance of Mizuki
+		//Dokan - tanky bully of itachi
+		
+		
+		//Team 5 - Kakashi
+		//Saisu Kamuno - weapon boy
+		//Maruten Akimichi - fat boy
+		//Izumi Uchiha (quits before teams change) - crush on Itachi, he saved her during nine tails, Itachi kills her with nice genjutsu
+
+		
+		//Chunin
+		//Team 6
+		//Tokuma Hyūga - hot shot
+		//Shisui Uchiha of the body flicker - humble hot shot
+		//
+		
+		//Root : Kabuto, Shisui, Itachi, ___
+		
+		
 		//arena
 		Character arenaBuilding = new Character();
 		arenaBuilding.setName("Arena");
 		mainmap.placeCreatureAndRemove(arenaBuilding,5,2);
+		//snakes
+		for(int i=0; i<5; i++){
+			placeRandomSnake(mainmap);
+		}
+
 		if(true) {  //answer == 1
 			//mainmap.printMapOfNames();
 			mainmap.printBattleMap();
 			while(e.mcArrivedAtChar(arenaBuilding)==false) {
-
-				if(e.mcArrivedAtChar(rat)==true){
-					Map1 ratBattleMap = new Map1(mc,3,3);
-					ratBattleMap.placeCreatureAndRemove(rat, 2, 2);
-					Squad s1 = new Squad(mc);
-					Squad s2 = new Squad(rat);
-					try {
-						mc.getBattle_().beginSquadBattle(ratBattleMap, s1, s2);
-					} catch (Exception ee) {
-						// TODO Auto-generated catch block
-						ee.printStackTrace();
-					}
-				}//end rat battle
+				
+				//snake event
+				//move snakes
+				for(Character snake : this.snakeList) {
+					if (e.mcNextToChar(snake) == true) {
+						s.pause();
+						s.out("WARNING! Snake is coming for an attack!");
+						s.pause();
+						Area mcArea = mainmap.getAreaOfChar(mc);
+						Map1 snakeBattleMap = new Map1(mc, 3, 3);
+						snakeBattleMap.placeCreatureAndRemove(snake, 2, 2);
+						Squad s1 = new Squad(mc);
+						Squad s2 = new Squad(snake);
+						Result result = new Result();
+						try {
+							result = mc.getBattle_().beginSquadBattle(snakeBattleMap, s1, s2);
+							mc.setMap_(mainmap);
+							mainmap.placeCreatureAndRemove(mc, mcArea.getX(), mcArea.getY());
+						} catch (Exception ee) {
+							// TODO Auto-generated catch block
+							ee.printStackTrace();
+						}
+						if(result.isVictory()){
+							//map.remove snake
+							mainmap.printBattleMap();
+							s.out("Snake has been destroyed!");
+							s.pause();
+							mainmap.removeChar(snake);
+							mainmap.printBattleMap();
+						}
+					}//end snake battle
+				}//loop nearby snakes
 
 				mc.getCommands_().runCommands();
 
@@ -107,7 +181,12 @@ public class Story1 implements Story, Serializable{
 
 		}
 		
-		//Yuki Minazuki = Itachi sensei
+		
+		
+		
+		
+		
+		
 		//Kakashi is jonin at this time - maybe a sensei
 		//boolean isAI, String nameInput, int lvlInput, String gender
 		Character ibiki = new Character(true,"Ibiki Morino", 25, "male");
@@ -152,5 +231,23 @@ public class Story1 implements Story, Serializable{
 		
 	}//end story1
 	
-	
-}
+
+
+	public Character newSnake(){
+		Character snake = new Character(true,"snake",1, "male");
+		snake.getStats_().loadClawed(snake.getLvl());
+		snake.getAbilities_().getaList().add(new Ability() );
+		snake.getAbilities_().getaList().get(0).loadScratch();
+		snake.getAbilities_().getaList().get(0).setName("Tail whip");
+		snake.getStats_().setCurrentHP(5);
+		return  snake;
+	}
+
+	public void placeRandomSnake(Map1 m){
+		Area a = m.getRandomEmptyArea();
+		Character snake = newSnake();
+		this.snakeList.add(snake);
+		m.placeCreatureAndRemove(snake,a.getX(),a.getY());
+	}
+
+}//end story1

@@ -2,6 +2,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
+import java.util.ListIterator;
 
 
 public class Map1 implements Serializable{
@@ -245,6 +246,64 @@ public class Map1 implements Serializable{
 			}
 		}
 	}//end printPositionList
+
+
+	public int getRandomX(){
+		int x = this.width;
+		return s.getRandomIntBetween(0,x);
+	}
+
+
+	public int getRandomY(){
+		int y = this.height;
+		return s.getRandomIntBetween(0,y);
+	}
+
+	public Area getRandomArea(){
+		Area a = this.getArea(getRandomX(),getRandomY());
+		return a;
+	}
+
+	public Area getRandomEmptyArea(){
+		Area a = getRandomArea();
+		int numTries = 0;
+		while (a.isEmpty() == false && numTries < 1000){
+			a = getRandomArea();
+			numTries++;
+		}
+		return a;
+	}
+
+
+	public void removeCharBad(Character c){
+		for(Area a : this.areas ) {
+			for(Object o : a.getContainsObj()) {
+				if(o instanceof Character) {
+					if( c == ((Character) o) ){
+						a.getContainsObj().remove(c);
+					}
+
+				}
+			}
+		}
+	}//removeChar
+
+
+	public void removeChar(Character c){
+		ListIterator<Area> areaList = this.areas.listIterator();
+
+		while(areaList.hasNext()){
+			//if( areaList.hasNext() ){
+				ListIterator<Object> objList = areaList.next().getContainsObj().listIterator();
+				while(objList.hasNext()	){
+					if(objList.next() == c){
+						objList.remove();
+					}
+				}
+			//}
+		}
+	}//removeChar
+
 
 	public Character getMc() {
 		return mc;

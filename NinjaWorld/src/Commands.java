@@ -98,19 +98,19 @@ public class Commands implements Serializable{
 		if(c.equals("north")) {
 			commandFound = true;
 			mc.moveNorth();
-			mc.getMap_().printMapOfNames();
+			mc.getMap_().printBattleMap();
 		}else if(c.equals("south")) {
 			commandFound = true;
 			mc.moveSouth();
-			mc.getMap_().printMapOfNames();
+			mc.getMap_().printBattleMap();
 		}else if(c.equals("east")) {
 			commandFound = true;
 			mc.moveEast();
-			mc.getMap_().printMapOfNames();
+			mc.getMap_().printBattleMap();
 		}else if(c.equals("west")) {
 			commandFound = true;
 			mc.moveWest();
-			mc.getMap_().printMapOfNames();
+			mc.getMap_().printBattleMap();
 		}else if(c.equals("look")) {
 			commandFound = true;
 			Area current = mc.getMap_().getAreaMC();

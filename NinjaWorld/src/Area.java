@@ -219,7 +219,14 @@ public class Area implements Serializable{
 		return sum;
 	}
 	
-	
+
+	public boolean isEmpty(){
+		if(this.containsObj.size() == 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 	public int getX() {
 		return x;

@@ -17,8 +17,9 @@ public class Menu  implements Serializable{
 		s.out("2. Load Game");
 		s.out("3. Multiplayer Match");
 		s.out("4. Quit Game");
-		s.out("5. Testing Sandbox");
-		answer = s.getIntBetween(1,5); 
+		s.out("5. Test Battle");
+		s.out("6. Test Missions");
+		answer = s.getIntBetween(1,6); 
 		//s.out("you chose " + answer);
 		if (answer == 1){
 			newCharacter();
@@ -29,6 +30,42 @@ public class Menu  implements Serializable{
 		}else if(answer == 5) {
 			Story4 st4 = new Story4();
 			st4.start_(mc);
+		}else if(answer == 6){
+			s.out("THE STORY CONTINUES....");
+			s.out("6 months later...");
+			s.out("");
+			s.out("Ibiki" + ": " + mc.getName() + ", its time for you to begin a mission.");
+			s.out("Please select a mission");
+			s.out("0. Cancel");
+			s.out("1. Sam's mission    - D rank -  $300 gold");
+			s.out("2. Chris's mission  - D rank -  $300 gold");
+			s.out("3. Jake's mission   - C rank -  $600 gold");
+			s.out("4. Josh's mission   - C rank -  $600 gold");
+			s.out("5. Elias's mission  - B rank - $1200 gold");
+			s.out("6. Seth's mission   - B rank - $1200 gold");
+			answer = s.getIntBetween(0,6);
+			Mission1 m1 = new Mission1();
+			Mission2 m2 = new Mission2();
+			Mission3 m3 = new Mission3();
+			Mission4 m4 = new Mission4();
+			Mission5 m5 = new Mission5();
+			Mission6 m6 = new Mission6();
+
+			if(answer ==1) {
+				m1.start_(mc);
+			}else if(answer == 2) {
+				m2.start_(mc);
+			}else if(answer == 3) {
+				m3.start_(mc);
+			}else if(answer == 4) {
+				m4.start_(mc);
+			}else if(answer == 5) {
+				m5.start_(mc);
+			}else if(answer == 6) {
+				m6.start_(mc);
+			}else {
+				s.out("Okay then.  No missions for you.");
+			}
 		}else {
 			s.out("Farewell ninja!");
 			System.exit(0);
@@ -86,11 +123,18 @@ public class Menu  implements Serializable{
 			s.out("Oh!! The " + mc.getClan() + "!!! \nI see... We will expect great things from you.");
 		}else {
 			s.out("I see. Your clan is unknown.  \nIt will be interesting to watch your development.");
-			mc.setClan("unknown");
+			mc.setClan("Unknown");
 		}
-		
+
+		//default abilities
+		mc.getAbilities_().getaList().add(new Ability() );
+		mc.getAbilities_().getaList().add(new Ability() );
+		mc.getAbilities_().getaList().get(0).loadChargingPunch();
+		mc.getAbilities_().getaList().get(1).loadKunaiThrow();
+
 		mc.levelUp();
-				 
+		//add custom abilities based on Clan
+		//add abilities based on leveling up
 		
 		
 	//	https://naruto.fandom.com/wiki/Clans

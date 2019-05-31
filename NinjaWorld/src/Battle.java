@@ -159,14 +159,17 @@ public class Battle implements Serializable{
 			//begin calculating results of first round of battling
 			processAbilitiesByChar();  //processes defense as abilities trigger
 			battleContinues = battleContinuesCheck();
-			Squad winner = winningSquad();
-			s.out("==================================================");
-			s.out(winner.getSquadName() + " is the winner!!!!!!!!!");
-			s.out("==================================================");
+			if(battleContinues == false) {
+				Squad winner = winningSquad();
+				if(winner == null){break;}
+				s.out("==================================================");
+				s.out(winner.getSquadName() + " is the winner!!!!!!!!!");
+				s.out("==================================================");
+			}
 		}//end battle loop
 
 
-		
+		result.setVictory(true);
 		return result;
 
 	}//end beginSquadBattle
@@ -174,18 +177,23 @@ public class Battle implements Serializable{
 
 	public boolean battleContinuesCheck() {
 		boolean onlyOneTeamAlive = false;
-		int teamAlive = 0;
+		int teamsAlive = 0;
 		for (Squad squad : ss) {
 			if (squadKO(squad) == false) {
-				teamAlive++;
+				teamsAlive++;
 			}
 		}
-		if (teamAlive == 1 || teamAlive == 0) {
+		if (teamsAlive == 1 || teamsAlive == 0) {
 			onlyOneTeamAlive = true;
 		} else{
 			onlyOneTeamAlive = false;
 		}
-		return onlyOneTeamAlive;
+
+		if(onlyOneTeamAlive == true){
+			return false;
+		}else{
+			return true;
+		}
 	}//battleContinuesCheck
 
 
@@ -541,7 +549,7 @@ public class Battle implements Serializable{
 //			}
 //		}
 		if(currentAction == 5) {
-			s.out("Sorry, " + currentChar.getName() + "has no items.");
+			s.out("Sorry, " + currentChar.getName() + " has no items.");
 		}
 		if(currentAction == 6){
 			this.map.printBattleMap();
