@@ -100,18 +100,23 @@ public class Battle implements Serializable{
 		setMapForAll(); //insert battle map into each character
 		
 		//printBattleIntroMessage
+		s.pause();
 		s.out("=========== BATTLE ===========");
 		s.out("Squad " + s1.getSquadName() + " vs. Squad " + s2.getSquadName());
 		s.out("=========== BEGIN! ===========");
+		s.pause();
 		//battle loop
 		battleContinues = true;
-		while(battleContinues==true) {			
+		while(battleContinues == true) {
 			this.characterIdOrder  = characterIdOrder();   //recalculate the order of attacks randomly each turn
 			
 			//loop characters for one round
 			for(int i=characterIdOrder.size()-1; i>=0; i--) {
 				//begin char turn
 				setCurrentCharByIndex(i);  //find and set currentChar
+				if(currentChar.getStatus_().isKO()==true){
+					break;
+				}
 				if(currentChar.getAction_().isUsedDefensive() == true){
 					this.numActions = 1;
 					currentChar.getAction_().setNumActions(1);
@@ -132,18 +137,28 @@ public class Battle implements Serializable{
 				//s.clear();  //no function
 				//s.pause();  //excessive
 			    this.map.printBattleMap();
+			    s.pause();
 			    s.out("");
 				s.out("===========================================================");
-				s.out("**"+ currentChar.getName() + "'s turn begins. **  Chakra: " + currentChar.getStats_().getCurrentChakra());
+				s.out("**"+ currentChar.getName() + "'s turn begins. **  Chakra: " + (int)currentChar.getStats_().getCurrentChakra());
 				s.out("===========================================================");
-
+				s.pause();
+				int currentCharId = currentChar.getId();
+				//loop one character
 				while(currentChar.getAction_().getNumActions() > 0) {
+										//error check
+										if( currentChar.getId()  != currentCharId ){
+											s.out("ERROR - character has switched incorrectly --fixing now");
+											currentChar = this.getCharById(currentCharId);
+											s.pause();
+										}
+					//get action
 					if(currentChar.getAI_().isAI() == true) {						
 						currentAction = validatedRandomAction();		 //AI action				
 					}else {						
 						currentAction = getBattleAction(currentChar); 				//human action 1 - 4
 					}
-					
+					//process action
 					if(processAction(true) == true) {						//process
 						currentChar.getAction_().decrementNumActions();
 					}else{
@@ -154,17 +169,28 @@ public class Battle implements Serializable{
 			}//loop to next character
 			
 			//loop on abilities that haven't had a chance to be defended
-			
-			
+			//
+			//
+
+
+
 			//begin calculating results of first round of battling
 			processAbilitiesByChar();  //processes defense as abilities trigger
+
+			while(processDefeatedCharacters() ){}
+
 			battleContinues = battleContinuesCheck();
 			if(battleContinues == false) {
 				Squad winner = winningSquad();
-				if(winner == null){break;}
-				s.out("==================================================");
-				s.out(winner.getSquadName() + " is the winner!!!!!!!!!");
-				s.out("==================================================");
+				if(winner != null){
+					s.pause();
+					s.out("==================================================");
+					s.out(winner.getSquadName() + " is the winner!!!!!!!!!");
+					s.out("==================================================");
+					s.pause();
+
+					processExperience(winner);
+				}
 			}
 		}//end battle loop
 
@@ -173,6 +199,62 @@ public class Battle implements Serializable{
 		return result;
 
 	}//end beginSquadBattle
+
+
+
+
+	public void processExperience(Squad winner){
+		double totalExpEarned = 0.0;
+		for(Squad s : 	this.ss){
+			if(s.getSquadId() != winner.getSquadId()){
+				for(Character enemy : s.getMembers()){
+					int lvl = enemy.getLvl();
+					double exp = enemy.experienceToLvlUpAtLevel(lvl);
+					totalExpEarned += exp;
+				}
+			}
+		}
+		int totalLevels = 0;
+		for(Character c: winner.getMembers()) {
+			totalLevels += c.getLvl();
+		}
+		for(Character c: winner.getMembers()){
+			double shareOfExp = (double) c.getLvl()/totalLevels ;
+			c.addExperience( shareOfExp * totalExpEarned);
+		}
+
+	}//processExperience
+
+
+	public boolean processDefeatedCharacters(){
+		Character defeatedChar = charDefeated();
+		if(defeatedChar != null){
+			s.pause();
+			this.map.printBattleMap();
+			s.pause();
+			s.out(defeatedChar.getName() + " is defeated");
+			defeatedChar.getStatus_().setKO(true);
+			this.map.removeChar(defeatedChar);
+			s.pause();
+			this.map.printBattleMap();
+			return true;
+		}else{
+			return false;
+		}
+	}//processDefeatedCharacters
+
+
+	public Character charDefeated(){
+		for(Squad squad : this.ss){
+			for(Character c : squad.getMembers()) {
+				if(c.getStats_().getCurrentHP() <= 0 && c.getStatus_().isKO()==false){
+					return c;
+				}
+			}
+		}
+		return null;
+	}//charDefeated
+
 
 
 	public boolean battleContinuesCheck() {
@@ -206,7 +288,7 @@ public class Battle implements Serializable{
 				atLeastOneAlive = true;
 			}
 		}
-		return  atLeastOneAlive;
+		return  !atLeastOneAlive;
 	}//squadKO
 
 
@@ -237,39 +319,31 @@ public class Battle implements Serializable{
 			int charId = characterIdOrder.get(i);
 			try {
 				ArrayList<Ability> list = activeAbilitiesByChar.get(charId);
-				ArrayList<Ability>  copyList = (ArrayList<Ability>)s.deepClone(list);
-				//loop abilities per character
-				for(Iterator<Ability> itr = list.iterator(); itr.hasNext();){
-					Ability a = itr.next();
+				if(list==null || list.size() ==0){
+					s.out("No abilities to process for " + currentChar.getName());
+				}else {
+					ListIterator<Ability> listItr = list.listIterator();
+					//ArrayList<Ability>  copyList = (ArrayList<Ability>)s.deepClone(list);
+					//loop abilities per character
+					while (listItr.hasNext()) {
+						Ability a = listItr.next();
 
-					currentAbility = a;
-					abilityNotCanceledCompletely = processAbility(a);
-					if(abilityNotCanceledCompletely == false || a.isMultiTurn()==false){
-						//remove ability from activeAbilitiesByChar.arraylist
-						//activeAbilitiesByChar.get(i).remove(a);
+						currentAbility = a;
+						abilityNotCanceledCompletely = processAbility(a);
+						if (abilityNotCanceledCompletely == false || a.isMultiTurn() == false) {
+							//remove ability from activeAbilitiesByChar.arraylist
+							//activeAbilitiesByChar.get(i).remove(a);
 
-						int abilityId = a.getId();
-						for(Iterator<Ability> itr2 = copyList.iterator(); itr2.hasNext();) {
-							Ability aa = itr2.next();
-							if(aa.getId() == abilityId){
-								//s.out("list = " + copyList.size());
-								s.out(aa.getName() + " completed.");
-								copyList.remove(aa);
-								//itr2.remove();
-								s.out("list = " + copyList.size());
-								if(copyList.size() == 0){
-									break;
-								}
-							}
-						} //loop till find correct id to delete
+							int abilityId = a.getId();
+							s.out(a.getName() + " completed.");
+							listItr.remove();
+						}//if delete required
+					}//while
+					//s.out("activeAbilitiesByChar size: "+ activeAbilitiesByChar.size());
 
-					}//if delete required
-				}//for
-				//s.out("activeAbilitiesByChar size: "+ activeAbilitiesByChar.size());
-				activeAbilitiesByChar.put(charId,copyList);  //put updated list back
-				//s.out("activeAbilitiesByChar size: "+ activeAbilitiesByChar.size());
-				s.out("Finished processing abilities for character id = "  + charId + " Name: " + this.getCharById(charId).getName());
-
+					//s.out("activeAbilitiesByChar size: "+ activeAbilitiesByChar.size());
+					s.out("Finished processing abilities for character id = " + charId + " Name: " + this.getCharById(charId).getName());
+				}
 			}catch(Exception e){
 				//do nothing
 				e.printStackTrace();
@@ -329,7 +403,7 @@ public class Battle implements Serializable{
 
 	public boolean runDefenseChoices(Character tc){
 		boolean abilityNotCanceledCompletely = true;
-		currentChar = tc;
+		//currentChar = tc;
 		int numActions = 1;
 		tc.getAction_().setNumActions(1);
 		while(numActions > 0) {
@@ -384,16 +458,16 @@ public class Battle implements Serializable{
 			double cbDamage = currentAbility.getBasicDamage();
 			double ccDamage = currentAbility.getChakraDamage();
 
-			s.out("Base damage        = " + (cbDamage + ccDamage) + " (physical dmg = " + cbDamage + " / chakra dmg = " + ccDamage + ")");
+			s.out( (int)(cbDamage + ccDamage) + " Base damage  -> " + " (physical dmg = " + (int)cbDamage + " / chakra dmg = " + (int)ccDamage + ")");
 
 			scaleAbility();
 			double cbDamageScaled = currentAbility.getBasicDamage();
 			double ccDamageScaled = currentAbility.getChakraDamage();
 			double totalBonus = (cbDamageScaled + ccDamageScaled) - (cbDamage + ccDamage);
-			s.out("Bonus Damage       = " + totalBonus);
+			s.out((int)totalBonus + " Bonus Damage      " );
 			//s.out("_______________________________________");
 			s.pause();
-			s.out(currentChar.getName() + "'s " + currentAbility.getName() + " strikes for " + (cbDamageScaled + ccDamageScaled));
+			s.out(currentChar.getName() + "'s " + currentAbility.getName() + " strikes for " + (int)(cbDamageScaled + ccDamageScaled));
 
 			//cancel damage with defense
 			Stats ts = tc.getStats_();
@@ -402,13 +476,13 @@ public class Battle implements Serializable{
 			double tcDef = ts.getChakraDef();
 			tbDef = (double) s.getRandomIntBetween(0, (int) tbDef);
 			tcDef = (double) s.getRandomIntBetween(0, (int) tcDef);
-			s.out(tc.getName() + " blocks " + tbDef + " physical dmg and " + tcDef + " chakra dmg");
+			s.out(tc.getName() + " blocks " + (int)tbDef + " physical dmg and " + (int)tcDef + " chakra dmg");
 			//s.out("_______________________________________");
 			s.pause();
 			cbDamageScaled = (cbDamageScaled - tbDef < 0) ? 0 : (cbDamageScaled - tbDef);
 			ccDamageScaled = (ccDamageScaled - tcDef < 0) ? 0 : (ccDamageScaled - tcDef);
 			double total = cbDamageScaled + ccDamageScaled;
-			s.out("Total Damage = " + total);
+			s.out("Total Damage = " + (int)total);
 			double tchp = ts.getCurrentHP();
 			ts.setCurrentHP(tchp - total);
 			s.pause();
@@ -448,7 +522,7 @@ public class Battle implements Serializable{
 			double t = currentChar.getStats_().getStatFromName(trait);
 			double bonus = (double)s.getRandomIntBetween((int)t/2, (int)t*2);
 			bonus = bonus * scale;
-			s.out("+ " + bonus + " physical damage, boosted by "  + trait + " @ " + (int)(scale*100) + "%" );
+			s.out("+ " + (int)bonus + " bonus physical damage, boosted by "  + trait + " @ " + (int)(scale*100) + "%" );
 			double bd = currentAbility.getBasicDamage();
 			currentAbility.setBasicDamage(bd + bonus);
 		}
@@ -459,11 +533,13 @@ public class Battle implements Serializable{
 			double t = currentChar.getStats_().getStatFromName(trait);
 			double bonus = (double)s.getRandomIntBetween((int)t/2, (int)t*2);
 			bonus = bonus * scale2;
-			s.out("+ " + bonus + " chakra damage, boosted by "  + trait + " @ " + (int)(scale2*100) + "%" );
+			s.out("+ " + (int)bonus + " bonus chakra damage, boosted by "  + trait + " @ " + (int)(scale2*100) + "%" );
 			double cd = currentAbility.getChakraDamage();
 			currentAbility.setBasicDamage(cd + bonus);
 		}
 	}//scaleAbilityOnTrait
+
+
 
 	public boolean processAction(boolean isOffense) {
 		//prevalidated
@@ -500,36 +576,76 @@ public class Battle implements Serializable{
 			}
 		}
 		//move
-		if(currentAction == 2) {			 
-			String com = currentChar.getCommands_().getCommand();
-			//change this part ---> make movements a request , not an immediate action
-			//create a moveNorth ability, if ability name = north, movement ==true, run movement
-			actionSuccess = currentChar.getCommands_().processBattleMapCommand(com);
-			if(actionSuccess) {
-				this.getMap().printBattleMap();
-				s.out("Moved " + com);
-				s.pause();
-				currentChar.getAction_().setUsedMove(true);
-			}			
+		if(currentAction == 2) {
+			//human
+			if(currentChar.getAI_().isAI() == false) {
+				String com = currentChar.getCommands_().getCommand();
+				//change this part ---> make movements a request , not an immediate action
+				//create a moveNorth ability, if ability name = north, movement ==true, run movement
+				actionSuccess = currentChar.getCommands_().processBattleMapCommand(com);
+				if (actionSuccess) {
+					this.getMap().printBattleMap();
+					s.out("");
+					s.pause();
+					s.out(currentChar.getName() + " moved " + com);
+					s.pause();
+					currentChar.getAction_().setUsedMove(true);
+				}
+			//AI
+			}else{ //is Ai = true
+				String direction = currentChar.getAI_().getRandomBattleMoveDirection();
+				actionSuccess = currentChar.getCommands_().processBattleMapCommand(direction);
+				if(actionSuccess){
+					this.getMap().printBattleMap();
+					s.out("");
+					s.pause();
+					s.out(currentChar.getName() + " moved " + direction);
+					s.pause();
+				}else{
+					s.out(currentChar.getName() + " failed at moving " + direction);
+				}
+			}
 		}
 		//offensive
 		if(currentAction == 3) {
-			Ability offensive = currentChar.getAbilities_().chooseOffensive();
-			Ability offensiveCopy = (Ability)s.deepClone(offensive) ;
+			//HUMAN
+			if(currentChar.getAI_().isAI() == false) {
+				Ability offensive = currentChar.getAbilities_().chooseOffensive();
+				Ability offensiveCopy = (Ability) s.deepClone(offensive);
 
-			if(offensive != null) {
-				if(currentChar.canDo(offensive) ){
-					currentAbility = offensiveCopy;
-					actionSuccess = prepareAbility();
-					if(actionSuccess){
-						offensiveCopy.setId(this.a_id);
-						this.a_id++;
-						activeAbilitiesCurrentChar.add(offensiveCopy);
-						activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar );
-						currentChar.getAction_().setUsedOffensive(true);
+				if (offensive != null) {
+					if (currentChar.canDo(offensive)) {
+						currentAbility = offensiveCopy;
+						actionSuccess = prepareAbility();
+						if (actionSuccess) {
+							offensiveCopy.setId(this.a_id);
+							this.a_id++;
+							activeAbilitiesCurrentChar.add(offensiveCopy);
+							activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar);
+							currentChar.getAction_().setUsedOffensive(true);
+						}
+					}
+				}
+			//AI
+			}else{
+				Ability offensive = currentChar.getAbilities_().chooseOffensiveAI();
+				Ability offensiveCopy = (Ability) s.deepClone(offensive);
+
+				if (offensive != null) {
+					if (currentChar.canDo(offensive)) {
+						currentAbility = offensiveCopy;
+						actionSuccess = prepareAbility();
+						if (actionSuccess) {
+							offensiveCopy.setId(this.a_id);
+							this.a_id++;
+							activeAbilitiesCurrentChar.add(offensiveCopy);
+							activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar);
+							currentChar.getAction_().setUsedOffensive(true);
+						}
 					}
 				}
 			}
+
 		}
 		//defensive
 //		if(currentAction == 4) {
@@ -622,28 +738,55 @@ public class Battle implements Serializable{
 //		}
 		//defensive
 		if(currentDefAction == 4) {
-			Ability defensive = tc.getAbilities_().chooseDefensive();
-			Ability defensiveCopy = (Ability)s.deepClone(defensive) ;
+			if(tc.getAI_().isAI() == false) {
+				Ability defensive = tc.getAbilities_().chooseDefensive();
+				Ability defensiveCopy = (Ability) s.deepClone(defensive);
 
-			if(defensive != null) {
-				if(tc.canDo(defensive) ){
-					currentAbility = defensiveCopy;
-					actionSuccess = prepareAbility();
-					if(actionSuccess){
-						defensiveCopy.setId(this.a_id);
-						this.a_id++;
-						activeAbilitiesCurrentChar.add(defensiveCopy);
-						activeAbilitiesByChar.put(tc.getId(), activeAbilitiesCurrentChar );
-						tc.getAction_().setUsedDefensive(true);
+				if (defensive != null) {
+					if (tc.canDo(defensive)) {
+						currentAbility = defensiveCopy;
+						actionSuccess = prepareAbility();
+						if (actionSuccess) {
+							defensiveCopy.setId(this.a_id);
+							this.a_id++;
+							activeAbilitiesCurrentChar.add(defensiveCopy);
+							activeAbilitiesByChar.put(tc.getId(), activeAbilitiesCurrentChar);
+							tc.getAction_().setUsedDefensive(true);
+						} else {
+							s.out(defensiveCopy.getName() + " cancelled.");
+						}
+					} else {
+						s.out("Sorry, you can't use defensive moves right now.");
+					}
+				} else {
+					s.out("Sorry, you have no defensive abilities.");
+				}
+			//AI
+			}else{
+				Ability defensive = tc.getAbilities_().chooseDefensiveAI();
+				Ability defensiveCopy = (Ability)s.deepClone(defensive) ;
+
+				if(defensive != null) {
+					if(tc.canDo(defensive) ){
+						currentAbility = defensiveCopy;
+						actionSuccess = prepareAbility();
+						if(actionSuccess){
+							defensiveCopy.setId(this.a_id);
+							this.a_id++;
+							activeAbilitiesCurrentChar.add(defensiveCopy);
+							activeAbilitiesByChar.put(tc.getId(), activeAbilitiesCurrentChar );
+							tc.getAction_().setUsedDefensive(true);
+						}else{
+							s.out(defensiveCopy.getName() + " cancelled.");
+						}
 					}else{
-						s.out(defensiveCopy.getName() + " cancelled.");
+						s.out("Sorry, you can't use defensive moves right now.");
 					}
 				}else{
-					s.out("Sorry, you can't use defensive moves right now.");
+					s.out("Sorry, you have no defensive abilities.");
 				}
-			}else{
-				s.out("Sorry, you have no defensive abilities.");
 			}
+
 		}
 		if(currentDefAction == 5) {
 			s.out("Sorry, " + tc.getName() + " has no items.");
@@ -900,7 +1043,7 @@ public class Battle implements Serializable{
 		currentChar = null;
 		for(Squad s : ss) {
 			currentChar = s.getCharById(characterIdOrder.get(i));
-			if (!(currentChar==null || currentChar.equals(null) )) {
+			if (!(currentChar == null || currentChar.equals(null) )) {
 				break;
 			}
 		}

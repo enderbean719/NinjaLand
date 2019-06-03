@@ -18,7 +18,29 @@ public class AI  implements Serializable{
 	
 	
 	
-	
+	public String getRandomBattleMoveDirection(){
+		System1 s = new System1();
+		int r = s.getRandomIntBetween(1,8);
+		switch (r){
+			case 1:
+				return "n";
+			case 2:
+				return "s";
+			case 3:
+				return "e";
+			case 4:
+				return "w";
+			case 5:
+				return "nw";
+			case 6:
+				return "ne";
+			case 7:
+				return "sw";
+			case 8:
+				return "se";
+		}
+		return "";
+	}
 
 	
 	public boolean isAI() {

@@ -95,21 +95,37 @@ public class Commands implements Serializable{
 	
 	public boolean processMapCommand(String c) {
 		boolean commandFound = false;
-		if(c.equals("north")) {
+		if(c.equals("north") || c.equals("n")) {
 			commandFound = true;
 			mc.moveNorth();
 			mc.getMap_().printBattleMap();
-		}else if(c.equals("south")) {
+		}else if(c.equals("south")|| c.equals("s")) {
 			commandFound = true;
 			mc.moveSouth();
 			mc.getMap_().printBattleMap();
-		}else if(c.equals("east")) {
+		}else if(c.equals("east")|| c.equals("e")) {
 			commandFound = true;
 			mc.moveEast();
 			mc.getMap_().printBattleMap();
-		}else if(c.equals("west")) {
+		}else if(c.equals("west")|| c.equals("w")) {
 			commandFound = true;
 			mc.moveWest();
+			mc.getMap_().printBattleMap();
+		}else if(c.equals("southwest")|| c.equals("sw")) {
+			commandFound = true;
+			mc.moveSouthWest();
+			mc.getMap_().printBattleMap();
+		}else if(c.equals("southeast")|| c.equals("se")) {
+			commandFound = true;
+			mc.moveSouthEast();
+			mc.getMap_().printBattleMap();
+		}else if(c.equals("northwest")|| c.equals("nw")) {
+			commandFound = true;
+			mc.moveNorthWest();
+			mc.getMap_().printBattleMap();
+		}else if(c.equals("northeast")|| c.equals("ne")) {
+			commandFound = true;
+			mc.moveNorthEast();
 			mc.getMap_().printBattleMap();
 		}else if(c.equals("look")) {
 			commandFound = true;
@@ -147,42 +163,29 @@ public class Commands implements Serializable{
 	
 	
 	
-	
-//	public boolean processBattleMovementCommand(String c) { //?
-//		boolean commandFound = false;
-//		if(c.equals("north")) {
-//			commandFound = true;
-//			mc.moveNorth();
-//			mc.getMap_().printBattleMap();
-//		}else if(c.equals("south")) {
-//			commandFound = true;
-//			mc.moveSouth();
-//			mc.getMap_().printBattleMap();
-//		}else if(c.equals("east")) {
-//			commandFound = true;
-//			mc.moveEast();
-//			mc.getMap_().printBattleMap();
-//		}else if(c.equals("west")) {
-//			commandFound = true;
-//			mc.moveWest();
-//			mc.getMap_().printBattleMap();
-//		}
-//		return false;
-//	}
+
 	
 	
 
 	public boolean processBattleMapCommand(String c) {
 		boolean moveSuccess = false;
 		while(   !(c.equals("back") || c.equals("cancel") )   &&    moveSuccess == false ){
-			if(c.equals("north")) {
+			if(c.equals("north") || c.equals("n")) {
 				moveSuccess = mc.moveNorth();
-			}else if(c.equals("south")) {
+			}else if(c.equals("south")|| c.equals("s")) {
 				moveSuccess = mc.moveSouth();
-			}else if(c.equals("east")) {
+			}else if(c.equals("east")|| c.equals("e")) {
 				moveSuccess = mc.moveEast();
-			}else if(c.equals("west")) {
+			}else if(c.equals("west")|| c.equals("w")) {
 				moveSuccess = mc.moveWest();
+			}else if(c.equals("southwest")|| c.equals("sw")) {
+				moveSuccess = mc.moveSouthWest();
+			}else if(c.equals("southeast")|| c.equals("se")) {
+				moveSuccess = mc.moveSouthEast();
+			}else if(c.equals("northwest")|| c.equals("nw")) {
+				moveSuccess = mc.moveNorthWest();
+			}else if(c.equals("northeast")|| c.equals("ne")) {
+				moveSuccess = mc.moveNorthEast();
 			}else if(c.equals("help")) {
 				//help menu
 				this.printBattleMapCmds();
@@ -230,10 +233,14 @@ public class Commands implements Serializable{
 		s.out("=========================");
 		s.out("     MAP COMMANDS    ");
 		s.out("=========================");
-		s.out("north = go 1 sqare up");
-		s.out("south = go 1 sqare down");
-		s.out("east = go 1 to the left");
-		s.out("west = go 1 to the right");
+		s.out("north 		(n) = go 1 square up");
+		s.out("south 		(s) = go 1 square down");
+		s.out("east  		(e) = go 1 to the left");
+		s.out("west  		(w) = go 1 to the right");
+		s.out("southeast (se) = go 1 square diagonally southeast");
+		s.out("southwest (sw) = go 1 square diagonally southwest");
+		s.out("northeast (ne) = go 1 square diagonally northeast");
+		s.out("northwest (nw) = go 1 square diagonally northwest");
 		s.out("look = observe area (use twice in a row to get a more detailed description)");
 		s.out("approach = interact with objects");
 		s.out("characters");
@@ -247,10 +254,14 @@ public class Commands implements Serializable{
 		s.out("=========================");
 		s.out("     MAP COMMANDS    ");
 		s.out("=========================");
-		s.out("north = go 1 sqare up");
-		s.out("south = go 1 sqare down");
-		s.out("east = go 1 to the left");
-		s.out("west = go 1 to the right");
+		s.out("north 		(n) = go 1 square up");
+		s.out("south 		(s) = go 1 square down");
+		s.out("east  		(e) = go 1 to the left");
+		s.out("west  		(w) = go 1 to the right");
+		s.out("southeast (se) = go 1 square diagonally southeast");
+		s.out("southwest (sw) = go 1 square diagonally southwest");
+		s.out("northeast (ne) = go 1 square diagonally northeast");
+		s.out("northwest (nw) = go 1 square diagonally northwest");
 		s.out("back = cancel move action");
 		s.out("=========================");
 	}

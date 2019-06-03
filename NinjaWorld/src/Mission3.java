@@ -9,11 +9,11 @@ public class Mission3 implements Story, Serializable{
 		System1 s = new System1();
 		boolean acceptMission = false;
 		boolean rejectMission = false;
-		Character Alfin = new Character(true, "Alfin Sensei", 30, "Male");
+		Character Alfin = new Character(true, "Alfin Sensei", 30, "Male", "elemental");
 		mc.getRel_().newRelationship75(Alfin.getName());		
-		Character Mintly = new Character(true, "Mintly Kun", 5, "Female");
+		Character Mintly = new Character(true, "Mintly Kun", 5, "Female", "tricky");
 		mc.getRel_().newRelationship50(Mintly.getName());
-		Character Geeno = new Character(true, "Geeno Kun", 5, "Male");
+		Character Geeno = new Character(true, "Geeno Kun", 5, "Male","clawed");
 		mc.getRel_().newRelationship50(Geeno.getName());
 		
 		s.out("Alfin: All right team 3! We've been called for our first D rank mission outside the village.");

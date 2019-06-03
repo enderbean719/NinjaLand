@@ -64,7 +64,9 @@ public class Abilities  implements Serializable{
 		}
 		return a;
 	}
-	
+
+
+
 	public Ability chooseDefensive() {
 		Ability a = new Ability();
 		int answer = 0;
@@ -89,6 +91,66 @@ public class Abilities  implements Serializable{
 		}
 		return a;
 	}
+
+
+
+	public Ability chooseOffensiveAI() {
+		Ability a = new Ability();
+		int answer = 0;
+//		s.out("+++++ " + mc.getName() + " +++++");
+//		s.out(" Choose an offensive ability ");
+//		s.out("_____________________________");
+//		showListOffensive();
+//		s.out("_____________________________");
+//		s.print(":");
+		answer = s.getRandomIntBetween(0, aList.size());
+		if(answer==0) {
+			a = null;  				 	//0 = cancel
+		}else {
+			a = aList.get(answer-1);   //adjust answer for +1 offset
+		}
+		while(a != null && a.isOffensive() == false) {
+//			s.out("Sorry, please re-enter a valid number");
+//			s.out("_____________________________");
+//			s.print(":");
+			answer = s.getRandomIntBetween(1, aList.size());
+			a = aList.get(answer-1);
+		}
+		return a;
+	}
+
+
+
+
+
+	public Ability chooseDefensiveAI() {
+		Ability a = new Ability();
+		int answer = 0;
+//		s.out("+++++ " + mc.getName() + " +++++");
+//		s.out(" Choose a defensive ability ");
+//		s.out("____________________________");
+//		showListDefensive();
+//		s.out("_____________________________");
+//		s.print(":");
+		answer = s.getRandomIntBetween(0, aList.size());
+		if(answer==0) {
+			a = null;   				//0 = cancel
+		}else {
+			a = aList.get(answer-1);   //adjust answer for +1 offset
+		}
+		while(a != null && a.isDefensive() == false) {
+//			s.out("Sorry, please re-enter a valid number");
+//			s.out("_____________________________");
+//			s.print(":");
+			answer = s.getRandomIntBetween(1, aList.size());
+			a = aList.get(answer-1);
+		}
+		return a;
+	}
+
+
+
+
 	
 	public void showList() {
 		for(int i=0; i< aList.size(); i++) {
@@ -100,7 +162,7 @@ public class Abilities  implements Serializable{
 		s.out("0. Cancel");
 		for(int i=0; i< aList.size(); i++) {
 			if(aList.get(i).isOffensive()	) {
-				s.out(   (i+1) + ": " + aList.get(i).getName() );
+				s.out(   (i+1) + ": " + aList.get(i).getName() + "\t\t\t" + (int)aList.get(i).getChakraCost() + " chakra" );
 			}			
 		}
 	}
@@ -109,7 +171,7 @@ public class Abilities  implements Serializable{
 		s.out("0. Cancel");
 		for(int i=0; i< aList.size(); i++) {
 			if(aList.get(i).isDefensive()	) {
-				s.out(  (i+1) + ": " + aList.get(i).getName() );
+				s.out(  (i+1) + ": " + aList.get(i).getName() + "\t\t\t" + (int)aList.get(i).getChakraCost() + " chakra");
 			}			
 		}
 	}

@@ -42,7 +42,7 @@ public class Story1 implements Story, Serializable{
 		//peek inside scroll = lose trust but gain a forbidden jutsu
 
 		//boolean isAI, String nameInput, int lvlInput, String gender
-		Character saisu = new Character(true, "Saisu Kamano", 1, "male");
+		Character saisu = new Character(true, "Saisu Kamano", 1, "male", "weaponSummoner");
 		saisu.getStats_().loadClawed(saisu.getLvl());
 		mc.getRel_().newRelationship75(saisu.getName());
 		//https://naruto.fandom.com/wiki/Saisu_Kamano
@@ -50,6 +50,7 @@ public class Story1 implements Story, Serializable{
 		//print nice character image;
 		s.out(saisu.getName() + ": Hey " + mc.getName() ) ;		
 		s.out("Do you hear that loud roaring?");
+		s.pause();
 		s.out("1. yeah, whats all the commotion?");
 		s.out("2. no, what's up?");
 		s.out("3. no, are you hearing things? ");
@@ -57,9 +58,11 @@ public class Story1 implements Story, Serializable{
 		if(answer == 1) {
 			mc.getRel_().addGoodDeedAgainst(saisu.getName());
 			s.out("<" + saisu.getName() + " noticed your positive attitude.>");
+			s.pause();
 			s.out("I was wondering when you would finally notice!");
 			s.out("It's the chunin exams!  We're late for the show!");
 			s.out("Let's go find some seats in the audience.");
+			s.pause();
 			s.out("1. Sure lets go!");
 			s.out("2. Nah...You go ahead.");
 		}else if(answer == 2) {
@@ -67,14 +70,17 @@ public class Story1 implements Story, Serializable{
 			s.out("Man, you must be deaf or something!");
 			s.out("It's the chunin exams!  We're late for the show!");
 			s.out("Let's go find some seats in the audience.");
+			s.pause();
 			s.out("1. Sure lets go!");
 			s.out("2. Nah...You go ahead.");
 		}else {
 			s.out("<" + saisu.getName() + " noticed your negative attitude.>");
 			mc.getRel_().addBadDeedAgainst(saisu.getName());
+			s.pause();
 			s.out("What?? You're kidding, right?");
 			s.out("It's the chunin exams!  We're late for the show!");
 			s.out("Let's go find some seats in the audience.");
+			s.pause();
 			s.out("1. Sure lets go!");
 			s.out("2. Nah...You go ahead.");			
 		}
@@ -83,56 +89,16 @@ public class Story1 implements Story, Serializable{
 		mc.setMap_(mainmap);
 
 
-		//Kakashi = Itachi + 8
-		//Itachi = Naruto + 6
-		
-		//ninja
-		
-		//children : Zaji, 
-		
-		//Genin
-		
-		//Team 1 - Ebisu (elite trainer for hokage)		
-		//Iruka Umino - naruto's teacher
-		//Muta Aburame - bug boy (cousin of Yoji) - good guy , lazy
-		//Hana Inuzuka - dog girl medical nin
-		
-		
-		//Team 2 - 		//Yuki Minazuki = Itachi sensei - jealous of itachi's skill
-		//Itachi Uchiha, 
-		//Tenma Izumo (fast taijutsu) (killed by masked man Madara on mission) bitter rival of itachi
-		//Shinko Inari, (girl) (quits ninja life) peace maker
-		
-		//Team 3 - Ibiki Sensei
-		//Himuka Suzukaze (girl) (added to itachi)worships itachi as master
-		//Yōji Aburame	(added to itachi) - bugs, killed father age 5, cant speak well (slit throat)
-		//MAIN CHAR
-		
-		//Team 4 - Asuma
-		//Mizuki (earth) killed ally secretly on mission so he wouldnt slow them down //Orochimaru secretly witnessed gave him a prototype cursemark as reward
-		//Tsubaki -(girl) fiance of Mizuki
-		//Dokan - tanky bully of itachi
-		
-		
-		//Team 5 - Kakashi
-		//Saisu Kamuno - weapon boy
-		//Maruten Akimichi - fat boy
-		//Izumi Uchiha (quits before teams change) - crush on Itachi, he saved her during nine tails, Itachi kills her with nice genjutsu
-
-		
-		//Chunin
-		//Team 6
-		//Tokuma Hyūga - hot shot
-		//Shisui Uchiha of the body flicker - humble hot shot
-		//
-		
-		//Root : Kabuto, Shisui, Itachi, ___
-		
-		
 		//arena
 		Character arenaBuilding = new Character();
 		arenaBuilding.setName("Arena");
-		mainmap.placeCreatureAndRemove(arenaBuilding,5,2);
+		mainmap.placeCreatureAndRemove(arenaBuilding,9,4);
+		//mizuki
+		Character mizuki = new Character(true,"Mizuki",2,"male","tricky");
+		mainmap.placeCreatureAndRemove(mizuki,0,4);
+		//arena
+		Character sakane = new Character(true, "Sakane Tsuchigumo", 7, "male", "elemental");
+		mainmap.placeCreatureAndRemove(sakane,5,2);
 		//snakes
 		for(int i=0; i<5; i++){
 			placeRandomSnake(mainmap);
@@ -150,7 +116,7 @@ public class Story1 implements Story, Serializable{
 						s.pause();
 						s.out("WARNING! Snake is coming for an attack!");
 						s.pause();
-						Area mcArea = mainmap.getAreaOfChar(mc);
+						//Area mcArea = mainmap.getAreaOfChar(mc);
 						Map1 snakeBattleMap = new Map1(mc, 3, 3);
 						snakeBattleMap.placeCreatureAndRemove(snake, 2, 2);
 						Squad s1 = new Squad(mc);
@@ -159,7 +125,7 @@ public class Story1 implements Story, Serializable{
 						try {
 							result = mc.getBattle_().beginSquadBattle(snakeBattleMap, s1, s2);
 							mc.setMap_(mainmap);
-							mainmap.placeCreatureAndRemove(mc, mcArea.getX(), mcArea.getY());
+							//mainmap.placeCreatureAndRemove(mc, mcArea.getX(), mcArea.getY());
 						} catch (Exception ee) {
 							// TODO Auto-generated catch block
 							ee.printStackTrace();
@@ -167,6 +133,7 @@ public class Story1 implements Story, Serializable{
 						if(result.isVictory()){
 							//map.remove snake
 							mainmap.printBattleMap();
+							s.pause();
 							s.out("Snake has been destroyed!");
 							s.pause();
 							mainmap.removeChar(snake);
@@ -189,7 +156,7 @@ public class Story1 implements Story, Serializable{
 		
 		//Kakashi is jonin at this time - maybe a sensei
 		//boolean isAI, String nameInput, int lvlInput, String gender
-		Character ibiki = new Character(true,"Ibiki Morino", 25, "male");
+		Character ibiki = new Character(true,"Ibiki Morino", 25, "male", "weaponSummoner");
 		ibiki.getStats_().loadWeaponSummoner(ibiki.getLvl());
 		mc.getRel_().newRelationship75(ibiki.getName());
 
@@ -234,12 +201,13 @@ public class Story1 implements Story, Serializable{
 
 
 	public Character newSnake(){
-		Character snake = new Character(true,"snake",1, "male");
+		Character snake = new Character(true,"snake",1, "male", "clawed");
 		snake.getStats_().loadClawed(snake.getLvl());
 		snake.getAbilities_().getaList().add(new Ability() );
 		snake.getAbilities_().getaList().get(0).loadScratch();
-		snake.getAbilities_().getaList().get(0).setName("Tail whip");
+		snake.getAbilities_().getaList().get(0).setName("Tail Whip");
 		snake.getStats_().setCurrentHP(5);
+		snake.getStats_().setHpRegen(0);
 		return  snake;
 	}
 

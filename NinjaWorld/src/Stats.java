@@ -63,9 +63,11 @@ public class Stats implements Serializable {
 		int answer = 0;
 		
 		while (x > 0){
-			printStats(); 	
+			printStats();
+			s.pause();
 			s.out("You have " + x + " points to spend.");
 			s.out("What area would you like to level up?");
+			s.print(":");
 			answer = s.getInt();
 			if (answer >= 1 && answer <= 11) {
 				levelUpStat(answer);
@@ -74,23 +76,43 @@ public class Stats implements Serializable {
 				s.out("Please enter a number 1 - 11");
 			}
 		}
-		
+		s.out("");
+		s.out("");
+		s.out("These are your new stats!")	;
+		printStats();
+		s.pause();
 	}//end purchaseStats
 	
 	
 	
 	public void printStats() {
-		s.out("1.  Strength:					" + basicAtk);
-		s.out("2.  Durability:					" + basicDef);
-		s.out("3.  Offensive Ninjutsu:				" + chakraAtk);		
-		s.out("4.  Defensive Ninjutsu:				" + chakraDef);
-		s.out("5.  Taijutsu/Agility:				" + speed);
-		s.out("6.  Genjutsu/Intelligence:			" + brains);
-		s.out("7.  Sensory Skills:				" + sensing);
-		s.out("8.  Health Quantity:				" + maxHP);
-		s.out("9.  Chakra Quantity:				" + maxChakra);
-		s.out("10. Health regeneration:			" + hpRegen);
-		s.out("11. Chakra regeneration:			" + chakraRegen);
+		//System.out.printf();
+
+		System.out.printf("%-30s %5.0f %n", "1.  Strength:", basicAtk);
+		System.out.printf("%-30s %5.0f %n", "2.  Durability:", basicDef);
+		System.out.printf("%-30s %5.0f %n", "3.  Offensive Ninjutsu:", chakraAtk);
+		System.out.printf("%-30s %5.0f %n", "4.  Defensive Ninjutsu:", chakraDef);
+		System.out.printf("%-30s %5.0f %n", "5.  Taijutsu/Agility:", speed);
+		System.out.printf("%-30s %5.0f %n", "6.  Genjutsu/Intelligence:", brains);
+		System.out.printf("%-30s %5.0f %n", "7.  Sensory Skills:", sensing);
+		System.out.printf("%-30s %5.0f %n", "8.  Health Quantity:", maxHP);
+		System.out.printf("%-30s %5.0f %n", "9.  Chakra Quantity:", maxChakra);
+		System.out.printf("%-30s %5.0f %n", "10. Health regeneration:", hpRegen);
+		System.out.printf("%-30s %5.0f %n", "11. Chakra regeneration:", chakraRegen);
+
+//
+//		s.out("");
+//		s.out("1.  Strength:					" + basicAtk);
+//		s.out("2.  Durability:					" + basicDef);
+//		s.out("3.  Offensive Ninjutsu:				" + chakraAtk);
+//		s.out("4.  Defensive Ninjutsu:				" + chakraDef);
+//		s.out("5.  Taijutsu/Agility:				" + speed);
+//		s.out("6.  Genjutsu/Intelligence:			" + brains);
+//		s.out("7.  Sensory Skills:				" + sensing);
+//		s.out("8.  Health Quantity:				" + maxHP);
+//		s.out("9.  Chakra Quantity:				" + maxChakra);
+//		s.out("10. Health regeneration:			" + hpRegen);
+//		s.out("11. Chakra regeneration:			" + chakraRegen);
 	}
 	
 	public void levelUpStat(int choice) {
@@ -188,7 +210,7 @@ public class Stats implements Serializable {
 		}else if(type == "weaponSummoner"){
 			loadWeaponSummoner(level);
 		}else {
-			
+			loadEqualStats(level);
 		}
 		
 		
@@ -355,7 +377,36 @@ public class Stats implements Serializable {
 		currentHP = maxHP;
 		currentChakra = maxChakra;
 	}
-	
+
+
+
+	public void loadEqualStats(int lvl) {
+		int points = calcPoints(lvl);
+		currentHP = 1;
+		currentChakra = 1;
+
+		maxHP = 40;  		//10%
+		maxChakra = 40;		//9%
+		hpRegen = 1;		//9%
+		chakraRegen = 1;	//9%
+		basicAtk = 1;		//9%
+		chakraAtk = 1;		//9%
+		basicDef = 1;		//9%
+		chakraDef = 1;		//9%
+		speed = 1;			//9%
+		brains = 1;			//9%
+		sensing = 1;		//9%
+		//11 stats total
+
+		armor = 1;
+		weight = 1;
+
+		applyPoints(points, .10, .09, .09, .09, .09, .09, .09, .09, .09, .09, .09);
+		currentHP = maxHP;
+		currentChakra = maxChakra;
+	}
+
+
 	private void applyPoints(int p, double a, double b, double c, double d, double e, double f, double g, double h, double i, double j, double k) {
 		//calculate ratios
 		int[] pp = new int[11];

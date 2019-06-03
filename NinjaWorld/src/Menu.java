@@ -120,19 +120,84 @@ public class Menu  implements Serializable{
 			s.out("What clan are you from?");
 			answerS = s.getWord();
 			mc.setClan(answerS);
+			s.out("");
 			s.out("Oh!! The " + mc.getClan() + "!!! \nI see... We will expect great things from you.");
 		}else {
 			s.out("I see. Your clan is unknown.  \nIt will be interesting to watch your development.");
 			mc.setClan("Unknown");
 		}
-
+		s.pause();
 		//default abilities
 		mc.getAbilities_().getaList().add(new Ability() );
 		mc.getAbilities_().getaList().add(new Ability() );
 		mc.getAbilities_().getaList().get(0).loadChargingPunch();
 		mc.getAbilities_().getaList().get(1).loadKunaiThrow();
 
-		mc.levelUp();
+
+		s.out("What type of fighter are you?");
+		s.out("0. Custom");
+		s.out("1. Balanced");
+		s.out("2. Tanky Fighter");
+		s.out("3. Speedy Fighter");
+		s.out("4. Weapon User");
+		s.out("5. Elemental User");
+		s.out("6. Tricky Fighter");
+		s.out("7. Sensory Fighter");
+		s.print(":")	;
+		answer = s.getIntBetween(0,7);
+		switch (answer){
+			case 0:
+				mc.levelUp();
+				break;
+			case 1:
+				mc.setLvl(1);
+				mc.updateExp();
+				mc.getStats_().loadEqualStats(1)	;
+				break;
+			case 2:
+				mc.setLvl(1);
+				mc.updateExp();
+				mc.getStats_().loadTanky(1)	;
+				break;
+			case 3:
+				mc.setLvl(1);
+				mc.updateExp();
+				mc.getStats_().loadClawed(1);
+				break;
+			case 4:
+				mc.setLvl(1);
+				mc.updateExp();
+				mc.getStats_().loadWeaponSummoner(1);
+				break;
+			case 5:
+				mc.setLvl(1);
+				mc.updateExp();
+				mc.getStats_().loadElemental(1);
+				break;
+			case 6:
+				mc.setLvl(1);
+				mc.updateExp();
+				mc.getStats_().loadTricky(1);
+				break;
+			case 7:
+				mc.setLvl(1);
+				mc.updateExp();
+				mc.getStats_().loadFlying(1)	;
+				break;
+			default:
+				mc.levelUp();
+				break;
+		}//end switch
+
+
+		s.out("")	;
+		s.out("Very interesting. Thank you for registering as a genin. You may go now.");
+		s.out("");
+		s.pause();
+		s.out("*You leave the Hokage's Headquarters*")	;
+		s.pause();
+
+
 		//add custom abilities based on Clan
 		//add abilities based on leveling up
 		

@@ -12,7 +12,8 @@ public class Character   implements Serializable {
 	private int money;
 	private int id;
 	private int exp;
-	private int expToLevelUp; 
+	private int expToLevelUp;
+	//private double shareOfBattle;   //not needed?
 	private String[] image = {""};
 	private Stats stats_ = new Stats();
 	private Abilities abilities_ = new Abilities(this);
@@ -34,6 +35,8 @@ public class Character   implements Serializable {
 	
 	public Character() {
 		//from CREATURE
+		//this.stats_.setCurrentHP(-999);  //set default for non-char Arena
+
 //		name = "Name"; 
 //		lvl = 0;
 //	    stats_ = new Stats();
@@ -43,7 +46,7 @@ public class Character   implements Serializable {
 		 
 	}
 	//boolean isAI, String nameInput, int lvlInput, String gender
-	public Character(boolean isAI, String nameInput, int lvlInput, String gender) {
+	public Character(boolean isAI, String nameInput, int lvlInput, String gender, String style) {
 
 	 	 name = nameInput;
 		 lvl = lvlInput ;
@@ -68,9 +71,21 @@ public class Character   implements Serializable {
 		 abilities_ = new Abilities(this);
 		 AI_ = new AI(this);
 		 this.AI_.setAI(isAI);
-		 map_ = new Map1(this, 1, 1);	
+		 map_ = new Map1(this, 1, 1);	//needs to change in game?
 		 commands_ = new Commands(this);
 
+		 //update stats based on level
+		this.stats_.loadCreatureStats(style,lvlInput);
+		//clawed --> dog, cat, bobcat, lion, fox, bear
+		// 			(speed, strength, hp)
+		//flying --> bird, bat, dragon
+		// 			(sensing + ninjutsu + speed)
+		//elemental -->
+		// 				(ninjutsu + durable)
+		//tanky  --> bear, toad, golem,
+		// 				(durable and strength)
+		//tricky  --> goblin, ghost, sage animal
+		// 				(genjutsu)
 	}
 	 
 	
@@ -101,17 +116,33 @@ public class Character   implements Serializable {
 		}else {
 			points = (int) (Math.sqrt(lvl)+2);			
 		}
+
 		this.stats_.purchaseStats(points);
 	}
 	
-	private void updateExp() {
+	public void updateExp() {
 		exp = 0;
 		double scaleOnLevel = Math.pow(lvl, 1.3);  //x^1.3  exponent
 		expToLevelUp = (int) (100.0 + (scaleOnLevel * 10.0));
 		//expToLevelUp = 100 + (lvl_ * 10);
 	}
-	
-	
+
+
+	public double experienceToLvlUpAtLevel(int level){
+		double scaleOnLevel = Math.pow(level, 1.3);  //x^1.3  exponent
+		expToLevelUp = (int) (100.0 + (scaleOnLevel * 10.0));
+		return expToLevelUp;
+	}
+
+
+	public void addExperience(double exp){
+		this.exp += exp;
+		double extraExp = this.exp - this.expToLevelUp;
+		if(this.exp>=this.expToLevelUp){
+			this.levelUp();
+			this.exp +=  extraExp;
+		}
+	}//addExperience
 	
 	public void printNumber(int x) {
 		//http://patorjk.com/software/taag/#p=display&f=Star%20Wars&t=234567
@@ -275,7 +306,9 @@ public class Character   implements Serializable {
 		}		
 		return tSuccess;
 	}//end transition
-	
+
+
+
 	public boolean move(String m) { //input cardinal direction
 		boolean moveSuccess = false;
 		int x, y, maxX, maxY;
@@ -289,28 +322,60 @@ public class Character   implements Serializable {
 				y--;
 				moveSuccess = true;
 			}else {
-				s.out("Cannot go any furthur north");
+				s.out("Cannot go any further north");
 			}			
 		}else if(m=="south") {
 			if(y < maxY) {
 				y++;
 				moveSuccess = true;
 			}else {
-				s.out("Cannot go any furthur south");
+				s.out("Cannot go any further south");
 			}
 		}else if(m=="east") {
 			if(x < maxX) {
 				x++;
 				moveSuccess = true;
 			}else {
-				s.out("Cannot go any furthur east");
+				s.out("Cannot go any further east");
 			}
 		}else if(m=="west") {
 			if(x > 0) {
 				x--;
 				moveSuccess = true;
 			}else {
-				s.out("Cannot go any furthur west");
+				s.out("Cannot go any further west");
+			}
+		}else if(m=="northeast") {
+			if(y > 0 && x < maxX) {
+				y--;
+				x++;
+				moveSuccess = true;
+			}else {
+				s.out("Cannot go any further northeast");
+			}
+		}else if(m=="northwest") {
+			if(y > 0 && x > 0) {
+				y--;
+				x--;
+				moveSuccess = true;
+			}else {
+				s.out("Cannot go any further northwest");
+			}
+		}else if(m=="southeast") {
+			if(y < maxY && x < maxX) {
+				y++;
+				x++;
+				moveSuccess = true;
+			}else {
+				s.out("Cannot go any further southeast");
+			}
+		}else if(m=="southwest") {
+			if(y < maxY && x > 0) {
+				y++;
+				x--;
+				moveSuccess = true;
+			}else {
+				s.out("Cannot go any further southwest");
 			}
 		}else {
 			s.out( m + "?");
@@ -343,9 +408,18 @@ public class Character   implements Serializable {
 	public boolean moveWest() {
 		return move("west");
 	}
-	
-	
-	
+	public boolean moveNorthWest() {
+		return move("northwest");
+	}
+	public boolean moveNorthEast() {
+		return move("northeast");
+	}
+	public boolean moveSouthWest() {
+		return move("southwest");
+	}
+	public boolean moveSouthEast() {
+		return move("southeast");
+	}
 	
 	 public void printStatsFormal() {
 		 s.out("");
@@ -551,5 +625,17 @@ public class Character   implements Serializable {
 	public void setAction_(Action action_) {
 		this.action_ = action_;
 	}
-		 
+
+
+
+//	public double getShareOfBattle() {
+//		return shareOfBattle;
+//	}
+//
+//	public void setShareOfBattle(double shareOfBattle) {
+//		this.shareOfBattle = shareOfBattle;
+//	}
+
+
+
 }//end Character

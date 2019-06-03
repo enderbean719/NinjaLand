@@ -12,8 +12,7 @@ public class Story4 implements Story, Serializable{
 
 		
 		
-		Character naruto = new Character(false,"Naruto",2,"male");
-		naruto.getStats_().loadCreatureStats("clawed", 4);
+		Character naruto = new Character(false,"Naruto",5,"male", "clawed");
 		naruto.getAbilities_().getaList().add(new Ability() );
 		naruto.getAbilities_().getaList().add(new Ability() );
 		naruto.getAbilities_().getaList().add(new Ability() );
@@ -29,8 +28,7 @@ public class Story4 implements Story, Serializable{
 
 		s.out("naruto AI = " + naruto.getAI_().isAI());
 		
-		Character sasuke = new Character(false,"Sasuke",2,"male");
-		sasuke.getStats_().loadCreatureStats("flying", 2);
+		Character sasuke = new Character(true,"Sasuke",2,"male","elemental");
 		sasuke.getAbilities_().getaList().add(new Ability() );
 		sasuke.getAbilities_().getaList().add(new Ability() );
 		sasuke.getAbilities_().getaList().add(new Ability() );
@@ -64,7 +62,7 @@ public class Story4 implements Story, Serializable{
 		
 		
 		s.out("end game");
-		s.getInt();
+		s.pause();
 		
 		//s.out("Enter integer to quit");
 		//s.getInt();
