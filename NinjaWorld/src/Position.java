@@ -4,6 +4,8 @@ import java.io.Serializable;
 public class Position  implements Serializable{
 	private int x;
 	private int y;
+	private int oldX;
+	private int oldY;
 	private boolean hidden;
 	private boolean invisible;
 	private boolean silent;
@@ -13,11 +15,11 @@ public class Position  implements Serializable{
 	
 	
 	//only one in this list
-	private boolean inWater; 	//travel
-	private boolean onWater;  //water
-	private boolean inSky;		//travel
-	private boolean inTree;	 //travel
-	private boolean onLand;  //travel
+	private boolean inWater; 		//travel
+	private boolean onWater;  		//water
+	private boolean inSky;			//travel
+	private boolean inTree;			//travel
+	private boolean onLand;  		//travel
 	private boolean underGround;	//travel	
 	
 	
@@ -28,6 +30,8 @@ public class Position  implements Serializable{
 	public Position() {
 		x = 0;
 		y = 0;
+		oldX = 0;
+		oldY = 0;
 		hidden = false;
 		invisible = false;
 		silent = false;
@@ -283,5 +287,25 @@ public class Position  implements Serializable{
 			this.underGround = underGround;
 		}	
 	}
-	
+
+
+
+	public int getOldX() {
+		return oldX;
+	}
+
+	public void setOldX(int oldX) {
+		this.oldX = oldX;
+	}
+
+	public int getOldY() {
+		return oldY;
+	}
+
+	public void setOldY(int oldY) {
+		this.oldY = oldY;
+	}
+
+
+
 }//end class

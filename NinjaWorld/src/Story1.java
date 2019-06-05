@@ -111,20 +111,32 @@ public class Story1 implements Story, Serializable{
 				
 				//snake event
 				//move snakes
-				for(Character snake : this.snakeList) {
+				ListIterator<Character> snakeListItr = snakeList.listIterator();
+				while (snakeListItr.hasNext()) {
+					Character snake = snakeListItr.next();
 					if (e.mcNextToChar(snake) == true) {
 						s.pause();
 						s.out("WARNING! Snake is coming for an attack!");
 						s.pause();
 						//Area mcArea = mainmap.getAreaOfChar(mc);
-						Map1 snakeBattleMap = new Map1(mc, 3, 3);
-						snakeBattleMap.placeCreatureAndRemove(snake, 2, 2);
+						//mainmap.removeChar(mc);
+
+
+
+						Map1 snakeBattleMap = new Map1(3, 3);
+						mc.transitionToMap(snakeBattleMap,0,0);
+						snake.transitionToMap(snakeBattleMap, 2,2);
+
+
+						//snakeBattleMap.placeCreatureAndRemove(snake, 2, 2);
 						Squad s1 = new Squad(mc);
 						Squad s2 = new Squad(snake);
+
 						Result result = new Result();
 						try {
+
 							result = mc.getBattle_().beginSquadBattle(snakeBattleMap, s1, s2);
-							mc.setMap_(mainmap);
+							//mc.setMap_(mainmap);
 							//mainmap.placeCreatureAndRemove(mc, mcArea.getX(), mcArea.getY());
 						} catch (Exception ee) {
 							// TODO Auto-generated catch block
@@ -137,6 +149,7 @@ public class Story1 implements Story, Serializable{
 							s.out("Snake has been destroyed!");
 							s.pause();
 							mainmap.removeChar(snake);
+							snakeListItr.remove();
 							mainmap.printBattleMap();
 						}
 					}//end snake battle

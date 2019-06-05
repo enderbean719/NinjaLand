@@ -3,7 +3,7 @@ import java.io.Serializable;
  
 public class Event implements Serializable{
 
-	Character mc;
+	public Character mc;
 	
 	public Event(Character mc) {
 		this.mc = mc;

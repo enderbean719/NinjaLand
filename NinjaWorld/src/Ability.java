@@ -63,7 +63,7 @@ public class Ability implements Serializable {
 
 	//private int targetAreaID;
 	//private String targetString;
-	private ArrayList<Object> targetObjs = new ArrayList<Object>();;  //Character, Area, ability
+	private ArrayList<Object> targetObjs = new ArrayList<Object>();  //Character, Area, ability
 	//private boolean atCharacter;	//battle processing
 	//private boolean atArea;			//battle processing
 	//private boolean atAbility;		//battle processing

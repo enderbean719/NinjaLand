@@ -22,6 +22,7 @@ public class Character   implements Serializable {
 	private AI AI_ = new AI();
 	private Relationships rel_ = new Relationships();
 	private Map1 map_ = new Map1();
+	private Map1 oldMap_ = new Map1();
 	private Squad squad_ = new Squad();
 	private Summonings summonings_ = new Summonings();
 	private Battle battle_ = new Battle();
@@ -64,7 +65,6 @@ public class Character   implements Serializable {
 		 rel_ = new Relationships();		//doesn't need reference to this		 	
 		 squad_ = new Squad();				//doesn't need reference to this
 		 summonings_ = new Summonings();	//doesn't need reference to this
-		 battle_ = new Battle();			//doesn't need reference to this		 
 		 items_ = new Items();				//doesn't need reference to this
 		 action_ = new Action();			//doesn't need reference to this
 
@@ -73,6 +73,7 @@ public class Character   implements Serializable {
 		 this.AI_.setAI(isAI);
 		 map_ = new Map1(this, 1, 1);	//needs to change in game?
 		 commands_ = new Commands(this);
+		 battle_ = new Battle(this);
 
 		 //update stats based on level
 		this.stats_.loadCreatureStats(style,lvlInput);
@@ -636,6 +637,33 @@ public class Character   implements Serializable {
 //		this.shareOfBattle = shareOfBattle;
 //	}
 
+
+	public Map1 getOldMap_() {
+		return oldMap_;
+	}
+
+	public void setOldMap_(Map1 oldMap_) {
+		this.oldMap_ = oldMap_;
+	}
+
+	public void transitionToMap(Map1 m, int x, int y){
+		this.setOldMap_(this.map_)	;
+		this.position_.setOldX(this.position_.getX());
+		this.position_.setOldY(this.position_.getY());
+		//this.getOldMap_().removeChar(this);
+		this.setMap_(m);
+		this.position_.setX(x);
+		this.position_.setY(y);
+		Area charExistsArea = m.getAreaOfChar(this);
+		if( charExistsArea == null){
+			s.out("char null in transitionToMap");
+			m.getArea(x,y).getContainsObj().add(this);
+		}else{
+			s.out("char exists in transitionToMap");
+			charExistsArea.getContainsObj().remove(this);
+			m.getArea(x,y).getContainsObj().add(this);
+		}
+	}//transitionToMap
 
 
 }//end Character

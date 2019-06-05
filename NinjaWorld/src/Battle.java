@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class Battle implements Serializable{
 
 	private System1 s = new System1();
+	private Character mc;
 	private Squad s1;
 	private Squad s2;
 	private ArrayList<Squad> ss;
@@ -41,7 +42,11 @@ public class Battle implements Serializable{
 	public Battle(){
 		
 	}
-	
+
+	public Battle(Character mc	){
+		this.mc = mc;
+	}
+
 	public Battle(Map1 map, Squad s1, Squad s2){
 		this.map = map;
 		this.s1 = s1;
@@ -57,29 +62,57 @@ public class Battle implements Serializable{
 	}
 	
 
-	public Result beginSquadBattle(){		
-		Result result = new Result();
-		
-		
-		
-		return result;
-	}
 	 
 	
 	public Result beginSquadAmbush() {
 		Result result = new Result();
-		
-		
-		
+
 		return result;
 	}
 	 
-	
-	public void attack() {
-		//give mc list of attack options
-	}
-	
-	
+
+
+
+	public void placeCharactersRandomly(){
+		int edge = 0;
+		int maxX = this.map.getWidth() - 1;
+		int maxY = this.map.getHeight() - 1;
+		for(Squad squad : ss){
+			edge++;
+			for(Character c : squad.getMembers()){
+				int xx = s.getRandomIntBetween(0,maxX);
+				int yy = s.getRandomIntBetween(0,maxY);
+				if(edge == 1){    	 //place on left boarder
+					xx = 0;
+				}else if(edge == 2){ //place on right boarder
+					xx = maxX;
+				}else if(edge == 3){ //place on top boarder
+					yy = 0;
+				}else if(edge == 4){ //place on bottom boarder
+					yy = maxY;
+				}else{
+					//leave as initialized -> 100% random placement
+				}
+//				c.getPosition_().setX(xx);
+//				c.getPosition_().setY(yy);
+				if(c.getMap_() != this.map){
+					c.transitionToMap(this.map,xx,yy);
+				}
+				Area charExistsArea = this.map.getAreaOfChar(c);
+				if( charExistsArea == null){
+					s.out("Char doesnt exist on map in placeCharactersRandomly");
+					this.map.getArea(xx,yy).getContainsObj().add(c);
+				}else{
+					s.out("Char already exists on map in placeCharactersRandomly");
+					charExistsArea.getContainsObj().remove(c);
+					this.map.getArea(xx,yy).getContainsObj().add(c);
+				}
+
+			}
+		}
+	}//placeCharactersRandomly
+
+
 
 	//if ambush, s1 attack s2
 	public Result beginSquadBattle(Map1 map, Squad s1, Squad s2) throws Exception{
@@ -94,6 +127,7 @@ public class Battle implements Serializable{
 		this.activeAbilitiesByChar = new ConcurrentHashMap<>();
 		this.ss.add(s1);
 		this.ss.add(s2);
+		placeCharactersRandomly();
 		this.turnCharacterId = 0;
 		this.turn = 0;
 		setCharIds();  //give each char a unique id for this battle
@@ -196,6 +230,7 @@ public class Battle implements Serializable{
 
 
 		result.setVictory(true);
+		this.mc.transitionToMap(mc.getOldMap_(),mc.getPosition_().getOldX(),mc.getPosition_().getOldY());
 		return result;
 
 	}//end beginSquadBattle
@@ -380,13 +415,13 @@ public class Battle implements Serializable{
 
 
 	public boolean processDefChoiceYN(Character tc){
-		boolean chooseDef = false;
+		boolean chooseDefAction = false;
 		if(tc.getAI_().isAI() == true){
 			int random = s.getRandomIntBetween(1,10);
-			if(random >= 4){  //60% chance to defend
+			if(random < 4){  //40% chance to defend with action
 				//processAIdefense
 				s.out(tc.getName() + " chooses to defend with an action.");
-				chooseDef = true;
+				chooseDefAction = true;
 			}
 		}else{
 			s.out(tc.getName() + " - would you like to use an action to defend? (-1 action from next round)");
@@ -394,10 +429,10 @@ public class Battle implements Serializable{
 			s.out("2. Use durability to defend");
 			int answer = s.getIntBetween(1,2);
 			if(answer == 1){
-				chooseDef = true;
+				chooseDefAction = true;
 			}
 		}
-		return chooseDef;
+		return chooseDefAction;
 	}
 
 
@@ -415,6 +450,7 @@ public class Battle implements Serializable{
 
 			if(processAction(false) == true) {						//processAction success
 				numActions--;
+				s.out(this.getActionName(currentDefAction) + " action succeeded.");
 			}else{
 				s.out("_______________________________");
 				s.out("");
@@ -431,7 +467,7 @@ public class Battle implements Serializable{
 		tc.getStatus_().setHasBeenTargeted(true);
 		canDefend = tc.getStatus_().canMove();
 		targetedChar = tc;
-		s.out(tc.getName() + " has been targeted by " + currentAbility.getName());
+		s.out(tc.getName() + " has been targeted by " + currentAbility.getOwnerName() + "'s " + currentAbility.getName());
 		if(tc.getStatus_().canMove() && tc.getAction_().isUsedDefensive() == false ){  //if can defend
 			boolean yesDefend = processDefChoiceYN(tc);
 			if(yesDefend){
@@ -637,6 +673,8 @@ public class Battle implements Serializable{
 						actionSuccess = prepareAbility();
 						if (actionSuccess) {
 							offensiveCopy.setId(this.a_id);
+							offensiveCopy.setOwnerName(currentChar.getName())	;
+							offensiveCopy.setOwnerId(currentChar.getId());
 							this.a_id++;
 							activeAbilitiesCurrentChar.add(offensiveCopy);
 							activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar);
@@ -674,7 +712,12 @@ public class Battle implements Serializable{
 			aa.listObjects();
 			int ii = s.getInt();
 			Character cc = aa.getCharacterFromIndex(ii);
-			cc.printBattleStatus();
+			if(cc!=null){
+				cc.printBattleStatus();
+			}else{
+				s.out("Nothing here");
+			}
+
 		}
 		return actionSuccess;
 	}//processValidatedAction
@@ -749,17 +792,19 @@ public class Battle implements Serializable{
 						if (actionSuccess) {
 							defensiveCopy.setId(this.a_id);
 							this.a_id++;
-							activeAbilitiesCurrentChar.add(defensiveCopy);
-							activeAbilitiesByChar.put(tc.getId(), activeAbilitiesCurrentChar);
+							//activeAbilitiesCurrentChar.add(defensiveCopy);
+							activeAbilitiesByChar.get(tc.getId()).add(defensiveCopy);
+							//activeAbilitiesByChar.put(tc.getId(), activeAbilitiesCurrentChar);
+							if(s.isDebug()  ){s.out(defensiveCopy.getName()  + " activated for " + tc.getName()   );}
 							tc.getAction_().setUsedDefensive(true);
 						} else {
 							s.out(defensiveCopy.getName() + " cancelled.");
 						}
 					} else {
-						s.out("Sorry, you can't use defensive moves right now.");
+						s.out("Sorry, " + tc.getName() + " can't use defensive moves right now.");
 					}
 				} else {
-					s.out("Sorry, you have no defensive abilities.");
+					s.out("Sorry, " + tc.getName() + " has no defensive abilities.");
 				}
 			//AI
 			}else{
@@ -773,17 +818,19 @@ public class Battle implements Serializable{
 						if(actionSuccess){
 							defensiveCopy.setId(this.a_id);
 							this.a_id++;
-							activeAbilitiesCurrentChar.add(defensiveCopy);
-							activeAbilitiesByChar.put(tc.getId(), activeAbilitiesCurrentChar );
+							//activeAbilitiesCurrentChar.add(defensiveCopy);
+							activeAbilitiesByChar.get(tc.getId()).add(defensiveCopy);
+							//activeAbilitiesByChar.put(tc.getId(), activeAbilitiesCurrentChar );
+							if(s.isDebug()  ){s.out(defensiveCopy.getName()  + " activated for " + tc.getName()   );}
 							tc.getAction_().setUsedDefensive(true);
 						}else{
 							s.out(defensiveCopy.getName() + " cancelled.");
 						}
 					}else{
-						s.out("Sorry, you can't use defensive moves right now.");
+						s.out("Sorry, " + tc.getName() + " can't use defensive moves right now.");
 					}
 				}else{
-					s.out("Sorry, you have no defensive abilities.");
+					s.out("Sorry, " + tc.getName() + " has no defensive abilities.");
 				}
 			}
 
@@ -792,12 +839,17 @@ public class Battle implements Serializable{
 			s.out("Sorry, " + tc.getName() + " has no items.");
 		}
 		if(currentDefAction == 6){
+			this.map.printBattleMap();
 			int id = this.selectMapId();
 			Area aa = this.map.getAreaFromID(id);
 			aa.listObjects();
 			int ii = s.getInt();
 			Character cc = aa.getCharacterFromIndex(ii);
-			cc.printBattleStatus();
+			if(cc!=null){
+				cc.printBattleStatus();
+			}else{
+				s.out("Nothing here");
+			}
 		}
 		return actionSuccess;
 	}//processValidatedDefAction
@@ -1450,6 +1502,15 @@ public class Battle implements Serializable{
 	}
 
 
+
+
+	public Character getMc() {
+		return mc;
+	}
+
+	public void setMc(Character mc) {
+		this.mc = mc;
+	}
 
 
 }//end Battle

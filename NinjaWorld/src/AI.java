@@ -23,21 +23,21 @@ public class AI  implements Serializable{
 		int r = s.getRandomIntBetween(1,8);
 		switch (r){
 			case 1:
-				return "n";
+				return "north";
 			case 2:
-				return "s";
+				return "south";
 			case 3:
-				return "e";
+				return "east";
 			case 4:
-				return "w";
+				return "west";
 			case 5:
-				return "nw";
+				return "northwest";
 			case 6:
-				return "ne";
+				return "northeast";
 			case 7:
-				return "sw";
+				return "southwest";
 			case 8:
-				return "se";
+				return "southeast";
 		}
 		return "";
 	}

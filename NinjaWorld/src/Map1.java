@@ -83,7 +83,9 @@ public class Map1 implements Serializable{
 	}
 	
 	public void placeMC(int x, int y) {
-		getArea(mc.getPosition_().getX(),mc.getPosition_().getY()).getContainsObj().remove(mc);
+		int xx =  mc.getPosition_().getX();
+		int yy = mc.getPosition_().getY();
+		getArea( xx  , yy).getContainsObj().remove(mc);
 		mc.getPosition_().setX(x);
 		mc.getPosition_().setY(y);
 		getArea(x,y).getContainsObj().add(mc);
