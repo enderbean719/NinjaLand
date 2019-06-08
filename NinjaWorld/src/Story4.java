@@ -54,7 +54,7 @@ public class Story4 implements Story, Serializable{
 		Squad s1 = new Squad(naruto);
 		Squad s2 = new Squad(sasuke);
 		try {
-			naruto.getBattle_().beginSquadBattle(mm, s1, s2);
+			naruto.getBattle_().beginSquadBattle(naruto, mm, s1, s2);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -124,9 +124,23 @@ public class Story1 implements Story, Serializable{
 
 
 						Map1 snakeBattleMap = new Map1(3, 3);
+
+											//BEFORE TEST
+											if(s.isDebug()) {
+												s.out("BEFORE TEST");
+												mainmap.printDups();
+												snakeBattleMap.printDups();
+											}
+
 						mc.transitionToMap(snakeBattleMap,0,0);
 						snake.transitionToMap(snakeBattleMap, 2,2);
 
+										//AFTER TRANSITION TEST
+										if(s.isDebug()) {
+											s.out("AFTER TRANSITION TEST");
+											mainmap.printDups();
+											snakeBattleMap.printDups();
+										}
 
 						//snakeBattleMap.placeCreatureAndRemove(snake, 2, 2);
 						Squad s1 = new Squad(mc);
@@ -135,7 +149,15 @@ public class Story1 implements Story, Serializable{
 						Result result = new Result();
 						try {
 
-							result = mc.getBattle_().beginSquadBattle(snakeBattleMap, s1, s2);
+							result = mc.getBattle_().beginSquadBattle(mc, snakeBattleMap, s1, s2);
+
+							//AFTER BATTLE TEST
+							if(s.isDebug()) {
+								s.out("AFTER BATTLE TEST");
+								mainmap.printDups();
+								snakeBattleMap.printDups();
+							}
+
 							//mc.setMap_(mainmap);
 							//mainmap.placeCreatureAndRemove(mc, mcArea.getX(), mcArea.getY());
 						} catch (Exception ee) {
@@ -151,6 +173,16 @@ public class Story1 implements Story, Serializable{
 							mainmap.removeChar(snake);
 							snakeListItr.remove();
 							mainmap.printBattleMap();
+
+							//AFTER REMOVAL TEST
+							if(s.isDebug()) {
+								s.out("AFTER REMOVAL TEST");
+								mainmap.printDups();
+								snakeBattleMap.printDups();
+							}
+
+
+
 						}
 					}//end snake battle
 				}//loop nearby snakes

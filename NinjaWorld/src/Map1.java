@@ -97,8 +97,79 @@ public class Map1 implements Serializable{
 		c.getPosition_().setY(y);
 		getArea(x,y).getContainsObj().add(c);
 	}
-	
-	 
+
+
+//	public void printArrayListString(){
+//
+//	}
+
+	public ArrayList<String> getListOfChar(){
+		ArrayList<String> l = new ArrayList<>();
+		for(Area a : this.getAreas()  ){
+			for( Object o : a.getContainsObj() ){
+				if(o instanceof  Character){
+					String name = ((Character) o).getName()  ;
+					l.add(name);
+				}
+			}
+		}
+		return l;
+	}
+
+
+
+
+	public void hasDuplicateObj(ArrayList<String> list){
+ 		for(String s1 : list){
+			int count = 0;
+			for(String s2 : list){
+				if(s1.equals(s2)){
+					count++;
+				}
+			}
+			s.out(s1 + ":" + count);
+		}
+
+
+	}
+
+
+	public void printDups(){
+		s.out("===================================");
+		s.out("===================================");
+		s.out("Map size : " + height + " h / " + width + " w");
+
+		hasDuplicateObj( getListOfChar() );
+		s.out("===================================");
+		s.out("===================================");
+
+	}
+
+//
+//	public String hasDuplicateObjBad(ArrayList<String> list){
+//		String name;
+//		int count = 0;
+//		for( String l : list){
+//			count = 0;
+//			for(Area a : this.getAreas()  ){
+//				for( Object o : a.getContainsObj() ){
+//					if(o instanceof  Character){
+//						name = ((Character) o).getName();
+//
+//						if(l.equals(name) ){
+//							count++;
+//							l = l + count;
+//
+//						}
+//					}
+//				}
+//			}
+//		}
+//		s.out(  list.toString()  );
+//
+//	}
+
+
 	public void printMapOfIds() {
 		printMapOf("ids");
 	}

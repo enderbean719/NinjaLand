@@ -69,7 +69,15 @@ public class Battle implements Serializable{
 
 		return result;
 	}
-	 
+
+
+	public void setMapForAllChar(){
+		for(Squad squad : ss) {
+			for (Character c : squad.getMembers()) {
+				c.setMap_(this.map);
+			}
+		}
+	}
 
 
 
@@ -102,10 +110,14 @@ public class Battle implements Serializable{
 				if( charExistsArea == null){
 					s.out("Char doesnt exist on map in placeCharactersRandomly");
 					this.map.getArea(xx,yy).getContainsObj().add(c);
+					c.getPosition_().setX(xx);
+					c.getPosition_().setY(yy);
 				}else{
 					s.out("Char already exists on map in placeCharactersRandomly");
 					charExistsArea.getContainsObj().remove(c);
 					this.map.getArea(xx,yy).getContainsObj().add(c);
+					c.getPosition_().setX(xx);
+					c.getPosition_().setY(yy);
 				}
 
 			}
@@ -115,9 +127,12 @@ public class Battle implements Serializable{
 
 
 	//if ambush, s1 attack s2
-	public Result beginSquadBattle(Map1 map, Squad s1, Squad s2) throws Exception{
+	public Result beginSquadBattle(Character mc, Map1 map, Squad s1, Squad s2) throws Exception{
 		//setup
+
+
 		Result result = new Result();
+		this.mc = mc;
 		this.map = map;		
 		this.s1 = s1;
 		this.s2 = s2;
@@ -127,7 +142,16 @@ public class Battle implements Serializable{
 		this.activeAbilitiesByChar = new ConcurrentHashMap<>();
 		this.ss.add(s1);
 		this.ss.add(s2);
+
 		placeCharactersRandomly();
+		setMapForAllChar();
+
+		if(s.isDebug()) {
+			s.out("battle begin");
+			map.printDups();
+		}
+
+
 		this.turnCharacterId = 0;
 		this.turn = 0;
 		setCharIds();  //give each char a unique id for this battle
@@ -145,7 +169,7 @@ public class Battle implements Serializable{
 			this.characterIdOrder  = characterIdOrder();   //recalculate the order of attacks randomly each turn
 			
 			//loop characters for one round
-			for(int i=characterIdOrder.size()-1; i>=0; i--) {
+			for(int i = characterIdOrder.size()-1; i>=0; i--) {
 				//begin char turn
 				setCurrentCharByIndex(i);  //find and set currentChar
 				if(currentChar.getStatus_().isKO()==true){
