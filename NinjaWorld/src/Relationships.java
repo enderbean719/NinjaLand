@@ -22,6 +22,8 @@ public class Relationships implements Serializable{
 	public void newRelationship50(String name) {
 		addGoodDeedAgainst(name);
 		addBadDeedAgainst(name);
+		addGoodDeedAgainst(name);
+		addBadDeedAgainst(name);
 	}
 	
 	public void newRelationship75(String name) {

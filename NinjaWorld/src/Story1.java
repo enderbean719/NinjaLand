@@ -6,17 +6,18 @@ import java.util.ListIterator;
 public class Story1 implements Story, Serializable{
  
 	private int answer = 0;
-	
-	
+	private System1 s = new System1();
+	private ArrayList<Character> snakeList = new ArrayList<>();
+
 	public int getAnswer() {
 		return answer;
 	}
 
-	
 	public void setAnswer(int answer) {
 		this.answer = answer;
 	}
-	public ArrayList<Character> snakeList = new ArrayList<>();
+
+
 
 	//public ListIterator<Character> snakeListIter = new ListIterator<Character>();
 
@@ -26,7 +27,7 @@ public class Story1 implements Story, Serializable{
 	@Override
 	public void start_(Character mc) { 
 		//SETH BEGIN HERE
-		System1 s = new System1(); 
+
 		Event e = new Event(mc);
 		
 		
@@ -95,9 +96,12 @@ public class Story1 implements Story, Serializable{
 		mainmap.placeCreatureAndRemove(arenaBuilding,9,4);
 		//mizuki
 		Character mizuki = new Character(true,"Mizuki",2,"male","tricky");
+		mc.getRel_().newRelationship50(mizuki.getName());
 		mainmap.placeCreatureAndRemove(mizuki,0,4);
 		//arena
 		Character sakane = new Character(true, "Sakane Tsuchigumo", 7, "male", "elemental");
+		mc.getRel_().newRelationship50(sakane.getName());
+		sakane.setName("Izumi Uchiha");
 		mainmap.placeCreatureAndRemove(sakane,5,2);
 		//snakes
 		for(int i=0; i<5; i++){
@@ -108,7 +112,13 @@ public class Story1 implements Story, Serializable{
 			//mainmap.printMapOfNames();
 			mainmap.printBattleMap();
 			while(e.mcArrivedAtChar(arenaBuilding)==false) {
-				
+
+
+				//MIZUKI
+				if (e.mcNextToChar(mizuki) == true) {
+					mizukiDialogue(mc, mizuki);
+				}//end Mizuki
+
 				//snake event
 				//move snakes
 				ListIterator<Character> snakeListItr = snakeList.listIterator();
@@ -120,8 +130,6 @@ public class Story1 implements Story, Serializable{
 						s.pause();
 						//Area mcArea = mainmap.getAreaOfChar(mc);
 						//mainmap.removeChar(mc);
-
-
 
 						Map1 snakeBattleMap = new Map1(3, 3);
 
@@ -262,5 +270,281 @@ public class Story1 implements Story, Serializable{
 		this.snakeList.add(snake);
 		m.placeCreatureAndRemove(snake,a.getX(),a.getY());
 	}
+
+
+
+	public void mizukiDialogue(Character mc, Character mizuki){
+		s.pause();
+		boolean whySnakes = false;
+		boolean suspicious = false;
+		s.out("Approach " + mizuki.getName() + "?"	);
+		s.out("1. Yes") ;
+		s.out("2. No")	;
+		s.out(":");
+		answer = s.getIntBetween(1,2);
+		if(answer == 1){  //approach yes
+			String[] approach = new String[4];
+			approach[1] = " 'Hey man, what's up?' ";
+			approach[2] = " 'What's with all the snakes around here?' ";
+			approach[3] = " 'You look awfully suspicious, what are you up to?' ";
+			s.out("Choose an approach");
+			for(int i=1; i<=3; i++){
+				s.out( i + ": " + approach[i]);
+			}
+			s.out(":");
+			answer = s.getIntBetween(1,3);
+			if(answer == 1 ){ //approach 1, friendly
+				//approach[1] = " 'Hey man, what's up?' ";
+				s.out("--------------------------------------------");
+				s.out(mc.getName() + ": " + approach[1]);
+				s.pause();
+				s.out(mizuki.getName() +": 'Oh, you know, just enjoying the weather!'");
+				if(s.getRandomIntBetween(0, (int)mc.getStats_().getSensing() ) >= 1	 ){
+					s.out(mc.getName() + " sensing skill: " + "<notices a sly smile>");
+				}
+				s.pause();
+				s.out("Respond to " + mizuki.getName() + "?"	);
+				s.out("1. Yes")	;
+				s.out("2. No")	;
+				s.out(":");
+				answer = s.getIntBetween(1,2);
+				if(answer == 2){  //no response
+					//do nothing continue about your day
+					s.out("");
+					s.out(mc.getName() + " walks away");
+					s.pause();
+					answer = 0;
+				}else if( answer == 1){  //choose response
+					//move on to next bracket
+					String[] response = new String[5];
+					response[1] = " 'It is nice out! Mind if I join you?' ";
+					response[2] = " 'How can you enjoy the weather with all these snakes about??' ";
+					response[3] = " 'Yes, I agree.  I particularly favor the cumulus clouds. How about you?' ";
+					response[4] = " 'Seems like something someone would say to hide what they are really doing...' ";
+					s.out("");
+					s.out("Choose a response");
+					int resp = 3;
+					for(int i=1; i<=3; i++){
+						s.out( i + ": " + response[i]);
+					}
+					if(s.getRandomIntBetween(0, (int)mc.getStats_().getBrains() ) >= 1	 ){
+						s.out( 4 + ": " + response[4] + "(" +mc.getName() + " intelligence skill)");
+						resp = 4;
+					}
+					s.out(":");
+					answer = s.getIntBetween(1,resp);
+
+					//MC RESPONSE
+					s.out("--------------------------------------------");
+					s.out(mc.getName() + ": " + response[answer]);
+					s.pause();
+					//MIZUKI RESPONSE
+					if(answer==1){  //" 'It is nice out! Mind if I join you?' ";
+
+						s.out(mizuki.getName() + ": 'Well...' <looks around awkwardly> 'Sure why not.'");
+						s.out("<" + mizuki.getName() + " notices your friendly attitude>");
+						mc.getRel_().addGoodDeedAgainst(mizuki.getName());
+						if(s.getRandomIntBetween(0, (int)mc.getStats_().getSensing() ) >= 2	 ){
+							s.out(mc.getName() + " sensing skill: " + "<noticed " + mizuki.getName() +
+									" look towards Izumani "); //+ sakane.getName() + " >");
+						}
+						s.pause();
+						//end story? or casual conversation?
+					}else if(answer == 2){  //'How can you enjoy the weather with all these snakes about??'
+
+						//ACTIVATE WHY SNAKE BRANCH
+						whySnakes = true;
+
+					}else if(answer == 3){  //'Yes, I agree.  I particularly favor the cumulus clouds. How about you?'
+						if(mc.getGender()=="female"){
+							s.out(mizuki.getName() + ": 'Haha - you're so cute.  I prefer the thunderstorms though.' ");
+							mc.getRel_().addGoodDeedAgainst(mizuki.getName());
+							s.out("<" + mizuki.getName() + " is starting to like you>");
+						}else{
+							s.out(mizuki.getName() + ": 'You're such a nerd.' <rolls eyes>");
+							mc.getRel_().addBadDeedAgainst(mizuki.getName());
+							s.out("<" + mizuki.getName() + " opinion of you drops>");
+						}
+						s.pause();
+					}else if(answer == 4){  //'Seems like something someone would say to hide what they are really doing...'
+						suspicious = true;
+						// ACTIVATE SUSPICIONS BRANCH
+					}
+
+				}//done with conversation
+				//finish approach 1
+			}else if(answer == 2){ //approach 2, questioning
+				//approach[2] = " 'What's with all the snakes around here?' ";
+
+				s.out("--------------------------------------------");
+				s.out(mc.getName() + ": " + approach[2]);
+				s.pause();
+				whySnakes = true;
+				//ACTIVATE WHY SNAKES BRANCH
+
+			}else if(answer == 3){ // approach 3, suspicious
+				//approach[3] = " 'You look awfully suspicious, what are you up to?' ";
+				s.out("--------------------------------------------");
+				s.out(mc.getName() + ": " + approach[3]);
+				s.pause();
+				suspicious = true;
+				//ACTIVATE SUSPICIOUS BRANCH
+			}
+		}else{
+			//continue about your day
+			answer = 0;
+		}
+
+
+		if(whySnakes == true){
+
+			s.out(mizuki.getName() + ": 'Snakes? What snakes? Oh, those are mere babies!");
+			s.pause();
+			s.out(mizuki.getName() + ": 'You've never had the pleasure of seeing a fully grown snake before have you?!");
+			s.pause();
+			if(mc.getGender().equals("female")){
+				s.out(mizuki.getName() + ": 'Don't worry I will protect you. <looks into your eyes and smiles>");
+				mc.getRel_().addGoodDeedAgainst(mizuki.getName());
+				s.out("<" + mizuki.getName() + " is starting to like you>");
+			}else{
+				s.out(mizuki.getName() + ": 'Don't be such a wimp. <rolls eyes>'");
+				mc.getRel_().addBadDeedAgainst(mizuki.getName());
+				s.out("<" + mizuki.getName() + " opinion of you drops>");
+			}
+			s.pause();
+
+			//RESPONSE
+			s.out("Respond to " + mizuki.getName() + "?"	);
+			s.out("1. Yes")	;
+			s.out("2. No")	;
+			s.out(":");
+			answer = s.getIntBetween(1,2);
+			if(answer == 2){  //no response
+				//do nothing continue about your day
+				s.out("");
+				s.out(mc.getName() + " walks away");
+				s.pause();
+				answer = 0;
+			}else if( answer == 1) {  //choose response
+				//move on to next bracket
+				String[] response = new String[4];
+				response[1] = " 'What do you mean?? There are larger snakes than those??' ";  //curious
+				response[2] = " 'Are you calling me a coward???' ";                                //challenging
+				response[3] = " 'There are snake scales on your clothes. You summoned them, didn't you?!' ";  //evidence
+				s.out("");
+				s.out("Choose a response");
+				int resp = 2;
+				for (int i = 1; i <= 2; i++) {
+					s.out(i + ": " + response[i]);
+				}
+				if (s.getRandomIntBetween(0, (int) mc.getStats_().getSensing()) >= 2) {
+					s.out(4 + ": " + response[3] + "(" + mc.getName() + " sensing skill)");
+					resp = 3;
+				}
+				s.out(":");
+				answer = s.getIntBetween(1, resp);
+				s.out("--------------------------------------------");
+				s.out(mc.getName() + ": " + response[answer]);
+				s.pause();
+				if(answer == 1){ 		 //curious
+//					response[1] = " 'What do you mean?? There are larger snakes than those??' ";  //curious
+					s.out(mizuki.getName() + ": 'Of course there are!  They can grow up to the size of walls of the village!!");
+					s.pause();
+					if(mc.getRel_().getRelationship(mizuki.getName()) > .5	 ){
+						s.out(mizuki.getName() + "'But don't worry.  As long as I'm around, they can't touch you.'");
+						s.pause();
+					}else{
+						s.out(mizuki.getName() + "'I guess you haven't had very many rigorous missions yet...'");
+						s.pause();
+					}
+				}else if(answer == 2){  //challenging
+
+//					response[2] = " 'Are you calling me a coward???' ";     //challenging
+
+					mc.getRel_().addBadDeedAgainst(mizuki.getName());
+					s.out(mizuki.getName() + ": ' Hmmm...I don't know - ARE YOU?' " +
+							"<" + mizuki.getName() + "places his hand on a kunai>");
+					s.pause();
+					s.out("Battle?");
+					s.out("1. Yes");
+					s.out("2. No");
+					answer = s.getIntBetween(1,2);
+					if(answer == 1){
+						s.out(mc.getName() + ": Bring it on JERK!  I'm not afraid of you!");
+						s.pause();
+						s.out(mizuki.getName() + ": 'Well, well, well. You got guts...But no brains.'");
+						s.pause();
+						while(mc.getRel_().getRelationship(mizuki.getName()) > .4){
+							mc.getRel_().addBadDeedAgainst(mizuki.getName());
+						}
+						//mc.getBattle_().beginSquadBattle(mc,)
+					}else {
+						s.out(mc.getName() + ":  'I'm not here to fight, okay?'");
+						s.pause();
+						s.out(mizuki.getName() + ": 'I thought so...' <smirk>");
+						s.pause();
+					}
+
+
+				}else if(answer == 3){  //evidence
+
+//					response[3] = " 'There are snake scales on your clothes. You summoned them, didn't you?!' ";  //evidence
+					s.out(mizuki.getName() + ": ' '");
+					s.pause();
+					s.out(mizuki.getName() + ": ' '");
+					s.pause();
+				}
+			}//end snake responses
+			whySnakes =false; //turn off branch
+		}
+
+		if(suspicious == true){
+
+			suspicious = false; // turn off branch
+		}
+
+
+	}//end Mizuki Dialogue
+
+
+
+	public void izumiDialogue(Character mc, Character sakane){
+
+
+
+
+		sakane.setName("Sakane Tsuchigumo");
+	}
+
+	public void sakaneDialogue(Character mc, Character sakane){
+
+
+
+
+	}
+
+
+
+	public System1 getS() {
+		return s;
+	}
+
+	public void setS(System1 s) {
+		this.s = s;
+	}
+
+	public ArrayList<Character> getSnakeList() {
+		return snakeList;
+	}
+
+	public void setSnakeList(ArrayList<Character> snakeList) {
+		this.snakeList = snakeList;
+	}
+
+
+
+
+
+
 
 }//end story1
