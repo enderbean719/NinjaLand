@@ -7,6 +7,10 @@ import java.io.Serializable;
 
 public class System1 implements Serializable{
 
+
+	private boolean debug = true;
+
+
 	public boolean isDebug() {
 		return debug;
 	}
@@ -14,8 +18,6 @@ public class System1 implements Serializable{
 	public void setDebug(boolean debug) {
 		this.debug = debug;
 	}
-
-	private boolean debug = true;
 
 	public void clear() {
 //		System.out.println("\033[H\033[2J");  

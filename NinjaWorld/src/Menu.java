@@ -13,6 +13,7 @@ public class Menu  implements Serializable{
 	public void start() {
 		mc.getAI_().setAI(false);
 		printTitle();
+		//s.out("0. Toggle logs");
 		s.out("1. New Game");
 		s.out("2. Load Game");
 		s.out("3. Multiplayer Match");

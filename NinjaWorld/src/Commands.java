@@ -7,6 +7,7 @@ public class Commands implements Serializable{
 	private Character mc;
 	private String input;
 	private System1 s = new System1();
+	private AI ai_ = new AI();
 	
 	
 	public Commands(Character mc) {
@@ -167,7 +168,7 @@ public class Commands implements Serializable{
 	
 	
 
-	public boolean processBattleMapCommand(String c) {
+	public boolean processBattleMapCommand(String c, boolean isAi) {
 		boolean moveSuccess = false;
 		while(   !(c.equals("back") || c.equals("cancel") )   &&    moveSuccess == false ){
 			if(c.equals("north") || c.equals("n")) {
@@ -193,8 +194,13 @@ public class Commands implements Serializable{
 				this.printBattleMapCmds();
 			}
 			if(moveSuccess == false) {
-				s.out("Enter a different direction or cancel");
-				c = this.getCommand();
+				if(isAi){
+					c = ai_.getRandomBattleMoveDirection();
+				}else{
+					s.out("Enter a different direction or cancel");
+					c = this.getCommand();
+				}
+
 			}
 			
 		}//while
