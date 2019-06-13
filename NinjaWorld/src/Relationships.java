@@ -60,8 +60,19 @@ public class Relationships implements Serializable{
 		}
 		updateRelationships(name);
 	}
-	
-	
+
+	public void decreaseRelTo(String name, double percent){
+		while(this.getRelationship(name)> percent){
+			this.addBadDeedAgainst(name);
+		}
+	}
+
+	public void increaseRelTo(String name, double percent){
+		while(this.getRelationship(name)< percent){
+			this.addGoodDeedAgainst(name);
+		}
+	}
+
 	
 	private void updateRelationships(String name) {
 		relationships.put(name, calcRelationship(name));

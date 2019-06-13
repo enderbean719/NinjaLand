@@ -119,6 +119,8 @@ public class Character   implements Serializable {
 		}
 
 		this.stats_.purchaseStats(points);
+		double maxH = this.getStats_().getMaxHP();
+		this.getStats_().setCurrentHP(maxH);
 	}
 	
 	public void updateExp() {
@@ -656,10 +658,10 @@ public class Character   implements Serializable {
 		this.position_.setY(y);
 		Area charExistsArea = m.getAreaOfChar(this);
 		if( charExistsArea == null){
-			s.out("char null in transitionToMap");
+			if(s.isDebug()){ s.out("char null in transitionToMap");}
 			m.getArea(x,y).getContainsObj().add(this);
 		}else{
-			s.out("char exists in transitionToMap");
+			if(s.isDebug()){ s.out("char exists in transitionToMap");}
 			charExistsArea.getContainsObj().remove(this);
 			m.getArea(x,y).getContainsObj().add(this);
 		}

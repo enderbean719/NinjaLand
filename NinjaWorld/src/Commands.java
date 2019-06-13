@@ -195,7 +195,8 @@ public class Commands implements Serializable{
 			}
 			if(moveSuccess == false) {
 				if(isAi){
-					c = ai_.getRandomBattleMoveDirection();
+					break;   //loop at Parent level
+					//c = ai_.getRandomBattleMoveDirection();
 				}else{
 					s.out("Enter a different direction or cancel");
 					c = this.getCommand();

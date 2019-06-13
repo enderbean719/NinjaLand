@@ -73,12 +73,13 @@ public class Battle implements Serializable{
 
 
 	public void setMapForAllChar(){
-		for(Squad squad : ss) {
+		for(Squad squad : this.ss) {
 			for (Character c : squad.getMembers()) {
 				c.setMap_(this.map);
 			}
 		}
-	}
+	}//setMapForAllChar
+
 
 
 
@@ -109,12 +110,12 @@ public class Battle implements Serializable{
 				}
 				Area charExistsArea = this.map.getAreaOfChar(c);
 				if( charExistsArea == null){
-					s.out("Char doesnt exist on map in placeCharactersRandomly");
+					if(s.isDebug()){ s.out("Char doesnt exist on map in placeCharactersRandomly");}
 					this.map.getArea(xx,yy).getContainsObj().add(c);
 					c.getPosition_().setX(xx);
 					c.getPosition_().setY(yy);
 				}else{
-					s.out("Char already exists on map in placeCharactersRandomly");
+					if(s.isDebug()){ s.out("Char already exists on map in placeCharactersRandomly");}
 					charExistsArea.getContainsObj().remove(c);
 					this.map.getArea(xx,yy).getContainsObj().add(c);
 					c.getPosition_().setX(xx);
@@ -145,7 +146,7 @@ public class Battle implements Serializable{
 		this.ss.add(s2);
 
 		placeCharactersRandomly();
-		setMapForAllChar();
+		setMapForAllChar(); //insert battle map into each character
 
 		if(s.isDebug()) {
 			s.out("battle begin");
@@ -156,7 +157,8 @@ public class Battle implements Serializable{
 		this.turnCharacterId = 0;
 		this.turn = 0;
 		setCharIds();  //give each char a unique id for this battle
-		setMapForAll(); //insert battle map into each character
+		setAbilityOwners(); //must be after (((setCharIds)))
+
 		
 		//printBattleIntroMessage
 		s.pause();
@@ -253,8 +255,12 @@ public class Battle implements Serializable{
 			}
 		}//end battle loop
 
+		if(mc.getStats_().getCurrentHP()>0){
+			result.setVictory(true);
+		}else{
+			result.setVictory(false);
+		}
 
-		result.setVictory(true);
 		this.mc.transitionToMap(mc.getOldMap_(),mc.getPosition_().getOldX(),mc.getPosition_().getOldY());
 		return result;
 
@@ -578,8 +584,10 @@ public class Battle implements Serializable{
 		Character owner = this.getCharById(a.getOwnerId()) ;
 		if( scale != null){
 			double t = owner.getStats_().getStatFromName(trait);
-			double bonus = (double)s.getRandomIntBetween((int)t/2, (int)t*2);
-			bonus = bonus * scale;
+			double randomOnTrait = (double)s.getRandomIntBetween((int)t/2, (int)t*2);
+			double randomBonus = randomOnTrait * scale;
+			double scalingBonus = randomBonus * scale * scale * a.getBasicDamage();
+			double bonus = scalingBonus + randomBonus;
 			s.out("+ " + (int)bonus + " bonus physical damage, boosted by "  + trait + " @ " + (int)(scale*100) + "%" );
 			double bd = a.getBasicDamage();
 			a.setBasicDamage(bd + bonus);
@@ -589,8 +597,10 @@ public class Battle implements Serializable{
 
 		if( scale2 != null){
 			double t = owner.getStats_().getStatFromName(trait);
-			double bonus = (double)s.getRandomIntBetween((int)t/2, (int)t*2);
-			bonus = bonus * scale2;
+			double randomOnTrait = (double)s.getRandomIntBetween((int)t/2, (int)t*2);
+			double randomBonus = randomOnTrait * scale2;
+			double scalingBonus = randomBonus * scale2 * scale2 * a.getBasicDamage();
+			double bonus = scalingBonus + randomBonus;
 			s.out("+ " + (int)bonus + " bonus chakra damage, boosted by "  + trait + " @ " + (int)(scale2*100) + "%" );
 			double cd = a.getChakraDamage();
 			a.setBasicDamage(cd + bonus);
@@ -637,15 +647,16 @@ public class Battle implements Serializable{
 		if(currentAction == 2) {
 			//human
 			if(currentChar.getAI_().isAI() == false) {
-				String com = currentChar.getCommands_().getCommand();
-				//change this part ---> make movements a request , not an immediate action
-				//create a moveNorth ability, if ability name = north, movement ==true, run movement
-				actionSuccess = currentChar.getCommands_().processBattleMapCommand(com, currentChar.getAI_().isAI() );
+				String direction = "";
+				//while(actionSuccess==false && direction != "back" && direction != "cancel"){
+					direction = currentChar.getCommands_().getCommand();
+					actionSuccess = currentChar.getCommands_().processBattleMapCommand(direction, currentChar.getAI_().isAI() );
+				//}
 				if (actionSuccess) {
 					this.getMap().printBattleMap();
 					s.out("");
 					s.pause();
-					s.out(currentChar.getName() + " moved " + com);
+					s.out(currentChar.getName() + " moved " + direction);
 					s.pause();
 					currentChar.getAction_().setUsedMove(true);
 				}
@@ -653,12 +664,18 @@ public class Battle implements Serializable{
 			}else{ //is Ai = true
 				String direction = currentChar.getAI_().getRandomBattleMoveDirection();
 				actionSuccess = currentChar.getCommands_().processBattleMapCommand(direction, currentChar.getAI_().isAI() );
+				while(actionSuccess==false && direction != "back" && direction != "cancel"){
+					direction = currentChar.getAI_().getRandomBattleMoveDirection();
+					actionSuccess = currentChar.getCommands_().processBattleMapCommand(direction, currentChar.getAI_().isAI() );
+				}
+
 				if(actionSuccess){
 					this.getMap().printBattleMap();
 					s.out("");
 					s.pause();
 					if(s.isDebug()){ s.out("AI");}
 					s.out(currentChar.getName() + " moved " + direction);
+					currentChar.getAction_().setUsedMove(true);
 					s.pause();
 				}else{
 					s.out(currentChar.getName() + " failed at moving " + direction);
@@ -682,9 +699,20 @@ public class Battle implements Serializable{
 							activeAbilitiesCurrentChar.add(offensiveCopy);
 							activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar);
 							currentChar.getAction_().setUsedOffensive(true);
+						} else {
+							if (s.isDebug()) {
+								s.out(currentChar.getName() + " prepareAbility failed");
+							}
 						}
+					}else{
+							if (s.isDebug()) {	s.out(currentChar.getName() + " can't do an offensive maneuver at this time");}
 					}
+				}else {
+						if (s.isDebug()) {
+							s.out(currentChar.getName() + " null ability");
+						}
 				}
+
 			//AI
 			}else{
 				Ability offensive = currentChar.getAbilities_().chooseOffensiveAI();
@@ -702,10 +730,16 @@ public class Battle implements Serializable{
 							activeAbilitiesCurrentChar.add(offensiveCopy);
 							activeAbilitiesByChar.put(currentChar.getId(), activeAbilitiesCurrentChar);
 							currentChar.getAction_().setUsedOffensive(true);
+						}else {
+							if(s.isDebug()){s.out(currentChar.getName() + " prepareAbility failed"); }
 						}
+					}else{
+						if(s.isDebug()){s.out(currentChar.getName() + " can't do an offensive maneuver at this time"); }
 					}
+				}else{
+					if(s.isDebug()){s.out(currentChar.getName() + " null ability"); }
 				}
-			}
+			}//end AI
 
 		}
 		//defensive
@@ -931,20 +965,23 @@ public class Battle implements Serializable{
 			int input = 0;
 			int max = this.getMap().getMaxAreaID();
 			while (nt > 0) {
+				s.pause();
 				this.map.printBattleMap();
+				s.pause();
 			    s.out("");
 			    s.out(currentAbility.getName() + " has a range of " + currentAbility.getRange()  );
 				s.out("");
 				s.out(currentAbility.getName() + " has " + nt + " target(s)");
 				s.out("");
 
-				//Squad enemySquad = this.getEnemySquad(currentChar);
+				//AI
+				//AI
 				boolean foundEnemyWithinRange = false;
 				if(charUsingAbility.getAI_().isAI()){
-					for(int i = 0; i<= max; i++){
+					for(int i = 1; i<= max; i++){
 						//input = s.getRandomIntBetween(0, max);
 
-						Area randA = this.map.getAreaFromID(i);
+						Area randA = this.map.getAreaFromID(i);  //Map Area Ids start at 1 and go to Max
 						if(randA.getContainsObj()!=null && randA.getContainsObj().size()>0){
 							for(Object o : randA.getContainsObj()){
 								if(o instanceof Character){
@@ -966,12 +1003,13 @@ public class Battle implements Serializable{
 
 					}
 					if(foundEnemyWithinRange ==false){
-						if(s.isDebug()){s.out(charUsingAbility.getName() + " could not find an enemy within range of " + currentAbility.getName());}
+						s.out(charUsingAbility.getName() + " could not find an enemy within range of " + currentAbility.getName());
+						//if(s.isDebug()){s.out(charUsingAbility.getName() + " could not find an enemy within range of " + currentAbility.getName());}
 						currentTargetArea = this.map.getAreaFromID(0);
 						currentTargetAreaID = 0;
 						return false;
 					}
-
+				//HUMAN
 				}else{
 					s.out("  Target Area ID (or 0: Cancel)");
 					s.out("=====================");
@@ -980,12 +1018,15 @@ public class Battle implements Serializable{
 					if(input == 0) {
 						return false;
 					}
+					currentTargetAreaID = input;
+					currentTargetArea = this.map.getAreaFromID(input);
 				}
 
-				
-				currentTargetAreaID = input;
-				currentTargetArea = this.map.getAreaFromID(input);
-				
+				if(currentTargetArea == null){
+					if(s.isDebug()){s.out("target area is null");}
+					return false;
+				}
+
 				//validate range of ability
 				if(targetAreaWithinRange() == false) {
 					s.out("___________________________________");
@@ -1008,9 +1049,12 @@ public class Battle implements Serializable{
 			}
 		}
 		//abilityReady == success --->subtract chakra
-		double cc = charUsingAbility.getStats_().getCurrentChakra();
-		charUsingAbility.getStats_().setCurrentChakra(cc - cost);
-		
+		if(abilityReady){
+			double cc = charUsingAbility.getStats_().getCurrentChakra();
+			charUsingAbility.getStats_().setCurrentChakra(cc - cost);
+			s.out(currentChar.getName() + " spends " + cost + " chakra");
+		}
+
 		return abilityReady;
 		//if(ab.includesDash){processDash}
 	}//prepareAbility
@@ -1041,7 +1085,7 @@ public class Battle implements Serializable{
 	    String t = "";
 	    //AI
 	    if(charUsingAbility.getAI_().isAI()){
-			int choice = s.getIntBetween(0,list.size());
+			int choice = s.getRandomIntBetween(0,list.size());
 			if(s.getRandomIntBetween(0,100)>0){
 				choice = 1;  //default to character choice at top of list (99%)
 			}
@@ -1140,20 +1184,20 @@ public class Battle implements Serializable{
 	}
 
 
-	public void setMapForAll() {
-		for(Squad s : this.ss) {
-			for(Character c: s.getMembers()) {
-				c.setMap_(this.map);
-			}
-		}
-		
-	}//setMapForAll
-	
+
 	
 	public int validatedRandomAction() { 
 		int v = -1;
-		while(validateAction(v) == false) {
-			v = s.getRandomIntBetween(0, 5);
+		while(validateAction(v) == false || v == 1 ) {   //dont allow transitions for AI until tested
+			int priority = s.getRandomIntBetween(1, 10);
+			if(priority >=1 && priority <= 2	){
+				v = 0;  //20% rest
+			}else if(priority >2 && priority <=4){
+				v = 2;	//20% move
+			}else {
+				v = 3;  //60% attack
+			}
+			//v = s.getRandomIntBetween(0, 5);
 		}
 		return v;
 	}
@@ -1452,6 +1496,19 @@ public class Battle implements Serializable{
 		}else {
 			return input;
 		}
+	}//selectMapId
+
+
+	public void setAbilityOwners(){
+		for(Squad sq : this.ss){
+			for(Character c : sq.getMembers() ){
+				for(Ability a : c.getAbilities_().getaList()){
+					a.setOwnerName(c.getName());
+					a.setOwnerId(c.getId());
+				}
+			}
+		}
+
 	}//selectMapId
 
 

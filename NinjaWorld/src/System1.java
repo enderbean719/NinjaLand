@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class System1 implements Serializable{
 
 
-	private boolean debug = true;
+	private boolean debug = false;
 
 
 	public boolean isDebug() {
@@ -113,8 +113,8 @@ public class System1 implements Serializable{
 	}
 	
 	public int getRandomIntBetween(int min, int max) {
-		if (min >= max) {
-			throw new IllegalArgumentException("max must be greater than min");
+		if (min > max) {
+			throw new IllegalArgumentException("max must be greater or equal to  min");
 		}
 		Random r = new Random();
 		return r.nextInt((max - min) + 1) + min;		

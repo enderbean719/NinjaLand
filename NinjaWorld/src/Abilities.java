@@ -103,7 +103,12 @@ public class Abilities  implements Serializable{
 //		showListOffensive();
 //		s.out("_____________________________");
 //		s.print(":");
-		answer = s.getRandomIntBetween(0, aList.size());
+		if(aList.size()>0){
+			answer = s.getRandomIntBetween(1, aList.size());
+		}else{
+			answer = 0;
+		}
+
 		if(answer==0) {
 			a = null;  				 	//0 = cancel
 		}else {
